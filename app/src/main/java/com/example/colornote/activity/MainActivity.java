@@ -7,6 +7,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,11 +23,13 @@ import com.example.colornote.database.Database;
 import com.example.colornote.fragment.DialogSortFragment;
 import com.example.colornote.util.Settings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     ViewPager viewPager;
     MainPagerAdapter adapter;
+    FloatingActionButton fabAddTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     public void init(){
         Database.getInstance().createDatabase("database.sqlite", this);
         Settings.getInstance().setSharedPreferences(getSharedPreferences("settings", MODE_PRIVATE));
+
+        fabAddTask = findViewById(R.id.fabAddTask);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setBackground(null);
@@ -79,7 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                Toast.makeText(MainActivity.this, position+"", Toast.LENGTH_SHORT).show();
                 for(int i=0;i<adapter.getCount();i++){
                     bottomNavigationView.getMenu().getItem(i).setChecked(false);
                 }
@@ -90,6 +94,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrollStateChanged(int state) {
 
+            }
+        });
+
+        fabAddTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (bottomNavigationView.getSelectedItemId()){
+                    case R.id.mnHome:
+                        Dialog dialog = new Dialog(MainActivity.this);
+                        dialog.setContentView(R.layout.dialog_create_task);
+                        dialog.show();
+                        break;
+                    case R.id.mnCal:
+                        break;
+                    case R.id.mnSearch:
+                        break;
+                    case R.id.mnNav:
+                        break;
+                }
             }
         });
     }
