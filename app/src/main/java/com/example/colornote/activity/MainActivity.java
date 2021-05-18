@@ -24,7 +24,8 @@ import com.example.colornote.util.Settings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
-// sưa version1
+// TTT
+
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
