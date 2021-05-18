@@ -23,10 +23,9 @@ import com.example.colornote.fragment.DialogSortFragment;
 import com.example.colornote.util.Settings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-<<<<<<< HEAD
-// bbbbddddddv3
-=======
->>>>>>> b6da7541f635b662e5823a2a9612b88c0634fbfc
+
+// sưa version1
+
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     ViewPager viewPager;
