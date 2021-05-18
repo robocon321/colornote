@@ -18,7 +18,7 @@
             android:layout_height="53dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/sort_list" />
+            android:src="@drawable/ic_sort_list" />
 
         <TextView
             android:layout_width="0dp"
@@ -45,7 +45,7 @@
             android:layout_height="53dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/sort_details" />
+            android:src="@drawable/ic_sort_details" />
         <TextView
             android:text="Details"
             android:fontFamily="@font/arial"
@@ -71,7 +71,7 @@
             android:layout_height="53dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/sort_grid" />
+            android:src="@drawable/ic_sort_grid" />
         <TextView
             android:text="Grid"
             android:fontFamily="@font/arial"
@@ -97,7 +97,7 @@
             android:layout_height="53dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/sort_large_grid" />
+            android:src="@drawable/ic_sort_large_grid" />
         <TextView
             android:text="Large grid"
             android:fontFamily="@font/arial"

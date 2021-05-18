@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
         android:backgroundTint="#F6F6F6"
-        android:drawableRight="@drawable/icon_down"
+        android:drawableRight="@drawable/ic_icon_down"
         android:fontFamily="@font/arial"
         android:paddingLeft="100dp"
         android:paddingRight="100dp"

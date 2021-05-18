@@ -19,7 +19,7 @@
             android:layout_height="53dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/clock_modified" />
+            android:src="@drawable/ic_clock_modified" />
 
         <TextView
             android:layout_width="0dp"
@@ -46,7 +46,7 @@
             android:layout_height="53dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/clock_create" />
+            android:src="@drawable/ic_clock_create" />
         <TextView
             android:text="by create time"
             android:fontFamily="@font/arial"
@@ -72,7 +72,7 @@
             android:layout_height="53dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/az" />
+            android:src="@drawable/ic_az" />
         <TextView
             android:text="by alphabetically"
             android:fontFamily="@font/arial"
@@ -98,7 +98,7 @@
             android:layout_height="53dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/by_color" />
+            android:src="@drawable/ic_by_color" />
         <TextView
             android:text="by color"
             android:fontFamily="@font/arial"
@@ -124,7 +124,7 @@
             android:layout_height="53dp"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/reminder" />
+            android:src="@drawable/ic_reminder" />
         <TextView
             android:text="by reminder time"
             android:fontFamily="@font/arial"
