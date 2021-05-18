@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/mnColorOption" android:title="Color Setting" app:showAsAction="always" android:icon="@drawable/by_color"/>
+    <item android:title="option" app:showAsAction="always" android:icon="@drawable/option">
+        <menu>
+            <item android:id="@+id/mnView" android:title="View" android:icon="@drawable/view" />
+            <item android:id="@+id/mnBackup" android:title="Backup" android:icon="@drawable/backup" />
+        </menu>
+    </item>
+</menu>

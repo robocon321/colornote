@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:id="@+id/sortModified"
+        android:weightSum="10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="53dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/clock_modified" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:fontFamily="@font/arial"
+            android:padding="15dp"
+            android:text="by modified time"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/sortCreate"
+        android:weightSum="10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="53dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/clock_create" />
+        <TextView
+            android:text="by create time"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:padding="15dp"
+            android:layout_weight="8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/sortAlpha"
+        android:weightSum="10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="53dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/az" />
+        <TextView
+            android:text="by alphabetically"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:padding="15dp"
+            android:layout_weight="8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/sortColor"
+        android:weightSum="10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="53dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/by_color" />
+        <TextView
+            android:text="by color"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:padding="15dp"
+            android:layout_weight="8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/sortReminder"
+        android:weightSum="10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <View
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="53dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/reminder" />
+        <TextView
+            android:text="by reminder time"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:padding="15dp"
+            android:layout_weight="8"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>
