@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     ViewPager viewPager;
     MainPagerAdapter adapter;
-
+//  BBB
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
