@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         init();
         setEvents();
+        Log.d("Error", "Sos you");
     }
 
     public void init(){
