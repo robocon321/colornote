@@ -24,9 +24,10 @@ import com.example.colornote.util.Settings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
-// TTT
 
 // KKK
+
+
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     ViewPager viewPager;
