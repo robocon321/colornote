@@ -11,12 +11,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.colornote.R;
 
-public class FragmentSortBy extends Fragment {
+public class ViewFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.layout_sort_option, container, false);
+        View view = inflater.inflate(R.layout.layout_view_option, container, false);
         return view;
     }
 }

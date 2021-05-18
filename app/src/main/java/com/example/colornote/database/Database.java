@@ -3,10 +3,6 @@ package com.example.colornote.database;
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
-import android.util.Log;
-
-import com.example.colornote.activity.HomeActivity;
-import com.example.colornote.util.Settings;
 
 import java.io.File;
 

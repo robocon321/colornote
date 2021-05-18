@@ -11,12 +11,11 @@ import androidx.fragment.app.Fragment;
 
 import com.example.colornote.R;
 
-public class FragmentView extends Fragment {
+public class CalendarFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.layout_view_option, container, false);
+        View view = inflater.inflate(R.layout.activity_more, container, false);
         return view;
     }
 }
