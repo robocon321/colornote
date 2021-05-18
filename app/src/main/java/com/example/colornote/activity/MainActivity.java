@@ -25,7 +25,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 // TTT
-
+//AAA
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
