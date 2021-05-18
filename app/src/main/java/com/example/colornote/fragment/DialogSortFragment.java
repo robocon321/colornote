@@ -1,14 +1,9 @@
 package com.example.colornote.fragment;
 
-import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -60,9 +55,9 @@ public class DialogSortFragment extends DialogFragment {
             }
         });
 
-        tabLayoutSort.getTabAt(0).setIcon(R.drawable.by_color);
-        tabLayoutSort.getTabAt(1).setIcon(R.drawable.clock);
-        tabLayoutSort.getTabAt(2).setIcon(R.drawable.view);
+        tabLayoutSort.getTabAt(0).setIcon(R.drawable.ic_by_color);
+        tabLayoutSort.getTabAt(1).setIcon(R.drawable.ic_clock);
+        tabLayoutSort.getTabAt(2).setIcon(R.drawable.ic_view);
 
     }
 
