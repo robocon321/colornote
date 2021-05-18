@@ -62,15 +62,19 @@ public class MainActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.mnHome:
+                                fabAddTask.setImageResource(R.drawable.ic_add);
                                 viewPager.setCurrentItem(0);
                                 break;
                             case R.id.mnCal:
+                                fabAddTask.setImageResource(R.drawable.ic_add);
                                 viewPager.setCurrentItem(1);
                                 break;
                             case R.id.mnSearch:
+                                fabAddTask.setImageResource(R.drawable.ic_close);
                                 viewPager.setCurrentItem(2);
                                 break;
                             default:
+                                fabAddTask.setImageResource(R.drawable.ic_sync);
                                 viewPager.setCurrentItem(3);
                                 break;
                         }
