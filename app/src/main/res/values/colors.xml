@@ -10,4 +10,5 @@
     <color name="gray">#F4F4F4</color>
     <color name="tab_selected">#222222</color>
     <color name="tab_non_selected">#878787</color>
+    <color name="task_gray">#717171</color>
 </resources>

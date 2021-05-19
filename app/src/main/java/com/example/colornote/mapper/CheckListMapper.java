@@ -6,7 +6,7 @@ import com.example.colornote.model.CheckList;
 
 import java.sql.Date;
 
-public class CheckListMapper implements RowMapper<CheckList> {
+public class CheckListMapper implements RowMapper<CheckList>{
     @Override
     public CheckList mappRow(Cursor cursor) {
         CheckList checkList = new CheckList();

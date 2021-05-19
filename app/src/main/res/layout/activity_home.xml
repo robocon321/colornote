@@ -46,11 +46,10 @@
         android:textAllCaps="false"
         android:textColor="@color/black" />
 
-    <View
-        android:id="@+id/view"
+    <GridView
+        android:id="@+id/gvTask"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/btnSort">
-
-    </View>
+        android:numColumns="1"
+        android:layout_below="@id/btnSort"/>
 </RelativeLayout>
