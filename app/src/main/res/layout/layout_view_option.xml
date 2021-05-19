@@ -1,111 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="match_parent" android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout
-        android:id="@+id/sortList"
-        android:weightSum="10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <View
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"/>
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="53dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@drawable/ic_sort_list" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="8"
-            android:fontFamily="@font/arial"
-            android:padding="15dp"
-            android:text="List"
-            android:textColor="@color/black"
-            android:textSize="20dp" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/sortDetails"
-        android:weightSum="10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <View
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"/>
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="53dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@drawable/ic_sort_details" />
-        <TextView
-            android:text="Details"
-            android:fontFamily="@font/arial"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:padding="15dp"
-            android:layout_weight="8"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/sortGrid"
-        android:weightSum="10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <View
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"/>
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="53dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@drawable/ic_sort_grid" />
-        <TextView
-            android:text="Grid"
-            android:fontFamily="@font/arial"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:padding="15dp"
-            android:layout_weight="8"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/sortLargeGrid"
-        android:weightSum="10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <View
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="0dp"/>
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="53dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@drawable/ic_sort_large_grid" />
-        <TextView
-            android:text="Large grid"
-            android:fontFamily="@font/arial"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:padding="15dp"
-            android:layout_weight="8"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+<LinearLayout android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <Button
+        android:id="@+id/btnSortList"
+        android:fontFamily="@font/arial"
+        android:textSize="20dp"
+        android:text="Checklist"
+        android:textColor="@color/black"
+        android:gravity="left|center"
+        android:textAllCaps="false"
+        style="?android:attr/buttonBarButtonStyle"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetRight="0dp"
+        android:insetLeft="0dp"
+        android:paddingLeft="20dp"
+        android:drawableLeft="@drawable/cus_ic_sort_list"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+    <Button
+        android:id="@+id/btnSortDetail"
+        android:fontFamily="@font/arial"
+        android:textSize="20dp"
+        android:text="Details"
+        android:textColor="@color/black"
+        android:gravity="left|center"
+        android:textAllCaps="false"
+        style="?android:attr/buttonBarButtonStyle"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetRight="0dp"
+        android:insetLeft="0dp"
+        android:paddingLeft="20dp"
+        android:drawableLeft="@drawable/cus_ic_sort_details"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+    <Button
+        android:id="@+id/btnSortGrid"
+        android:fontFamily="@font/arial"
+        android:textSize="20dp"
+        android:text="Grid"
+        android:textColor="@color/black"
+        android:gravity="left|center"
+        android:textAllCaps="false"
+        style="?android:attr/buttonBarButtonStyle"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetRight="0dp"
+        android:insetLeft="0dp"
+        android:paddingLeft="20dp"
+        android:drawableLeft="@drawable/cus_ic_sort_grid"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+    <Button
+        android:id="@+id/btnSortLargeGrid"
+        android:fontFamily="@font/arial"
+        android:textSize="20dp"
+        android:text="Large Grid"
+        android:textColor="@color/black"
+        android:gravity="left|center"
+        android:textAllCaps="false"
+        style="?android:attr/buttonBarButtonStyle"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetRight="0dp"
+        android:insetLeft="0dp"
+        android:paddingLeft="20dp"
+        android:drawableLeft="@drawable/cus_ic_sort_large_grid"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
 </LinearLayout>
