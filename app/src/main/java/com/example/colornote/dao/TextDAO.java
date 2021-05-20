@@ -37,4 +37,9 @@ public class TextDAO extends AbstractDAO{
         values.put("status", status);
         return database.update("Text", values, "id = ?", new String[]{id+""});
     }
+
+    @Override
+    public String queryAll() {
+        return "SELECT * FROM Text";
+    }
 }

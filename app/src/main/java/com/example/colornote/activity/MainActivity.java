@@ -8,7 +8,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,12 +18,17 @@ import android.widget.Toast;
 
 import com.example.colornote.R;
 import com.example.colornote.adapter.MainPagerAdapter;
+import com.example.colornote.dao.ColorDAO;
 import com.example.colornote.database.Database;
 import com.example.colornote.fragment.DialogSortFragment;
+import com.example.colornote.mapper.ColorMapper;
+import com.example.colornote.model.Color;
 import com.example.colornote.util.Settings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
@@ -120,11 +124,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.top_home_menu, menu);
-        return true;
     }
 }
