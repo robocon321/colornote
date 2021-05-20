@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto">
+<item android:id="@+id/mnColorOption" android:title="Show Current Day" app:showAsAction="always" android:icon="@drawable/ic_calendar"/>
+<item android:title="option" app:showAsAction="always" android:icon="@drawable/ic_option">
+    <menu>
+        <item
+            android:id="@+id/mnView"
+            android:icon="@drawable/ic_by_color"
+            android:title="View" />
+        <item
+            android:id="@+id/mnBackup"
+            android:icon="@drawable/ic_backup"
+            android:title="Backup" />
+    </menu>
+</item>
+</menu>
