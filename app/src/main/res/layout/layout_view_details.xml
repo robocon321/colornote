@@ -4,44 +4,61 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
+        android:id="@+id/cvTask"
         app:cardCornerRadius="10dp"
-        app:contentPadding="10dp"
+        app:contentPaddingRight="10dp"
+        app:cardElevation="2dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/txtTitle"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:text="KKK"
-                android:textSize="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <ImageView
-                android:id="@+id/imgCheck"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_check"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/txtContent"
-                android:text="lsakdjjf oiwer klasjdflsakdjjf oiwer klasjdflsakdjjf oiwer klasjdflsakdjjf oiwer klasjdflsakdjjf oiwer ..."
-                android:textSize="15dp"
-                android:textColor="@color/task_gray"
-                android:layout_below="@id/txtTitle"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+            <View
+                android:id="@+id/colorSub"
+                android:background="@color/black"
+                android:layout_width="5dp"
+                android:layout_height="match_parent"/>
+            <RelativeLayout
+                android:padding="10dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:text="9:03"
-                android:textColor="@color/task_gray"
-                android:textSize="12dp"
-                android:layout_below="@id/txtContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/txtTitle"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="KKK"
+                    android:textSize="15dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <ImageView
+                    android:id="@+id/imgCheck"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/ic_check"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/txtContent"
+                    android:text="lsakdjjf oiwer klasjdflsakdjjf oiwer klasjdflsakdjjf oiwer klasjdflsakdjjf oiwer klasjdflsakdjjf oiwer ..."
+                    android:textSize="15dp"
+                    android:maxLines="2"
+                    android:textColor="@color/task_gray"
+                    android:layout_below="@id/txtTitle"
+                    android:layout_marginTop="2dp"
+                    android:layout_marginBottom="2dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:id="@+id/txtTime"
+                    android:text="9:03"
+                    android:textColor="@color/task_gray"
+                    android:textSize="12dp"
+                    android:layout_below="@id/txtContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+            </RelativeLayout>
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </LinearLayout>

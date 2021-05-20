@@ -1,14 +1,18 @@
 package com.example.colornote.model;
 
-import java.sql.Date;
+import java.util.Date;
+import java.util.Comparator;
 
-public class Task {
+public abstract class Task {
     protected int id;
     protected String title;
     protected int colorId;
     protected Date reminder;
     protected Date modifiedDate;
     protected int status;
+
+    public abstract String showContent();
+    public abstract boolean isComplete();
 
     public int getColorId() {
         return colorId;
@@ -57,4 +61,32 @@ public class Task {
     public void setStatus(int status) {
         this.status = status;
     }
+
+    public static Comparator<Task> compareByModifiedTime = new Comparator<Task>() {
+        @Override
+        public int compare(Task t1, Task t2) {
+            return t1.modifiedDate.compareTo(t2.modifiedDate);
+        }
+    };
+
+    public static Comparator<Task> compareByColor = new Comparator<Task>() {
+        @Override
+        public int compare(Task t1, Task t2) {
+            return t1.colorId - t2.colorId;
+        }
+    };
+
+    public static Comparator<Task> compareByTitle = new Comparator<Task>() {
+        @Override
+        public int compare(Task t1, Task t2) {
+            return t1.title.compareTo(t2.title);
+        }
+    };
+
+    public static Comparator<Task> compareByReminderTime = new Comparator<Task>() {
+        @Override
+        public int compare(Task t1, Task t2) {
+            return t1.reminder.compareTo(t2.reminder);
+        }
+    };
 }
