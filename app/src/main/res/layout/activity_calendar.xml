@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="5dp"
+        android:paddingTop="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
+        android:weightSum="7">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Calendar"
+            android:textColor="#454343"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:layout_weight="7"/>
+
+        <ImageButton
+            android:id="@+id/btnShowCurrentdays"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/ic_calendar"
+            android:layout_weight="1"/>
+
+        <ImageButton
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/plus"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+    <com.applandeo.materialcalendarview.CalendarView
+        android:id="@+id/calCustom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:daysLabelsColor="@color/black"
+        app:forwardButtonSrc="@drawable/next"
+        app:headerColor="#F3F3F3"
+        app:headerLabelColor="@color/black"
+        app:previousButtonSrc="@drawable/previous"
+        app:selectionColor="@android:color/holo_orange_dark"></com.applandeo.materialcalendarview.CalendarView>
+
+</LinearLayout>
