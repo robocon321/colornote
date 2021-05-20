@@ -13,19 +13,20 @@
         android:paddingTop="5dp"
         android:paddingRight="5dp"
         android:paddingBottom="5dp"
-        android:weightSum="7">
+        android:weightSum="7"
+        android:background="#F3F3F3">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Calendar"
             android:textColor="#454343"
-            android:textSize="30sp"
+            android:textSize="30dp"
             android:textStyle="bold"
             android:layout_weight="7"/>
 
         <ImageButton
-            android:id="@+id/btnShowCurrentdays"
+            android:id="@+id/btnShowCurrentday"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginTop="5dp"
@@ -33,6 +34,7 @@
             android:layout_weight="1"/>
 
         <ImageButton
+            android:id="@+id/btnfunc"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginLeft="10dp"
@@ -46,9 +48,10 @@
         android:id="@+id/calCustom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
         app:daysLabelsColor="@color/black"
         app:forwardButtonSrc="@drawable/next"
-        app:headerColor="#F3F3F3"
+        app:headerColor="#D6D2D2"
         app:headerLabelColor="@color/black"
         app:previousButtonSrc="@drawable/previous"
         app:selectionColor="@android:color/holo_orange_dark"></com.applandeo.materialcalendarview.CalendarView>
