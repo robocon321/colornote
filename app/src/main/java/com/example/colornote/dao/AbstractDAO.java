@@ -29,11 +29,11 @@ public abstract class AbstractDAO {
 
     public <T> T get(RowMapper<T> mapper, int id){
         List<T> list = new ArrayList<>();
-        String query = queryAll() + "WHERE id =" + id;
+        String query = queryAll() + " WHERE id =" + id;
         Cursor cursor = database.rawQuery(query, null);
         while(cursor.moveToNext()){
             list.add(mapper.mappRow(cursor));
         }
-        return list.isEmpty() ? list.get(0) : null;
+        return list.isEmpty() ? null : list.get(0);
     }
 }

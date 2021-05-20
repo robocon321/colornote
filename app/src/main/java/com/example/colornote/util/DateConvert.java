@@ -1,6 +1,9 @@
 package com.example.colornote.util;
 
-import java.sql.Date;
+import android.util.Log;
+
+import java.util.Date;
+import java.util.Calendar;
 import java.util.Comparator;
 
 public class DateConvert implements Comparator<DateConvert>{
@@ -12,12 +15,15 @@ public class DateConvert implements Comparator<DateConvert>{
     private int year;
 
     public DateConvert(Date date){
-        this.second = date.getSeconds();
-        this.minute= date.getMinutes();
-        this.hour = date.getHours();
-        this.day = date.getDate();
-        this.month = date.getMonth() + 1;
-        this.year = date.getYear() + 1;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        this.second = calendar.get(Calendar.SECOND);
+        this.minute= calendar.get(Calendar.MINUTE);
+        this.hour = calendar.get(Calendar.HOUR_OF_DAY);
+        this.day = calendar.get(Calendar.DAY_OF_MONTH);
+        this.month = calendar.get(Calendar.MONTH) + 1;
+        this.year = calendar.get(Calendar.YEAR);
+        Log.d("TTT", this.second+"\t"+this.minute +"\t"+this.hour+"\t"+this.day+"\t"+this.month+"\t"+this.year);
     }
 
     public int getDay() {
@@ -44,9 +50,9 @@ public class DateConvert implements Comparator<DateConvert>{
         return hour;
     }
 
-    public String getTime(){
-        Date date = new Date(System.currentTimeMillis());
-        if(date.getYear() == year && date.getMonth() == month  && date.getDay() == day){
+    public String showTime(){
+        Calendar cal = Calendar.getInstance();
+        if(cal.get(Calendar.YEAR) == year && cal.get(Calendar.MONTH) + 1 == month  && cal.get(Calendar.DAY_OF_MONTH) == day){
             return this.hour +":"+this.minute;
         }else {
             return this.year + "/" + this.month + "/" + this.day;

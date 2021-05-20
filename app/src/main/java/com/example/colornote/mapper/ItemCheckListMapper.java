@@ -10,11 +10,11 @@ public class ItemCheckListMapper implements RowMapper<ItemCheckList> {
     @Override
     public ItemCheckList mappRow(Cursor cursor) {
         ItemCheckList item = new ItemCheckList();
-        item.setId(cursor.getInt(1));
-        item.setContent(cursor.getString(2));
-        item.setParentId(cursor.getInt(3));
-        item.setModifiedDate(new Date(cursor.getLong(4)));
-        item.setStatus(cursor.getInt(5));
+        item.setId(cursor.getInt(0));
+        item.setContent(cursor.getString(1));
+        item.setParentId(cursor.getInt(2));
+        item.setModifiedDate(new Date(cursor.getLong(3)));
+        item.setStatus(cursor.getInt(4));
         return item;
     }
 }

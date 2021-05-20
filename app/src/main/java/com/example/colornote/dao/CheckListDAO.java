@@ -52,7 +52,7 @@ public class CheckListDAO extends AbstractDAO{
 
     public List<ItemCheckList> getItemCheckList(int parentId){
         List<ItemCheckList> list = new ArrayList<>();
-        String query = queryAll() + "WHERE parentId = "+parentId;
+        String query = (new ItemCheckListDAO()).queryAll() + " WHERE parentId = "+parentId;
         Cursor cursor = database.rawQuery(query, null);
         RowMapper<ItemCheckList> mapper = new ItemCheckListMapper();
         while(cursor.moveToNext()){
