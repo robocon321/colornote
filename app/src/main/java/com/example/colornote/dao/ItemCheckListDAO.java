@@ -1,9 +1,14 @@
 package com.example.colornote.dao;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
+import com.example.colornote.mapper.ItemCheckListMapper;
+import com.example.colornote.mapper.RowMapper;
 import com.example.colornote.model.ItemCheckList;
-import com.example.colornote.model.Text;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemCheckListDAO extends AbstractDAO{
     public long insert(ItemCheckList itemCheckList){
@@ -28,5 +33,21 @@ public class ItemCheckListDAO extends AbstractDAO{
         ContentValues values = new ContentValues();
         values.put("status", status);
         return database.update("ItemCheckList", values, "id = ?", new String[]{id+""});
+    }
+
+    public List<ItemCheckList> getByStatus(int status){
+        List<ItemCheckList> list = new ArrayList<>();
+        String query = queryAll() + "WHERE status = "+status;
+        Cursor cursor = database.rawQuery(query, null);
+        RowMapper<ItemCheckList> mapper = new ItemCheckListMapper();
+        while(cursor.moveToNext()){
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
+    }
+
+    @Override
+    public String queryAll() {
+        return "SELECT * FROM ItemCheckList";
     }
 }

@@ -31,8 +31,8 @@ public class Database {
     public void createDatabase(String name, Activity activity){
         String path = buildPathDatabase(name, activity);
         File file = activity.getDatabasePath(path);
+        sqLiteDatabase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.CREATE_IF_NECESSARY);
         if(!file.exists()){
-            sqLiteDatabase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.CREATE_IF_NECESSARY);
             createTable();
         }
     }
@@ -41,7 +41,7 @@ public class Database {
         sqLiteDatabase.execSQL("CREATE TABLE Text(id INTEGER PRIMARY KEY AUTOINCREMENT, title NVARCHAR(255), content TEXT, color INTEGER, reminder DATETIME, modifiedDate DATETIME, status INTEGER)");
         sqLiteDatabase.execSQL("CREATE TABLE CheckList(id INTEGER PRIMARY KEY AUTOINCREMENT, title NVARCHAR(255), color INTEGER, reminder DATETIME, modifiedDate DATETIME, status INTEGER)");
         sqLiteDatabase.execSQL("CREATE TABLE ItemCheckList(id INTEGER PRIMARY KEY AUTOINCREMENT, content TEXT, parentId BIGINT, modifiedDate DATETIME, status INTEGER)");
-        sqLiteDatabase.execSQL("CREATE TABLE Color(id INTEGER PRIMARY KEY AUTOINCREMENT, color VARCHAR(10), content NVARCHAR(255))");
+        sqLiteDatabase.execSQL("CREATE TABLE Color(id INTEGER PRIMARY KEY AUTOINCREMENT, colorMain VARCHAR(10), colorSub VARCHAR(10), content NVARCHAR(255))");
     }
 
     public void dropTable(String name){

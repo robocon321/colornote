@@ -1,9 +1,16 @@
 package com.example.colornote.dao;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 
+import com.example.colornote.mapper.CheckListMapper;
+import com.example.colornote.mapper.ItemCheckListMapper;
+import com.example.colornote.mapper.RowMapper;
 import com.example.colornote.model.CheckList;
-import com.example.colornote.model.Text;
+import com.example.colornote.model.ItemCheckList;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CheckListDAO extends AbstractDAO{
     public long insert(CheckList checkList){
@@ -30,5 +37,32 @@ public class CheckListDAO extends AbstractDAO{
         ContentValues values = new ContentValues();
         values.put("status", status);
         return database.update("CheckList", values, "id = ?", new String[]{id+""});
+    }
+
+    public List<CheckList> getByStatus(int status){
+        List<CheckList> list = new ArrayList<>();
+        String query = queryAll() + "WHERE status = "+status;
+        Cursor cursor = database.rawQuery(query, null);
+        RowMapper<CheckList> mapper = new CheckListMapper();
+        while(cursor.moveToNext()){
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
+    }
+
+    public List<ItemCheckList> getItemCheckList(int parentId){
+        List<ItemCheckList> list = new ArrayList<>();
+        String query = queryAll() + "WHERE parentId = "+parentId;
+        Cursor cursor = database.rawQuery(query, null);
+        RowMapper<ItemCheckList> mapper = new ItemCheckListMapper();
+        while(cursor.moveToNext()){
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
+    }
+
+    @Override
+    public String queryAll() {
+        return "SELECT * FROM CheckList";
     }
 }
