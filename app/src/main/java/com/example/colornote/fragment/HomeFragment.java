@@ -8,7 +8,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,10 +21,26 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.colornote.R;
+import com.example.colornote.adapter.ViewDetailsAdapter;
+import com.example.colornote.dao.CheckListDAO;
+import com.example.colornote.dao.TextDAO;
+import com.example.colornote.mapper.CheckListMapper;
+import com.example.colornote.mapper.TextMapper;
+import com.example.colornote.model.Task;
+import com.example.colornote.model.Text;
+import com.example.colornote.util.Settings;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class HomeFragment extends Fragment {
     Toolbar toolbar;
     Button btnSort;
+    GridView gvTask;
+    BaseAdapter adapter;
+    ArrayList<Task> tasks;
+    CheckListDAO checkListDAO = new CheckListDAO();
+    TextDAO textDAO = new TextDAO();
 
     @Nullable
     @Override
@@ -37,6 +56,16 @@ public class HomeFragment extends Fragment {
         toolbar = view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         btnSort = view.findViewById(R.id.btnSort);
+        gvTask = view.findViewById(R.id.gvTask);
+
+        tasks = new ArrayList<>();
+        adapter = new ViewDetailsAdapter(tasks, getActivity());
+        tasks.addAll(textDAO.getAll(new TextMapper()));
+        tasks.addAll(checkListDAO.getAll(new CheckListMapper()));
+
+        Collections.sort(tasks, Task.compareByTitle);
+        adapter.notifyDataSetChanged();
+        gvTask.setAdapter(adapter);
     }
 
     public void setEvents(){
