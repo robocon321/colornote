@@ -6,8 +6,8 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
     <menu>
         <item
             android:id="@+id/mnView"
-            android:icon="@drawable/ic_by_color"
-            android:title="View" />
+            android:icon="@drawable/cus_ic_by_color"
+            android:title="Change color"/>
         <item
             android:id="@+id/mnBackup"
             android:icon="@drawable/ic_backup"
