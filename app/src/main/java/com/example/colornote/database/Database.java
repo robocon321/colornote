@@ -21,9 +21,9 @@ public class Database {
     private String buildPathDatabase(String name, Activity activity){
         String path;
         if(Build.VERSION.SDK_INT >= 17)
-            path = activity.getApplicationInfo().dataDir+"/databases/";
+            path = activity.getApplicationInfo().dataDir+"/";
         else
-            path = "/data/data"+activity.getPackageName()+"/databases/";
+            path = "/data/data"+activity.getPackageName()+"/";
         path += "/"+name;
         return path;
     }
@@ -31,9 +31,11 @@ public class Database {
     public void createDatabase(String name, Activity activity){
         String path = buildPathDatabase(name, activity);
         File file = activity.getDatabasePath(path);
-        sqLiteDatabase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.CREATE_IF_NECESSARY);
         if(!file.exists()){
+            sqLiteDatabase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.CREATE_IF_NECESSARY);
             createTable();
+        }else{
+            sqLiteDatabase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READWRITE);
         }
     }
 
