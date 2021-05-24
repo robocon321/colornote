@@ -1,6 +1,8 @@
 package com.example.colornote.fragment;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,10 +20,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.colornote.R;
 import com.example.colornote.adapter.ViewDetailsAdapter;
+import com.example.colornote.adapter.ViewGridAdapter;
+import com.example.colornote.adapter.ViewLargeGridAdapter;
+import com.example.colornote.adapter.ViewListAdapter;
 import com.example.colornote.dao.CheckListDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.mapper.CheckListMapper;
@@ -59,7 +65,7 @@ public class HomeFragment extends Fragment {
         gvTask = view.findViewById(R.id.gvTask);
 
         tasks = new ArrayList<>();
-        adapter = new ViewDetailsAdapter(tasks, getActivity());
+        adapter = new ViewListAdapter(tasks, getActivity());
         tasks.addAll(textDAO.getAll(new TextMapper()));
         tasks.addAll(checkListDAO.getAll(new CheckListMapper()));
 
@@ -88,10 +94,51 @@ public class HomeFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
             case R.id.mnView:
-                Dialog dialog = new Dialog(getActivity(), R.style.Dialog);
-                dialog.setContentView(R.layout.layout_view_option);
-                dialog.setTitle("View");
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder.setView(R.layout.layout_view_option);
+                }
+                builder.setTitle("View");
+                AlertDialog dialog = builder.create();
+
                 dialog.show();
+                Button btnSortList = dialog.findViewById(R.id.btnSortList);
+                Button btnSortDetail = dialog.findViewById(R.id.btnSortDetail);
+                Button btnSortGrid = dialog.findViewById(R.id.btnSortGrid);
+                Button btnSortLargeGrid = dialog.findViewById(R.id.btnSortLargeGrid);
+
+                btnSortList.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        changeAdapter(new ViewListAdapter(tasks, getActivity()), 1);
+                        dialog.cancel();
+                    }
+                });
+
+                btnSortDetail.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        changeAdapter(new ViewDetailsAdapter(tasks, getActivity()), 1);
+                        dialog.cancel();
+                    }
+                });
+
+                btnSortGrid.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        changeAdapter(new ViewGridAdapter(tasks, getActivity()), 3);
+                        dialog.cancel();
+                    }
+                });
+
+                btnSortLargeGrid.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        changeAdapter(new ViewLargeGridAdapter(tasks, getActivity()), 3);
+                        dialog.cancel();
+                    }
+                });
+
                 break;
             case R.id.mnBackup:
                 break;
@@ -99,5 +146,11 @@ public class HomeFragment extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void changeAdapter(BaseAdapter adapter, int numCol){
+        this.adapter = adapter;
+        this.adapter.notifyDataSetChanged();
+        gvTask.setNumColumns(numCol);
     }
 }
