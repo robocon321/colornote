@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,9 +43,10 @@ import java.util.Collections;
 public class HomeFragment extends Fragment {
     Toolbar toolbar;
     Button btnSort;
-    GridView gvTask;
-    BaseAdapter adapter;
-    ArrayList<Task> tasks;
+    static GridView gvTask;
+    static BaseAdapter adapter;
+    static ArrayList<Task> tasks;
+    static DialogSortFragment dialogSortFragment;
     CheckListDAO checkListDAO = new CheckListDAO();
     TextDAO textDAO = new TextDAO();
 
@@ -78,8 +80,8 @@ public class HomeFragment extends Fragment {
         btnSort.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogSortFragment dialog =  new DialogSortFragment();
-                dialog.show(getActivity().getSupportFragmentManager(),"Show");
+                dialogSortFragment =  new DialogSortFragment();
+                dialogSortFragment.show(getActivity().getSupportFragmentManager(),"Show");
             }
         });
     }
@@ -134,7 +136,7 @@ public class HomeFragment extends Fragment {
                 btnSortLargeGrid.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        changeAdapter(new ViewLargeGridAdapter(tasks, getActivity()), 3);
+                        changeAdapter(new ViewLargeGridAdapter(tasks, getActivity()), 2);
                         dialog.cancel();
                     }
                 });
@@ -148,9 +150,10 @@ public class HomeFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public void changeAdapter(BaseAdapter adapter, int numCol){
-        this.adapter = adapter;
-        this.adapter.notifyDataSetChanged();
+    public static void changeAdapter(BaseAdapter newAdapter, int numCol){
+        adapter = newAdapter;
+        adapter.notifyDataSetChanged();
         gvTask.setNumColumns(numCol);
+        gvTask.setAdapter(adapter);
     }
 }

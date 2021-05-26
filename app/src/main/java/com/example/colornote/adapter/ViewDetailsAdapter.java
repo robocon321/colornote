@@ -28,6 +28,7 @@ public class ViewDetailsAdapter extends BaseAdapter {
     ColorDAO colorDAO;
 
     public ViewDetailsAdapter(ArrayList<Task> tasks, Context context){
+        Log.d("AAA", "1");
         this.tasks = tasks;
         this.context = context;
         colorDAO = new ColorDAO();
@@ -50,6 +51,7 @@ public class ViewDetailsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View  view, ViewGroup parent) {
+        Log.d("AAA", "2");
         ViewHolder holder = null;
         Task task = tasks.get(position);
         if(view == null){

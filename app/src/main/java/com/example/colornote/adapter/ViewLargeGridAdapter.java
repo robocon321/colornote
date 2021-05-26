@@ -52,7 +52,7 @@ public class ViewLargeGridAdapter extends BaseAdapter {
         if(view == null){
             LayoutInflater inflater = LayoutInflater.from(context);
             holder = new ViewHolder();
-            view = inflater.inflate(R.layout.layout_view_grid, parent, false);
+            view = inflater.inflate(R.layout.layout_view_large_grid, parent, false);
             holder.txtTitle = view.findViewById(R.id.txtTitle);
             holder.txtContent = view.findViewById(R.id.txtContent);
             holder.imgCheck = view.findViewById(R.id.imgCheck);

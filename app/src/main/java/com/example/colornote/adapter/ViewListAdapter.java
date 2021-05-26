@@ -1,6 +1,7 @@
 package com.example.colornote.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ public class ViewListAdapter extends BaseAdapter {
     ColorDAO colorDAO;
 
     public ViewListAdapter(ArrayList<Task> tasks, Context context){
+        Log.d("BBB", "1");
         this.tasks = tasks;
         this.context = context;
         colorDAO = new ColorDAO();
@@ -47,6 +49,7 @@ public class ViewListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View  view, ViewGroup parent) {
+        Log.d("BBB", "2");
         ViewHolder holder = null;
         Task task = tasks.get(position);
         if(view == null){
