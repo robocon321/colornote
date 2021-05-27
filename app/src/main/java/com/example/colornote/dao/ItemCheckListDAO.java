@@ -11,6 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemCheckListDAO extends AbstractDAO{
+    private static ItemCheckListDAO instance = new ItemCheckListDAO();
+    public static ItemCheckListDAO getInstance(){
+        return instance;
+    }
+    private ItemCheckListDAO(){}
     public long insert(ItemCheckList itemCheckList){
         ContentValues values = new ContentValues();
         values.put("content", itemCheckList.getContent());

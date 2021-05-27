@@ -5,6 +5,12 @@ import android.content.ContentValues;
 import com.example.colornote.model.Color;
 
 public class ColorDAO extends AbstractDAO{
+    private static ColorDAO instance = new ColorDAO();
+    public static ColorDAO getInstance(){
+        return instance;
+    }
+    private ColorDAO(){}
+
 
     public long insert(Color color){
         ContentValues values = new ContentValues();

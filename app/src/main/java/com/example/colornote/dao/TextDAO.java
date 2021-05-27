@@ -10,6 +10,12 @@ import java.util.Date;
 import java.util.List;
 
 public class TextDAO extends AbstractDAO{
+    private static TextDAO instance = new TextDAO();
+    public static TextDAO getInstance(){
+        return instance;
+    }
+    private TextDAO(){}
+
     public long insert(Text text){
         ContentValues values = new ContentValues();
         values.put("title", text.getTitle());
