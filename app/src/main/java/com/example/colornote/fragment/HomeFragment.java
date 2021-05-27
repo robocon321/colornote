@@ -145,6 +145,9 @@ public class HomeFragment extends Fragment {
             case R.id.mnBackup:
                 break;
             case R.id.mnColorOption:
+                Dialog dialogColor = new Dialog(getActivity());
+                dialogColor.setContentView(R.layout.layout_color_edit);
+                dialogColor.show();
                 break;
         }
         return super.onOptionsItemSelected(item);

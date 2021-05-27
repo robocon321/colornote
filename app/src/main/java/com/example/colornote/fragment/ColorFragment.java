@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.Toast;
 
@@ -45,26 +46,27 @@ public class ColorFragment extends Fragment {
         ColorDAO dao = ColorDAO.getInstance();
         colors = dao.getAll(new ColorMapper());
         for(Color color : colors){
-            addButton(color, view);
+            addEditText(color, view);
         }
         return view;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void addButton(Color color, View view){
-        Button btnColor = new Button(getActivity());
+    public void addEditText(Color color, View view){
+        EditText edtColor = new EditText(getActivity());
 
-        btnColor.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
-        btnColor.setGravity(Gravity.FILL);
-        btnColor.setTextSize(18);
+        edtColor.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
+        edtColor.setGravity(Gravity.FILL);
+        edtColor.setTextSize(18);
 
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.setMargins(10,10,10,10);
         params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED,GridLayout.FILL,1f);
         params.rowSpec = params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED,GridLayout.FILL,1f);
-        btnColor.setLayoutParams(params);
+        edtColor.setLayoutParams(params);
+        edtColor.setFocusable(false);
 
-        btnColor.setOnClickListener(new View.OnClickListener() {
+        edtColor.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
@@ -72,13 +74,12 @@ public class ColorFragment extends Fragment {
                 tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
                 tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
                 tasks.removeIf(task -> task.getColorId() != color.getId());
-                Toast.makeText(getActivity(), tasks.size()+"", Toast.LENGTH_SHORT).show();
                 HomeFragment.adapter.notifyDataSetChanged();
                 HomeFragment.dialogSortFragment.dismiss();
             }
         });
 
         glColor = view.findViewById(R.id.glColor);
-        glColor.addView(btnColor);
+        glColor.addView(edtColor);
     }
 }
