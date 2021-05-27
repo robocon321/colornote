@@ -17,6 +17,7 @@ import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
 import com.example.colornote.util.Constant;
+import com.example.colornote.util.DateConvert;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,6 @@ public class ViewListAdapter extends BaseAdapter {
     ColorDAO colorDAO;
 
     public ViewListAdapter(ArrayList<Task> tasks, Context context){
-        Log.d("BBB", "1");
         this.tasks = tasks;
         this.context = context;
         colorDAO = new ColorDAO();
@@ -49,7 +49,6 @@ public class ViewListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View  view, ViewGroup parent) {
-        Log.d("BBB", "2");
         ViewHolder holder = null;
         Task task = tasks.get(position);
         if(view == null){
@@ -70,7 +69,7 @@ public class ViewListAdapter extends BaseAdapter {
 
         holder.txtTitle.setText(task.getTitle());
         holder.imgCheck.setImageResource(task.isComplete() ? R.drawable.ic_check : R.drawable.ic_icon_down);
-        holder.txtTime.setText("12/01/2020");
+        holder.txtTime.setText(new DateConvert(task.getModifiedDate()).showTime());
 
         Color color = colorDAO.get(new ColorMapper(), task.getColorId());
         holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? Constant.MAIN_COLOR : color.getColorMain()));

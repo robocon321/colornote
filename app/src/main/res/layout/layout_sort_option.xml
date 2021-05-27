@@ -22,23 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
     <Button
-        android:id="@+id/btnSortCreate"
-        android:fontFamily="@font/arial"
-        android:textSize="20dp"
-        android:text="by create time"
-        android:textColor="@color/black"
-        android:gravity="left|center"
-        android:textAllCaps="false"
-        style="?android:attr/buttonBarButtonStyle"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:insetRight="0dp"
-        android:insetLeft="0dp"
-        android:paddingLeft="20dp"
-        android:drawableLeft="@drawable/cus_ic_clock_create"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent" />
-    <Button
         android:id="@+id/btnSortAlpha"
         android:fontFamily="@font/arial"
         android:textSize="20dp"
