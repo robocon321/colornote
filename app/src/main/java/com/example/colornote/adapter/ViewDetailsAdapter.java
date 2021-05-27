@@ -73,8 +73,8 @@ public class ViewDetailsAdapter extends BaseAdapter {
 
         holder.txtTitle.setText(task.getTitle());
         holder.txtContent.setText(task.showContent());
-        holder.imgCheck.setImageResource(task.isComplete() ? R.drawable.ic_check : R.drawable.ic_icon_down);
-        holder.txtTime.setText("12/01/2020");
+        holder.imgCheck.setImageResource(task.isComplete() ? R.drawable.ic_check : 0);
+        holder.txtTime.setText(new DateConvert(task.getModifiedDate()).showTime());
 
         Color color = colorDAO.get(new ColorMapper(), task.getColorId());
         holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? Constant.MAIN_COLOR : color.getColorMain()));

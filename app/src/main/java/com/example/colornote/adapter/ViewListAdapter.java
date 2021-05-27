@@ -68,7 +68,7 @@ public class ViewListAdapter extends BaseAdapter {
         }
 
         holder.txtTitle.setText(task.getTitle());
-        holder.imgCheck.setImageResource(task.isComplete() ? R.drawable.ic_check : R.drawable.ic_icon_down);
+        holder.imgCheck.setImageResource(task.isComplete() ? R.drawable.ic_check : 0);
         holder.txtTime.setText(new DateConvert(task.getModifiedDate()).showTime());
 
         Color color = colorDAO.get(new ColorMapper(), task.getColorId());
