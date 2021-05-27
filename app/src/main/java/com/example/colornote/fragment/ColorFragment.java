@@ -37,7 +37,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ColorFragment extends Fragment {
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
