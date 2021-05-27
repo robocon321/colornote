@@ -1,5 +1,6 @@
 package com.example.colornote.fragment;
 
+import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -9,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +29,7 @@ import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
+import com.example.colornote.model.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,54 +37,55 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ColorFragment extends Fragment {
-    List<Color> colors;
-    GridLayout glColor;
-    ArrayList<Task> tasks = HomeFragment.tasks;
-
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View view = inflater.inflate(R.layout.layout_color_option, container, false);
-        colors = new ArrayList<Color>();
-        ColorDAO dao = ColorDAO.getInstance();
-        colors = dao.getAll(new ColorMapper());
-        for(Color color : colors){
-            addEditText(color, view);
-        }
+        addItemColorToGridLayout(getActivity(), view.findViewById(R.id.glColor), false, false);
         return view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void addEditText(Color color, View view){
-        EditText edtColor = new EditText(getActivity());
+    public static void addItemColorToGridLayout(Context context, GridLayout glColor, boolean isEdit, boolean isShowAmount){
+        ArrayList<Task> tasks = HomeFragment.tasks;
 
-        edtColor.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
-        edtColor.setGravity(Gravity.FILL);
-        edtColor.setTextSize(18);
+        List<Color> colors = new ArrayList<Color>();
+        ColorDAO dao = ColorDAO.getInstance();
+        colors = dao.getAll(new ColorMapper());
 
-        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        params.setMargins(10,10,10,10);
-        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED,GridLayout.FILL,1f);
-        params.rowSpec = params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED,GridLayout.FILL,1f);
-        edtColor.setLayoutParams(params);
-        edtColor.setFocusable(false);
+        for(Color color : colors){
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View view = inflater.inflate(R.layout.item_color, glColor,false);
+            EditText edtColor = view.findViewById(R.id.edtTitle);
+            EditText edtAmount = view.findViewById(R.id.edtAmount);
 
-        edtColor.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onClick(View v) {
-                tasks.clear();
-                tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
-                tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
-                tasks.removeIf(task -> task.getColorId() != color.getId());
-                HomeFragment.adapter.notifyDataSetChanged();
-                HomeFragment.dialogSortFragment.dismiss();
+            edtColor.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
+            edtColor.setFocusable(isEdit);
+
+            if(isShowAmount){
+                edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+                edtColor.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 2f));
+                edtAmount.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
+            }else {
+                edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0f));
+                edtColor.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 3f));
             }
-        });
 
-        glColor = view.findViewById(R.id.glColor);
-        glColor.addView(edtColor);
+            edtColor.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                @Override
+                public void onClick(View v) {
+                    tasks.clear();
+                    tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
+                    tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
+                    tasks.removeIf(task -> task.getColorId() != color.getId());
+                    HomeFragment.adapter.notifyDataSetChanged();
+                    HomeFragment.dialogSortFragment.dismiss();
+                }
+            });
+
+            glColor.addView(view);
+        }
     }
 }

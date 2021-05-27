@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,11 +15,14 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
@@ -33,6 +37,7 @@ import com.example.colornote.dao.CheckListDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.mapper.CheckListMapper;
 import com.example.colornote.mapper.TextMapper;
+import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
 import com.example.colornote.model.Text;
 import com.example.colornote.util.Settings;
@@ -49,6 +54,7 @@ public class HomeFragment extends Fragment {
     static DialogSortFragment dialogSortFragment;
     CheckListDAO checkListDAO = CheckListDAO.getInstance();
     TextDAO textDAO = TextDAO.getInstance();
+    GridLayout glColor;
 
     @Nullable
     @Override
@@ -145,9 +151,6 @@ public class HomeFragment extends Fragment {
             case R.id.mnBackup:
                 break;
             case R.id.mnColorOption:
-                Dialog dialogColor = new Dialog(getActivity());
-                dialogColor.setContentView(R.layout.layout_color_edit);
-                dialogColor.show();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -158,6 +161,38 @@ public class HomeFragment extends Fragment {
         adapter.notifyDataSetChanged();
         gvTask.setNumColumns(numCol);
         gvTask.setAdapter(adapter);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void addLayout(Color color, View view){
+        EditText edtColor = new EditText(getActivity());
+
+        edtColor.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
+        edtColor.setGravity(Gravity.FILL);
+        edtColor.setTextSize(18);
+
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.setMargins(10,10,10,10);
+        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED,GridLayout.FILL,1f);
+        params.rowSpec = params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED,GridLayout.FILL,1f);
+        edtColor.setLayoutParams(params);
+        edtColor.setFocusable(false);
+
+        edtColor.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                tasks.clear();
+                tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
+                tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
+                tasks.removeIf(task -> task.getColorId() != color.getId());
+                HomeFragment.adapter.notifyDataSetChanged();
+                HomeFragment.dialogSortFragment.dismiss();
+            }
+        });
+
+        glColor = view.findViewById(R.id.glColor);
+        glColor.addView(edtColor);
     }
 
 }
