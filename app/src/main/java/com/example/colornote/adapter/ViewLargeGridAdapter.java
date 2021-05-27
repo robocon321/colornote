@@ -27,7 +27,7 @@ public class ViewLargeGridAdapter extends BaseAdapter {
     public ViewLargeGridAdapter(ArrayList<Task> tasks, Context context){
         this.tasks = tasks;
         this.context = context;
-        colorDAO = new ColorDAO();
+        colorDAO = ColorDAO.getInstance();
     }
 
     @Override

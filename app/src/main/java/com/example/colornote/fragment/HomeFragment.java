@@ -47,8 +47,8 @@ public class HomeFragment extends Fragment {
     static BaseAdapter adapter;
     static ArrayList<Task> tasks;
     static DialogSortFragment dialogSortFragment;
-    CheckListDAO checkListDAO = new CheckListDAO();
-    TextDAO textDAO = new TextDAO();
+    CheckListDAO checkListDAO = CheckListDAO.getInstance();
+    TextDAO textDAO = TextDAO.getInstance();
 
     @Nullable
     @Override
@@ -67,9 +67,9 @@ public class HomeFragment extends Fragment {
         gvTask = view.findViewById(R.id.gvTask);
 
         tasks = new ArrayList<>();
-        adapter = new ViewListAdapter(tasks, getActivity());
         tasks.addAll(textDAO.getAll(new TextMapper()));
         tasks.addAll(checkListDAO.getAll(new CheckListMapper()));
+        adapter = new ViewListAdapter(tasks, getActivity());
 
         Collections.sort(tasks, Task.compareByTitle);
         adapter.notifyDataSetChanged();
@@ -156,4 +156,5 @@ public class HomeFragment extends Fragment {
         gvTask.setNumColumns(numCol);
         gvTask.setAdapter(adapter);
     }
+
 }

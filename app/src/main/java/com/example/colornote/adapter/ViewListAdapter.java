@@ -29,7 +29,7 @@ public class ViewListAdapter extends BaseAdapter {
     public ViewListAdapter(ArrayList<Task> tasks, Context context){
         this.tasks = tasks;
         this.context = context;
-        colorDAO = new ColorDAO();
+        colorDAO = ColorDAO.getInstance();
     }
 
     @Override
