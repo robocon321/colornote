@@ -10,6 +10,12 @@ import java.util.Date;
 import java.util.List;
 
 public class TextDAO extends AbstractDAO{
+    private static TextDAO instance = new TextDAO();
+    public static TextDAO getInstance(){
+        return instance;
+    }
+    private TextDAO(){}
+
     public long insert(Text text){
         ContentValues values = new ContentValues();
         values.put("title", text.getTitle());
@@ -25,7 +31,7 @@ public class TextDAO extends AbstractDAO{
         ContentValues values = new ContentValues();
         values.put("title", text.getTitle());
         values.put("content", text.getContent());
-        values.put("colorId", text.getColorId());
+        values.put("color", text.getColorId());
         values.put("reminder", text.getReminder().getTime());
         values.put("modifiedDate", text.getModifiedDate().getTime());
         values.put("status",text.getStatus());

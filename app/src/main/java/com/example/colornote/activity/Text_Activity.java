@@ -126,12 +126,12 @@ public class Text_Activity extends AppCompatActivity {
     }
     public void addText(){
         Text text = new Text();
-        TextDAO textDAO = new TextDAO();
+        TextDAO textDAO = TextDAO.getInstance();
         text.setTitle(title_text.getText().toString());
         text.setContent(edit_text.getText().toString());
         text.setColorId(1);
-        text.setModifiedDate(new Date(2020,5,19));
-        text.setReminder(new Date(2020,4,9));
+        text.setModifiedDate(new Date(2020,5,19, 0,0,0));
+        text.setReminder(new Date(2020,4,9, 0,0,0));
         text.setStatus(3);
 
 //        textDAO.insert(text);
