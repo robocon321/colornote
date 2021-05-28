@@ -13,6 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CheckListDAO extends AbstractDAO{
+    private static CheckListDAO instance = new CheckListDAO();
+    public static CheckListDAO getInstance(){
+        return instance;
+    }
+    private CheckListDAO(){}
     public long insert(CheckList checkList){
         ContentValues values = new ContentValues();
         values.put("title", checkList.getTitle());
@@ -52,7 +57,7 @@ public class CheckListDAO extends AbstractDAO{
 
     public List<ItemCheckList> getItemCheckList(int parentId){
         List<ItemCheckList> list = new ArrayList<>();
-        String query = (new ItemCheckListDAO()).queryAll() + " WHERE parentId = "+parentId;
+        String query = ItemCheckListDAO.getInstance().queryAll() + " WHERE parentId = "+parentId;
         Cursor cursor = database.rawQuery(query, null);
         RowMapper<ItemCheckList> mapper = new ItemCheckListMapper();
         while(cursor.moveToNext()){

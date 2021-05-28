@@ -21,9 +21,9 @@ public class Database {
     private String buildPathDatabase(String name, Activity activity){
         String path;
         if(Build.VERSION.SDK_INT >= 17)
-            path = activity.getApplicationInfo().dataDir+"/";
+            path = activity.getApplicationInfo().dataDir+"/databases/";
         else
-            path = "/data/data"+activity.getPackageName()+"/";
+            path = "/data/data"+activity.getPackageName()+"/databases/";
         path += "/"+name;
         return path;
     }

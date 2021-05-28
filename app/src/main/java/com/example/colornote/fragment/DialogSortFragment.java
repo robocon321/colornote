@@ -13,10 +13,11 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.colornote.R;
 import com.example.colornote.adapter.SortPagerAdapter;
+import com.example.colornote.viewpager.CustomViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 public class DialogSortFragment extends DialogFragment {
-    ViewPager viewPagerSort;
+    CustomViewPager viewPagerSort;
     TabLayout tabLayoutSort;
     SortPagerAdapter adapter;
 
@@ -68,4 +69,5 @@ public class DialogSortFragment extends DialogFragment {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
     }
+
 }

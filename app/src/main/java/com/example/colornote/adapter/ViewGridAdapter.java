@@ -28,7 +28,7 @@ public class ViewGridAdapter extends BaseAdapter {
     public ViewGridAdapter(ArrayList<Task> tasks, Context context){
         this.tasks = tasks;
         this.context = context;
-        colorDAO = new ColorDAO();
+        colorDAO = ColorDAO.getInstance();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ViewGridAdapter extends BaseAdapter {
 
         holder.txtTitle.setText(task.getTitle());
         holder.txtContent.setText(task.showContent());
-        holder.imgCheck.setImageResource(task.isComplete() ? R.drawable.ic_check : R.drawable.ic_icon_down);
+        holder.imgCheck.setImageResource(task.isComplete() ? R.drawable.ic_check : 0);
 
         Color color = colorDAO.get(new ColorMapper(), task.getColorId());
         holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? Constant.MAIN_COLOR : color.getColorMain()));

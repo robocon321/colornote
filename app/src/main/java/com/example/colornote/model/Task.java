@@ -86,7 +86,9 @@ public abstract class Task {
     public static Comparator<Task> compareByReminderTime = new Comparator<Task>() {
         @Override
         public int compare(Task t1, Task t2) {
-            return t1.reminder.compareTo(t2.reminder);
+            if(t1.reminder == null) return -1;
+            else if(t1.reminder != null && t2.reminder == null) return 1;
+            else return t1.reminder.compareTo(t2.reminder);
         }
     };
 }

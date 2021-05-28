@@ -27,7 +27,7 @@ public class ViewLargeGridAdapter extends BaseAdapter {
     public ViewLargeGridAdapter(ArrayList<Task> tasks, Context context){
         this.tasks = tasks;
         this.context = context;
-        colorDAO = new ColorDAO();
+        colorDAO = ColorDAO.getInstance();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ViewLargeGridAdapter extends BaseAdapter {
         if(view == null){
             LayoutInflater inflater = LayoutInflater.from(context);
             holder = new ViewHolder();
-            view = inflater.inflate(R.layout.layout_view_grid, parent, false);
+            view = inflater.inflate(R.layout.layout_view_large_grid, parent, false);
             holder.txtTitle = view.findViewById(R.id.txtTitle);
             holder.txtContent = view.findViewById(R.id.txtContent);
             holder.imgCheck = view.findViewById(R.id.imgCheck);
@@ -66,7 +66,7 @@ public class ViewLargeGridAdapter extends BaseAdapter {
 
         holder.txtTitle.setText(task.getTitle());
         holder.txtContent.setText(task.showContent());
-        holder.imgCheck.setImageResource(task.isComplete() ? R.drawable.ic_check : R.drawable.ic_icon_down);
+        holder.imgCheck.setImageResource(task.isComplete() ? R.drawable.ic_check : 0);
 
         Color color = colorDAO.get(new ColorMapper(), task.getColorId());
         holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? Constant.MAIN_COLOR : color.getColorMain()));
