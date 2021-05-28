@@ -1,6 +1,7 @@
 package com.example.colornote.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -45,8 +46,8 @@ public class ColorFragment extends Fragment {
         addItemColorToGridLayout(getActivity(), view.findViewById(R.id.glColor), false, false);
         return view;
     }
-
-    public static void addItemColorToGridLayout(Context context, GridLayout glColor, boolean isEdit, boolean isShowAmount){
+    public void addItemColorToGridLayout(Context context, GridLayout glColor, boolean isEdit, boolean isShowAmount){
+        glColor.removeAllViews();
         ArrayList<Task> tasks = HomeFragment.tasks;
 
         List<Color> colors = new ArrayList<Color>();
@@ -60,12 +61,14 @@ public class ColorFragment extends Fragment {
             EditText edtAmount = view.findViewById(R.id.edtAmount);
 
             edtColor.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
+            edtColor.setText(color.getContent());
             edtColor.setFocusable(isEdit);
 
             if(isShowAmount){
                 edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
                 edtColor.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 2f));
                 edtAmount.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
+                edtAmount.setText(ColorDAO.getInstance().countTask(color.getId())+"");
             }else {
                 edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0f));
                 edtColor.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 3f));
@@ -87,4 +90,6 @@ public class ColorFragment extends Fragment {
             glColor.addView(view);
         }
     }
+
+
 }

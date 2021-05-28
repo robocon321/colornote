@@ -4,10 +4,13 @@
     android:orientation="horizontal"
     android:weightSum="3"
     android:layout_width="0dp"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
     android:layout_rowWeight="1"
     android:layout_columnWeight="1"
     android:layout_margin="5dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackground"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <EditText
         android:id="@+id/edtAmount"
@@ -16,7 +19,6 @@
         android:layout_weight="0"
         android:gravity="center"
         android:layout_marginRight="1dp"
-        android:focusable="false"
         android:layout_width="0dp"
         android:layout_height="match_parent"/>
     <View

@@ -1,6 +1,8 @@
 package com.example.colornote.dao;
 
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.util.Log;
 
 import com.example.colornote.model.Color;
 
@@ -26,6 +28,13 @@ public class ColorDAO extends AbstractDAO{
         values.put("colorSub", color.getColorSub());
         values.put("content", color.getContent());
         return database.update("Color", values, "id = ?", new String[]{color.getId()+""});
+    }
+
+    public int countTask(int id){
+        String query = "SELECT COUNT(*) c FROM (SELECT id FROM Text WHERE color = "+id+" UNION ALL SELECT id FROM CheckList  WHERE color = "+id+")";
+        Cursor cursor = database.rawQuery(query, null);
+        cursor.moveToNext();
+        return cursor.getInt(0);
     }
 
     @Override

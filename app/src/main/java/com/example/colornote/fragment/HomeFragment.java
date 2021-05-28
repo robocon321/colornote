@@ -2,6 +2,8 @@ package com.example.colornote.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +20,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -34,8 +39,10 @@ import com.example.colornote.adapter.ViewGridAdapter;
 import com.example.colornote.adapter.ViewLargeGridAdapter;
 import com.example.colornote.adapter.ViewListAdapter;
 import com.example.colornote.dao.CheckListDAO;
+import com.example.colornote.dao.ColorDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.mapper.CheckListMapper;
+import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
@@ -44,6 +51,7 @@ import com.example.colornote.util.Settings;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
     Toolbar toolbar;
@@ -54,7 +62,8 @@ public class HomeFragment extends Fragment {
     static DialogSortFragment dialogSortFragment;
     CheckListDAO checkListDAO = CheckListDAO.getInstance();
     TextDAO textDAO = TextDAO.getInstance();
-    GridLayout glColor;
+    Dialog dialogEditColor;
+    ImageView imgEdit, imgNumber;
 
     @Nullable
     @Override
@@ -134,7 +143,7 @@ public class HomeFragment extends Fragment {
                 btnSortGrid.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        changeAdapter(new ViewGridAdapter(tasks, getActivity()), 3);
+                            changeAdapter(new ViewGridAdapter(tasks, getActivity()), 3);
                         dialog.cancel();
                     }
                 });
@@ -151,6 +160,7 @@ public class HomeFragment extends Fragment {
             case R.id.mnBackup:
                 break;
             case R.id.mnColorOption:
+                showDialogEditColor();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -163,36 +173,141 @@ public class HomeFragment extends Fragment {
         gvTask.setAdapter(adapter);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void addLayout(Color color, View view){
-        EditText edtColor = new EditText(getActivity());
+    public void addItemColorToGridLayout(Dialog dialog, Context context, GridLayout glColor, boolean isEdit, boolean isShowAmount){
+        glColor.removeAllViews();
+        List<Color> colors = new ArrayList<Color>();
+        ColorDAO dao = ColorDAO.getInstance();
+        colors = dao.getAll(new ColorMapper());
 
-        edtColor.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
-        edtColor.setGravity(Gravity.FILL);
-        edtColor.setTextSize(18);
+        for(Color color : colors){
+            LayoutInflater inflater = LayoutInflater.from(context);
+            View view = inflater.inflate(R.layout.item_color, glColor,false);
+            EditText edtColor = view.findViewById(R.id.edtTitle);
+            EditText edtAmount = view.findViewById(R.id.edtAmount);
+            view.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
 
-        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
-        params.setMargins(10,10,10,10);
-        params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED,GridLayout.FILL,1f);
-        params.rowSpec = params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED,GridLayout.FILL,1f);
-        edtColor.setLayoutParams(params);
-        edtColor.setFocusable(false);
+            if(isShowAmount){
+                edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
+                edtColor.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 2f));
+                edtAmount.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
+                edtAmount.setText(ColorDAO.getInstance().countTask(color.getId())+"");
+            }else {
+                edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0f));
+                edtColor.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 3f));
+            }
 
-        edtColor.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
+            edtAmount.setFocusable(false);
+            edtColor.setFocusable(isEdit);
+            edtColor.setText(color.getContent());
+            if(!isEdit){
+                imgNumber.setVisibility(View.VISIBLE);
+                imgEdit.setImageResource(R.drawable.ic_edit);
+                edtColor.setBackground(null);
+                edtColor.setOnClickListener(new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onClick(View v) {
+                        tasks.clear();
+                        tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
+                        tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
+                        tasks.removeIf(task -> task.getColorId() != color.getId());
+                        adapter.notifyDataSetChanged();
+                        dialogEditColor.dismiss();
+                    }
+                });
+            }else{
+                imgNumber.setVisibility(View.INVISIBLE);
+                imgEdit.setImageResource(R.drawable.ic_check);
+
+                List<Color> finalColors = colors;
+                imgEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        for(int i = 0; i < finalColors.size(); i++){
+                            String str = ((EditText) ((LinearLayout) glColor.getChildAt(i)).getChildAt(2)).getText().toString();
+                            Color color = finalColors.get(i);
+                            color.setContent(str);
+                            ColorDAO.getInstance().update(color);
+                        }
+                        dialogEditColor.dismiss();
+                        showDialogEditColor();
+                    }
+                });
+            }
+
+
+            edtColor.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    rename(color);
+                    return true;
+                }
+            });
+
+            edtAmount.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    rename(color);
+                    return true;
+                }
+            });
+
+            glColor.addView(view);
+        }
+    }
+
+    public void showDialogEditColor(){
+        dialogEditColor = new Dialog(getActivity());
+        dialogEditColor.setContentView(R.layout.layout_color_edit);
+        imgEdit= dialogEditColor.findViewById(R.id.imgEdit);
+        imgNumber = dialogEditColor.findViewById(R.id.imgNumber);
+        GridLayout glColor = dialogEditColor.findViewById(R.id.glColor);
+        addItemColorToGridLayout(dialogEditColor, getActivity(), glColor, false, false);
+        dialogEditColor.show();
+
+        imgNumber.setOnClickListener(new View.OnClickListener() {
+            boolean isShowAmount = false;
             @Override
             public void onClick(View v) {
-                tasks.clear();
-                tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
-                tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
-                tasks.removeIf(task -> task.getColorId() != color.getId());
-                HomeFragment.adapter.notifyDataSetChanged();
-                HomeFragment.dialogSortFragment.dismiss();
+                isShowAmount = !isShowAmount;
+                addItemColorToGridLayout(dialogEditColor, getActivity(), glColor, false, isShowAmount);
             }
         });
 
-        glColor = view.findViewById(R.id.glColor);
-        glColor.addView(edtColor);
+        imgEdit.setOnClickListener(new View.OnClickListener() {
+            boolean isEdit = false;
+            @Override
+            public void onClick(View v) {
+                isEdit = !isEdit;
+                addItemColorToGridLayout(dialogEditColor, getActivity(), glColor, isEdit, false);
+            }
+        });
+
     }
 
+    public void rename(Color color){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Rename");
+        final EditText input = new EditText(getActivity());
+        input.setText(color.getContent());
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                color.setContent(input.getText().toString());
+                ColorDAO.getInstance().update(color);
+                dialogEditColor.dismiss();
+                showDialogEditColor();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
 }
