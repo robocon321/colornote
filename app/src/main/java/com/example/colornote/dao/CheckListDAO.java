@@ -16,7 +16,7 @@ public class CheckListDAO extends AbstractDAO{
     public long insert(CheckList checkList){
         ContentValues values = new ContentValues();
         values.put("title", checkList.getTitle());
-        values.put("colorId", checkList.getColorId());
+        values.put("color", checkList.getColorId());
         values.put("reminder", checkList.getReminder().getTime());
         values.put("modifiedDate", checkList.getModifiedDate().getTime());
         values.put("status",checkList.getStatus());

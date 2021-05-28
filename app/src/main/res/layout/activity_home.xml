@@ -50,7 +50,8 @@
         android:id="@+id/gvTask"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/btnSort"
+        android:layout_marginTop="0dp"
         android:numColumns="1"
-        android:verticalSpacing="10dp"
-        android:layout_below="@id/btnSort"/>
+        android:verticalSpacing="10dp" />
 </RelativeLayout>

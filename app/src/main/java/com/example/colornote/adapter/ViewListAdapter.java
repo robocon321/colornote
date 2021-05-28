@@ -70,8 +70,8 @@ public class ViewListAdapter extends BaseAdapter {
         holder.txtTime.setText("12/01/2020");
 
         Color color = colorDAO.get(new ColorMapper(), task.getColorId());
-        holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? Constant.MAIN_COLOR : color.getColorMain()));
-        holder.colorSub.setBackgroundColor(android.graphics.Color.parseColor(color.getColorSub() == null ? Constant.SUB_COLOR : color.getColorSub()));
+        holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.MAIN_COLOR : color.getColorMain()));
+        holder.colorSub.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.SUB_COLOR : color.getColorSub()));
 
         return view;
     }
