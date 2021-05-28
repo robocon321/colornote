@@ -1,5 +1,6 @@
 package com.example.colornote.fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
@@ -38,11 +39,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ColorFragment extends Fragment {
+    View view;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.layout_color_option, container, false);
+        view = inflater.inflate(R.layout.layout_color_option, container, false);
         addItemColorToGridLayout(getActivity(), view.findViewById(R.id.glColor), false, false);
         return view;
     }
@@ -63,6 +65,7 @@ public class ColorFragment extends Fragment {
             edtColor.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
             edtColor.setText(color.getContent());
             edtColor.setFocusable(isEdit);
+            edtAmount.setFocusable(isEdit);
 
             if(isShowAmount){
                 edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
@@ -73,6 +76,22 @@ public class ColorFragment extends Fragment {
                 edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0f));
                 edtColor.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 3f));
             }
+
+            edtColor.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    rename(color);
+                    return true;
+                }
+            });
+
+            edtAmount.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    rename(color);
+                    return true;
+                }
+            });
 
             edtColor.setOnClickListener(new View.OnClickListener() {
                 @RequiresApi(api = Build.VERSION_CODES.N)
@@ -91,5 +110,30 @@ public class ColorFragment extends Fragment {
         }
     }
 
+    public void rename(Color color){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Rename");
+        final EditText input = new EditText(getActivity());
+        input.setText(color.getContent());
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                color.setContent(input.getText().toString());
+                ColorDAO.getInstance().update(color);
+                HomeFragment.dialogSortFragment.dismiss();
+                HomeFragment.dialogSortFragment.show(getActivity().getSupportFragmentManager(),"Show");
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        builder.show();
+    }
 
 }
