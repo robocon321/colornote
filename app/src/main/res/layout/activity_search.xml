@@ -15,11 +15,12 @@
         tools:layout_editor_absoluteY="1dp">
 
         <TextView
+            android:id="@+id/txtSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/boder_textview_search"
-            android:paddingLeft="10dp"
             android:hint="Search"
+            android:padding="5dp"
             android:textSize="20sp" />
 
     </LinearLayout>
