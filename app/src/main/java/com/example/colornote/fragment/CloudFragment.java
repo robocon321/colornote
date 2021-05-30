@@ -11,11 +11,11 @@ import androidx.fragment.app.Fragment;
 
 import com.example.colornote.R;
 
-public class SearchFragment extends Fragment {
+public class CloudFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_search, container, false);
+        View view = inflater.inflate(R.layout.activity_sign_in, container, false);
         return view;
     }
 }

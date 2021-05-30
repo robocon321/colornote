@@ -19,7 +19,7 @@ public class MoreFragment extends Fragment {
         @Nullable
         @Override
         public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.activity_more, container, false);
+            View view = inflater.inflate(R.layout.fragment_more, container, false);
             linearLayout =(LinearLayout) view.findViewById(R.id.linear_signIn);
 
             linearLayout.setOnClickListener(new View.OnClickListener() {

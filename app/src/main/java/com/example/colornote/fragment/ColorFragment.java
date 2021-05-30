@@ -5,17 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
-import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,12 +26,9 @@ import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
-import com.example.colornote.model.Text;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ColorFragment extends Fragment {
     View view;
@@ -44,7 +36,7 @@ public class ColorFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        view = inflater.inflate(R.layout.layout_color_option, container, false);
+        view = inflater.inflate(R.layout.fragment_color_option, container, false);
         addItemColorToGridLayout(getActivity(), view.findViewById(R.id.glColor), false, false);
         return view;
     }

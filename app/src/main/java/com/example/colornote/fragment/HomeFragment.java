@@ -6,15 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,15 +19,12 @@ import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.colornote.R;
@@ -46,8 +40,6 @@ import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
-import com.example.colornote.model.Text;
-import com.example.colornote.util.Settings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,7 +60,7 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
         setHasOptionsMenu(true);
         init(view);
         setEvents();
@@ -113,7 +105,7 @@ public class HomeFragment extends Fragment {
             case R.id.mnView:
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder.setView(R.layout.layout_view_option);
+                    builder.setView(R.layout.fragment_view_option);
                 }
                 builder.setTitle("View");
                 AlertDialog dialog = builder.create();
