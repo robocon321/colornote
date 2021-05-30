@@ -29,5 +29,5 @@
             android:layout_width="30dp"
             android:layout_height="30dp"/>
     </RelativeLayout>
-    <include android:layout_width="match_parent" android:layout_height="wrap_content" layout="@layout/layout_color_option"/>
+    <include android:layout_width="match_parent" android:layout_height="wrap_content" layout="@layout/fragment_color_option"/>
 </LinearLayout>
