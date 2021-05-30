@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/edit"
+        android:icon="@drawable/ic_baseline_edit_24"
+        android:title="Edit"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/color"
+        android:icon="@drawable/color"
+        android:title="color"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/check"
+        android:title="Check"
+        app:showAsAction="withText" />
+    <item android:title="Send"
+        android:id="@+id/send"/>
+    <item android:title="Reminder"
+        android:id="@+id/reminder"/>
+    <item android:title="Find"
+        android:id="@+id/find"/>
+    <item android:title="Lock"
+        android:id="@+id/lock"/>
+    <item android:title="Archive"
+        android:id="@+id/archive"/>
+    <item android:title="Delete"
+        android:id="@+id/delete"/>
+
+</menu>

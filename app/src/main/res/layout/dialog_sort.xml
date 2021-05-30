@@ -13,8 +13,8 @@
         app:tabIconTint="@color/tab_non_selected"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <androidx.viewpager.widget.ViewPager
+    <com.example.colornote.viewpager.CustomViewPager
         android:id="@+id/viewPagerSort"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
 </LinearLayout>
