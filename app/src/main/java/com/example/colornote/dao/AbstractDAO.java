@@ -36,4 +36,11 @@ public abstract class AbstractDAO {
         }
         return list.isEmpty() ? null : list.get(0);
     }
+
+    public int count(){
+        String query = "SELECT COUNT(*) C FROM ("+ queryAll() +")";
+        Cursor cursor = database.rawQuery(query, null);
+        cursor.moveToNext();
+        return cursor.getInt(0);
+    }
 }

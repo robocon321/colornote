@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -28,6 +29,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.colornote.R;
+import com.example.colornote.activity.BackupActivity;
 import com.example.colornote.adapter.ViewDetailsAdapter;
 import com.example.colornote.adapter.ViewGridAdapter;
 import com.example.colornote.adapter.ViewLargeGridAdapter;
@@ -150,6 +152,8 @@ public class HomeFragment extends Fragment {
 
                 break;
             case R.id.mnBackup:
+                Intent intent = new Intent(getActivity(), BackupActivity.class);
+                getActivity().startActivity(intent);
                 break;
             case R.id.mnColorOption:
                 showDialogEditColor();

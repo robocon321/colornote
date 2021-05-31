@@ -7,6 +7,7 @@
     <TextView
         android:id="@+id/txtTimeBackup"
         android:text="30/05/2021 22:34"
+        android:textColor="@color/white"
         android:layout_marginHorizontal="5dp"
         android:textSize="18dp"
         android:layout_width="wrap_content"
@@ -20,6 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <ImageView
+        android:id="@+id/imgTypeBackup"
         android:src="@drawable/ic_phone"
         android:layout_below="@id/txtTimeBackup"
         android:layout_toRightOf="@id/txtTypeBackup"
@@ -28,9 +30,11 @@
         android:layout_width="15dp"
         android:layout_height="15dp"/>
     <TextView
+        android:id="@+id/txtCountBackup"
         android:text="19"
         android:textSize="25dp"
         android:background="@drawable/back"
+        android:textColor="@color/white"
         android:gravity="center"
         android:layout_alignParentRight="true"
         android:layout_width="40dp"
