@@ -17,8 +17,11 @@ public class Database {
     public SQLiteDatabase getSqLiteDatabase() {
         return sqLiteDatabase;
     }
+    public void setSqLiteDatabase(String path) {
+        this.sqLiteDatabase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READWRITE);
+    }
 
-    private String buildPathDatabase(String name, Activity activity){
+    public String buildPathDatabase(String name, Activity activity){
         String path;
         if(Build.VERSION.SDK_INT >= 17)
             path = activity.getApplicationInfo().dataDir+"/databases/";

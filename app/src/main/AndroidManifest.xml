@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ColorNote">
-        <activity android:name=".activity.BackupActivity"></activity>
+        <activity android:name=".activity.BackupActivity" android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar"></activity>
         <activity android:name=".activity.CheckList_Activity" />
         <activity android:name=".activity.Text_Activity" />
         <activity android:name=".activity.SignInActivity" />
