@@ -1,6 +1,8 @@
 package com.example.colornote.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Build;
 import android.text.SpannableString;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -28,6 +31,7 @@ import com.example.colornote.database.Database;
 import com.example.colornote.model.BackupInfo;
 import com.example.colornote.util.DateConvert;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import static java.security.AccessController.getContext;
@@ -95,6 +99,57 @@ public class BackupRclAdapter extends RecyclerView.Adapter<BackupRclAdapter.View
                     SpannableString s = new SpannableString(new DateConvert(infos.get(getAdapterPosition()).getDate()).showTime());
                     s.setSpan(new ForegroundColorSpan(Color.parseColor("#4DB6AC")), 0, s.length(), 0);
                     popupBackup.getMenu().getItem(0).setTitle(s);
+                    popupBackup.getMenu().getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Toast.makeText(context, "Item 1 click", Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                    });
+
+                    popupBackup.getMenu().getItem(2).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Toast.makeText(context, "Item 2 click", Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                    });
+
+                    popupBackup.getMenu().getItem(3).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.MyDialogTheme);
+                            builder.setTitle("Delete");
+                            builder.setMessage("Are your sure you want to remove the backed up data?");
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    File file = new File(infos.get(getAdapterPosition()).getPath());
+                                    file.delete();
+                                    infos.remove(getAdapterPosition());
+                                    notifyDataSetChanged();
+                                }
+                            });
+                            builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                            return true;
+                        }
+                    });
+
+                    popupBackup.getMenu().getItem(4).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item) {
+                            Toast.makeText(context, "Item 4 click", Toast.LENGTH_SHORT).show();
+                            return true;
+                        }
+                    });
+
                     popupBackup.show();
                     return true;
                 }
