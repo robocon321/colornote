@@ -193,12 +193,10 @@ public class DeviceFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        Database.getInstance().createDatabase("database.sqlite", getActivity());
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Database.getInstance().createDatabase("database.sqlite", getActivity());
     }
 }
