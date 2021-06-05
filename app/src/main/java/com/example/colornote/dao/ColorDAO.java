@@ -19,7 +19,7 @@ public class ColorDAO extends AbstractDAO{
         values.put("colorMain", color.getColorMain());
         values.put("colorSub", color.getColorSub());
         values.put("content", color.getContent());
-        return database.insert("Color", null, values);
+        return database.getSqLiteDatabase().insert("Color", null, values);
     }
 
     public int update(Color color){
@@ -27,12 +27,12 @@ public class ColorDAO extends AbstractDAO{
         values.put("colorMain", color.getColorMain());
         values.put("colorSub", color.getColorSub());
         values.put("content", color.getContent());
-        return database.update("Color", values, "id = ?", new String[]{color.getId()+""});
+        return database.getSqLiteDatabase().update("Color", values, "id = ?", new String[]{color.getId()+""});
     }
 
     public int countTask(int id){
         String query = "SELECT COUNT(*) c FROM (SELECT id FROM Text WHERE color = "+id+" UNION ALL SELECT id FROM CheckList  WHERE color = "+id+")";
-        Cursor cursor = database.rawQuery(query, null);
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(query, null);
         cursor.moveToNext();
         return cursor.getInt(0);
     }

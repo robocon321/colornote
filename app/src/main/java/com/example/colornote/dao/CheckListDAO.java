@@ -25,7 +25,7 @@ public class CheckListDAO extends AbstractDAO{
         values.put("reminder", checkList.getReminder().getTime());
         values.put("modifiedDate", checkList.getModifiedDate().getTime());
         values.put("status",checkList.getStatus());
-        return database.insert("CheckList", null, values);
+        return database.getSqLiteDatabase().insert("CheckList", null, values);
     }
 
     public int update(CheckList checkList){
@@ -35,19 +35,19 @@ public class CheckListDAO extends AbstractDAO{
         values.put("reminder", checkList.getReminder().getTime());
         values.put("modifiedDate", checkList.getModifiedDate().getTime());
         values.put("status",checkList.getStatus());
-        return database.update("CheckList", values, "id = ?", new String[]{checkList.getId()+""});
+        return database.getSqLiteDatabase().update("CheckList", values, "id = ?", new String[]{checkList.getId()+""});
     }
 
     public int changeStatus(long id, int status){
         ContentValues values = new ContentValues();
         values.put("status", status);
-        return database.update("CheckList", values, "id = ?", new String[]{id+""});
+        return database.getSqLiteDatabase().update("CheckList", values, "id = ?", new String[]{id+""});
     }
 
     public List<CheckList> getByStatus(int status){
         List<CheckList> list = new ArrayList<>();
         String query = queryAll() + "WHERE status = "+status;
-        Cursor cursor = database.rawQuery(query, null);
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(query, null);
         RowMapper<CheckList> mapper = new CheckListMapper();
         while(cursor.moveToNext()){
             list.add(mapper.mappRow(cursor));
@@ -58,7 +58,7 @@ public class CheckListDAO extends AbstractDAO{
     public List<ItemCheckList> getItemCheckList(int parentId){
         List<ItemCheckList> list = new ArrayList<>();
         String query = ItemCheckListDAO.getInstance().queryAll() + " WHERE parentId = "+parentId;
-        Cursor cursor = database.rawQuery(query, null);
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(query, null);
         RowMapper<ItemCheckList> mapper = new ItemCheckListMapper();
         while(cursor.moveToNext()){
             list.add(mapper.mappRow(cursor));
