@@ -24,7 +24,7 @@ public class TextDAO extends AbstractDAO{
         values.put("reminder", text.getReminder().getTime());
         values.put("modifiedDate", text.getModifiedDate().getTime());
         values.put("status",text.getStatus());
-        return database.insert("Text", null, values);
+        return database.getSqLiteDatabase().insert("Text", null, values);
     }
 
     public int update(Text text){
@@ -35,13 +35,13 @@ public class TextDAO extends AbstractDAO{
         values.put("reminder", text.getReminder().getTime());
         values.put("modifiedDate", text.getModifiedDate().getTime());
         values.put("status",text.getStatus());
-        return database.update("Text", values, "id = ?", new String[]{text.getId()+""});
+        return database.getSqLiteDatabase().update("Text", values, "id = ?", new String[]{text.getId()+""});
     }
 
     public int changeStatus(long id, int status){
         ContentValues values = new ContentValues();
         values.put("status", status);
-        return database.update("Text", values, "id = ?", new String[]{id+""});
+        return database.getSqLiteDatabase().update("Text", values, "id = ?", new String[]{id+""});
     }
 
     @Override

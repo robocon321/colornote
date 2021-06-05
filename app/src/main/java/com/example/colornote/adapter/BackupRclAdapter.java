@@ -1,5 +1,6 @@
 package com.example.colornote.adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,6 +33,11 @@ import com.example.colornote.model.BackupInfo;
 import com.example.colornote.util.DateConvert;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import static java.security.AccessController.getContext;
@@ -77,6 +83,48 @@ public class BackupRclAdapter extends RecyclerView.Adapter<BackupRclAdapter.View
         return infos.size();
     }
 
+    public void copyFile(String src, String dst){
+        File fileSrc = new File(src);
+        File fileDst = new File(dst);
+        try {
+            fileDst.getParentFile().mkdirs();
+            fileDst.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        InputStream inStream = null;
+        OutputStream outStream = null;
+
+        try {
+            inStream = new FileInputStream(src);
+            outStream = new FileOutputStream(dst);
+
+            int length;
+            byte[] buffer = new byte[1024];
+
+            // copy the file content in bytes
+            while ((length = inStream.read(buffer)) > 0) {
+                outStream.write(buffer, 0, length);
+            }
+
+            inStream.close();
+            outStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public String buildPathDatabase(Activity activity){
+        String path;
+        if(Build.VERSION.SDK_INT >= 17)
+            path = activity.getApplicationInfo().dataDir+"/databases/";
+        else
+            path = "/data/data"+activity.getPackageName()+"/databases/";
+        path += "/"+"database.sqlite";
+        return path;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtTimeBackup, txtTypeBackup, txtCountBackup;
         ImageView imgTypBackup;
@@ -110,7 +158,26 @@ public class BackupRclAdapter extends RecyclerView.Adapter<BackupRclAdapter.View
                     popupBackup.getMenu().getItem(2).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            Toast.makeText(context, "Item 2 click", Toast.LENGTH_SHORT).show();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.MyDialogTheme);
+                            builder.setTitle("Restore");
+                            builder.setMessage("Are your sure you want to restore the backed up data?");
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    String des = buildPathDatabase((Activity) context);
+                                    String src = infos.get(getAdapterPosition()).getPath();
+                                    copyFile(src, des);
+                                    Toast.makeText(ctw, "Restored", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
                             return true;
                         }
                     });
