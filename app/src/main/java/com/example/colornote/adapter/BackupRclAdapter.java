@@ -44,6 +44,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,6 +159,7 @@ public class BackupRclAdapter extends RecyclerView.Adapter<BackupRclAdapter.View
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
                             Intent intent = new Intent(context, DetailItemBackupActivity.class);
+                            intent.putExtra("info", infos.get(getAdapterPosition()));
                             context.startActivity(intent);
                             return true;
                         }
