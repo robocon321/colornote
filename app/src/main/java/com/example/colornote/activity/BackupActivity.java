@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.colornote.R;
 import com.example.colornote.adapter.BackupPagerAdapter;
@@ -29,5 +30,17 @@ public class BackupActivity extends AppCompatActivity {
         adapter = new BackupPagerAdapter(getSupportFragmentManager());
         viewPagerBackup.setAdapter(adapter);
         tabLayoutBackup.setupWithViewPager(viewPagerBackup);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("AAA", "onResume - BackupActivity");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("AAA", "onStop - BackupActivity");
     }
 }

@@ -39,7 +39,6 @@ public abstract class AbstractDAO {
     }
 
     public int count(){
-        Log.e("EEE", database.getSqLiteDatabase().getPath());
         String query = "SELECT COUNT(*) C FROM ("+ queryAll() +")";
         Cursor cursor = database.getSqLiteDatabase().rawQuery(query, null);
         cursor.moveToNext();
