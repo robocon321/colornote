@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.text.SpannableString;
@@ -29,7 +30,11 @@ import com.example.colornote.R;
 import com.example.colornote.dao.CheckListDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.database.Database;
+import com.example.colornote.mapper.CheckListMapper;
+import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.BackupInfo;
+import com.example.colornote.model.CheckList;
+import com.example.colornote.model.Task;
 import com.example.colornote.util.DateConvert;
 
 import java.io.File;
@@ -39,6 +44,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.security.AccessController.getContext;
 
@@ -46,7 +52,7 @@ public class BackupRclAdapter extends RecyclerView.Adapter<BackupRclAdapter.View
     Context context;
     ArrayList<BackupInfo> infos;
 
-    public BackupRclAdapter(Context context, ArrayList<BackupInfo> infos){
+    public BackupRclAdapter(Context context, ArrayList<BackupInfo> infos) {
         this.context = context;
         this.infos = infos;
     }
@@ -55,7 +61,7 @@ public class BackupRclAdapter extends RecyclerView.Adapter<BackupRclAdapter.View
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(context);
-        View view= inflater.inflate(R.layout.item_backup, parent, false);
+        View view = inflater.inflate(R.layout.item_backup, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
     }
@@ -64,17 +70,17 @@ public class BackupRclAdapter extends RecyclerView.Adapter<BackupRclAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         BackupInfo info = infos.get(position);
         holder.txtTimeBackup.setText(new DateConvert(info.getDate()).showTime());
-        if(info.isType()){
+        if (info.isType()) {
             holder.txtTypeBackup.setText("Auto backup");
             holder.txtTypeBackup.setTextColor(Color.parseColor("#FAFAFA"));
-        }else{
+        } else {
             holder.txtTypeBackup.setText("Manual backup");
             holder.txtTypeBackup.setTextColor(Color.parseColor("#FFC107"));
         }
 
         Database.getInstance().setSqLiteDatabase(info.getPath());
         int count = TextDAO.getInstance().count() + CheckListDAO.getInstance().count();
-        holder.txtCountBackup.setText(count+"");
+        holder.txtCountBackup.setText(count + "");
 
     }
 
@@ -83,7 +89,7 @@ public class BackupRclAdapter extends RecyclerView.Adapter<BackupRclAdapter.View
         return infos.size();
     }
 
-    public void copyFile(String src, String dst){
+    public void copyFile(String src, String dst) {
         File fileSrc = new File(src);
         File fileDst = new File(dst);
         try {
@@ -115,13 +121,13 @@ public class BackupRclAdapter extends RecyclerView.Adapter<BackupRclAdapter.View
         }
     }
 
-    public String buildPathDatabase(Activity activity){
+    public String buildPathDatabase(Activity activity) {
         String path;
-        if(Build.VERSION.SDK_INT >= 17)
-            path = activity.getApplicationInfo().dataDir+"/databases/";
+        if (Build.VERSION.SDK_INT >= 17)
+            path = activity.getApplicationInfo().dataDir + "/databases/";
         else
-            path = "/data/data"+activity.getPackageName()+"/databases/";
-        path += "/"+"database.sqlite";
+            path = "/data/data" + activity.getPackageName() + "/databases/";
+        path += "/" + "database.sqlite";
         return path;
     }
 
@@ -212,7 +218,18 @@ public class BackupRclAdapter extends RecyclerView.Adapter<BackupRclAdapter.View
                     popupBackup.getMenu().getItem(4).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            Toast.makeText(context, "Item 4 click", Toast.LENGTH_SHORT).show();
+                            Database.getInstance().setSqLiteDatabase(infos.get(getAdapterPosition()).getPath());
+                            List<Task> tasks = new ArrayList<>();
+                            tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
+                            tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
+
+                            String data = readData(tasks);
+
+                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            intent.setType("text/plain");
+                            intent.putExtra(Intent.EXTRA_SUBJECT, data);
+                            context.startActivity(Intent.createChooser(intent, "Share tasks"));
+
                             return true;
                         }
                     });
@@ -222,5 +239,16 @@ public class BackupRclAdapter extends RecyclerView.Adapter<BackupRclAdapter.View
                 }
             });
         }
+
+        public String readData(List<Task> tasks){
+            String result = "";
+            for(Task task: tasks){
+                result += "Task " + task.getTitle()+": \n";
+                result += "\t"+task.showContent()+"\n";
+            }
+            return result;
+        }
     }
 }
+
+
