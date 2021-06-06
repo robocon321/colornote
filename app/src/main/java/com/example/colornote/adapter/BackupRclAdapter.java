@@ -27,6 +27,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.colornote.R;
+import com.example.colornote.activity.DetailItemBackupActivity;
 import com.example.colornote.dao.CheckListDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.database.Database;
@@ -156,7 +157,8 @@ public class BackupRclAdapter extends RecyclerView.Adapter<BackupRclAdapter.View
                     popupBackup.getMenu().getItem(1).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                         @Override
                         public boolean onMenuItemClick(MenuItem item) {
-                            Toast.makeText(context, "Item 1 click", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(context, DetailItemBackupActivity.class);
+                            context.startActivity(intent);
                             return true;
                         }
                     });
