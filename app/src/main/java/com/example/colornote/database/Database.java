@@ -21,6 +21,10 @@ public class Database {
         this.sqLiteDatabase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READWRITE);
     }
 
+    public void pointToDatabaseMain(Activity activity){
+        createDatabase("database.sqlite", activity);
+    }
+
     public String buildPathDatabase(String name, Activity activity){
         String path;
         if(Build.VERSION.SDK_INT >= 17)
