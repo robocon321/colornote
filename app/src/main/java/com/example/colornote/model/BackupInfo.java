@@ -1,8 +1,9 @@
 package com.example.colornote.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class BackupInfo {
+public class BackupInfo implements Serializable {
     private String password;
     private Date date;
     private boolean type;
