@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android1="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android1:layout_width="match_parent"
+    android1:layout_height="match_parent"
+    android1:background="#FFFFFF"
+    android1:columnCount="3"
+    android1:rowCount="3">
+
+    <Button
+        android1:id="@+id/btn_red"
+        android1:layout_width="100dp"
+        android1:layout_height="100dp"
+        android1:layout_margin="10dp"
+        android1:background="#EE0038"
+        app:backgroundTint="#EE0038" />
+
+    <Button
+        android1:id="@+id/btn_orange"
+        android1:layout_width="100dp"
+        android1:layout_height="100dp"
+        android1:layout_margin="10dp"
+        android1:background="#FFAB02"
+        app:backgroundTint="#FFAB02" />
+
+    <Button
+        android1:id="@+id/btn_yellow"
+        android1:layout_width="100dp"
+        android1:layout_height="100dp"
+        android1:layout_margin="10dp"
+        android1:background="#FFDD02"
+        app:backgroundTint="#FFDD02" />
+
+    <Button
+        android1:id="@+id/btn_green"
+        android1:layout_width="100dp"
+        android1:layout_height="100dp"
+        android1:layout_margin="10dp"
+        android1:background="#26FF00"
+        app:backgroundTint="#26FF00" />
+
+    <Button
+        android1:id="@+id/btn_blue"
+        android1:layout_width="100dp"
+        android1:layout_height="100dp"
+        android1:layout_margin="10dp"
+        android1:background="#0066FF"
+        app:backgroundTint="#0066FF" />
+
+    <Button
+        android1:id="@+id/btn_purple"
+        android1:layout_width="100dp"
+        android1:layout_height="100dp"
+        android1:layout_margin="10dp"
+        android1:background="@color/purple_500" />
+
+    <Button
+        android1:id="@+id/btn_blue_1"
+        android1:layout_width="100dp"
+        android1:layout_height="100dp"
+        android1:layout_margin="10dp"
+        android1:background="#00FFDA"
+        app:backgroundTint="#00FFDA" />
+
+    <Button
+        android1:id="@+id/btn_gray"
+        android1:layout_width="100dp"
+        android1:layout_height="100dp"
+        android1:layout_margin="10dp"
+        android1:background="@color/gray"
+        app:backgroundTint="@color/gray" />
+
+    <Button
+        android1:id="@+id/btn_white"
+        android1:layout_width="100dp"
+        android1:layout_height="100dp"
+        android1:layout_margin="10dp"
+        android1:background="@color/white"
+        app:backgroundTint="@color/white" />
+</GridLayout>

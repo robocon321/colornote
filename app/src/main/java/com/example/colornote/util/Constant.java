@@ -2,16 +2,31 @@ package com.example.colornote.util;
 
 public class Constant {
     // Status constant
-    public static int DELETE = 0;
-    public static int RECYCLE_BIN = 1;
-    public static int NON_COMPLETE = 2;
-    public static int COMPLETE = 3;
+    public final static int DELETE = 0;
+    public final static int RECYCLE_BIN = 1;
+    public final static int NON_COMPLETE = 2;
+    public final static int COMPLETE = 3;
+
+    // task type
+    public final static int ALL_TASK = 0;
+    public final static int TEXT_TASK = 0;
+    public final static int CHECKLIST_TASK = 0;
+
+    // backup table type
+    public final static int ALL_TABLE = 0;
+    public final static int NOTES_TABLE = 1;
+    public final static int CALENDAR_TABLE = 2;
+
+    // backup status
+    public final static int ALL_STATUS = 0;
+    public final static int NORMAL_STATUS = 1;
+    public final static int ARCHIEVED_STAUS = 2;
 
     // Settings VIEW
-    public static int LIST = 0;
-    public static int  DETAILS = 1;
-    public static int GRID = 2;
-    public static int LARGE_GRID = 3;
+    public final static int LIST = 0;
+    public final static int  DETAILS = 1;
+    public final static int GRID = 2;
+    public final static int LARGE_GRID = 3;
 
     // Color default
     public static String MAIN_COLOR = "#FFD54F";

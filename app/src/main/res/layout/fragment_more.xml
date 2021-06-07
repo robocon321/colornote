@@ -5,12 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <androidx.appcompat.widget.Toolbar
+        app:titleTextColor="@color/black"
+        android:background="#ECE8E8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:text="More"
+            android:textSize="24dp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageView
+
             android:id="@+id/imgUser"
             android:padding="16dp"
             android:src="@drawable/ic_user"
@@ -37,8 +52,7 @@
             android:src="@drawable/ic_more_horiz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
-    </RelativeLayout>
+</RelativeLayout>
 
     <TableRow
         android:layout_width="match_parent"
@@ -52,11 +66,10 @@
         android:layout_gravity="fill_horizontal">
 
         <Button
-
+            android:id="@+id/btnMoreArchive"
             android:layout_column="0"
             android:layout_row="0"
             android:layout_columnWeight="1"
-            android:id="@+id/btnMoreArchive"
             android:fontFamily="@font/arial"
             android:text="Archive"
             android:layout_margin="12dp"
@@ -70,12 +83,12 @@
 
 
         <Button
+            android:id="@+id/btnMoreTrashCan"
             android:layout_margin="12dp"
             android:padding="12dp"
             android:layout_column="1"
             android:layout_row="0"
             android:layout_columnWeight="1"
-            android:id="@+id/btnMoreTrashCan"
             android:fontFamily="@font/arial"
             android:text="Trash can"
             android:textColor="@color/black"

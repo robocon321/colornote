@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +23,7 @@ import com.example.colornote.dao.ColorDAO;
 import com.example.colornote.database.Database;
 import com.example.colornote.fragment.DialogSortFragment;
 import com.example.colornote.mapper.ColorMapper;
+import com.example.colornote.model.CheckList;
 import com.example.colornote.model.Color;
 import com.example.colornote.util.Settings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -115,7 +117,27 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.mnHome:
                         Dialog dialog = new Dialog(MainActivity.this);
                         dialog.setContentView(R.layout.dialog_create_task);
+                        Button button_text,button_checklist;
+                        button_text = (Button) dialog.findViewById(R.id.btn_textDialog);
+                        button_checklist =(Button) dialog.findViewById(R.id.btn_checklistDialog);
+
+                        button_text.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(MainActivity.this,Text_Activity.class);
+                                startActivity(intent);
+                            }
+                        });
+                        button_checklist.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(MainActivity.this, CheckList_Activity.class);
+                                startActivity(intent);
+                            }
+                        });
                         dialog.show();
+
+
                         break;
                     case R.id.mnCal:
                         break;
@@ -126,5 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
+
 }

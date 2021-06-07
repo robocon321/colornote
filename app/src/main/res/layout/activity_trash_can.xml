@@ -9,31 +9,45 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activity.TrashCanActivity">
-    <androidx.appcompat.widget.Toolbar
-        app:titleTextColor="@color/black"
-        android:background="#ECE8E8"
-        android:layout_width="match_parent"
 
-        android:layout_height="wrap_content">
-        <ImageView
-            android:paddingRight="20dp"
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ECE8E8"
+        app:titleTextColor="@color/black">
+
+        <ImageButton
+            android:id="@+id/btnBackTrashCan"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
             android:src="@drawable/ic_arrow_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/black" />
+
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Trash Can"
-            android:textSize="24dp"
             android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <ImageView
+            android:textSize="24dp" />
+
+
+        <ImageButton
+            android:id="@+id/btnTrashCanTrashCan"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:padding="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
             android:src="@drawable/ic_trash_can"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textColor="@color/black" />
 
     </androidx.appcompat.widget.Toolbar>
+
     <Button
         android:id="@+id/btnSort"
         android:layout_width="match_parent"

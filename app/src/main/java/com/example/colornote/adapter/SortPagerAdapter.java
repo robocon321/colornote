@@ -1,5 +1,7 @@
 package com.example.colornote.adapter;
 
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -26,6 +28,12 @@ public class SortPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         return fragments.get(position);
+    }
+
+    @Nullable
+    @Override
+    public Parcelable saveState() {
+        return null;
     }
 
     @Override

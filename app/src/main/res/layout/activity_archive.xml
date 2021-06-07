@@ -10,17 +10,21 @@
     android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_Archive"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ECE8E8"
-
         app:titleTextColor="@color/black">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingRight="20dp"
-            android:src="@drawable/ic_arrow_back" />
+        <ImageButton
+            android:id="@+id/btnBackArchive"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:src="@drawable/ic_arrow_back"
+            android:textColor="@color/black" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -29,19 +33,28 @@
             android:textColor="@color/black"
             android:textSize="24dp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:id="@+id/btnColorArchive"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
             android:layout_gravity="end"
-            android:padding="16dp"
-            android:src="@drawable/cus_ic_by_color" />
+            android:src="@drawable/cus_ic_by_color"
+            android:textColor="@color/black" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+        <ImageButton
+            android:id="@+id/btnNoteArchive"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
             android:layout_gravity="end"
-            android:padding="16dp"
-            android:src="@drawable/ic_text" />
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:src="@drawable/ic_text"
+            android:textColor="@color/black" />
     </androidx.appcompat.widget.Toolbar>
     <LinearLayout
         android:orientation="horizontal"

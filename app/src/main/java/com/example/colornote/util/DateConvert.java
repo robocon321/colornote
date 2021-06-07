@@ -21,9 +21,8 @@ public class DateConvert implements Comparator<DateConvert>{
         this.minute= calendar.get(Calendar.MINUTE);
         this.hour = calendar.get(Calendar.HOUR_OF_DAY);
         this.day = calendar.get(Calendar.DAY_OF_MONTH);
-        this.month = calendar.get(Calendar.MONTH) + 1;
-        this.year = calendar.get(Calendar.YEAR);
-        Log.d("TTT", this.second+"\t"+this.minute +"\t"+this.hour+"\t"+this.day+"\t"+this.month+"\t"+this.year);
+        this.month = calendar.get(Calendar.MONTH);
+        this.year = calendar.get(Calendar.YEAR) - 1900;
     }
 
     public int getDay() {

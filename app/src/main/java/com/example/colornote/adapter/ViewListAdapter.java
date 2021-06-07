@@ -1,6 +1,7 @@
 package com.example.colornote.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
 import com.example.colornote.util.Constant;
+import com.example.colornote.util.DateConvert;
 
 import java.util.ArrayList;
 
@@ -27,7 +29,7 @@ public class ViewListAdapter extends BaseAdapter {
     public ViewListAdapter(ArrayList<Task> tasks, Context context){
         this.tasks = tasks;
         this.context = context;
-        colorDAO = new ColorDAO();
+        colorDAO = ColorDAO.getInstance();
     }
 
     @Override
@@ -66,12 +68,12 @@ public class ViewListAdapter extends BaseAdapter {
         }
 
         holder.txtTitle.setText(task.getTitle());
-        holder.imgCheck.setImageResource(task.isComplete() ? R.drawable.ic_check : R.drawable.ic_icon_down);
-        holder.txtTime.setText("12/01/2020");
+        holder.imgCheck.setImageResource(task.isComplete() ? R.drawable.ic_check : 0);
+        holder.txtTime.setText(new DateConvert(task.getModifiedDate()).showTime());
 
         Color color = colorDAO.get(new ColorMapper(), task.getColorId());
-        holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? Constant.MAIN_COLOR : color.getColorMain()));
-        holder.colorSub.setBackgroundColor(android.graphics.Color.parseColor(color.getColorSub() == null ? Constant.SUB_COLOR : color.getColorSub()));
+        holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.MAIN_COLOR : color.getColorMain()));
+        holder.colorSub.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.SUB_COLOR : color.getColorSub()));
 
         return view;
     }

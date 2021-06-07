@@ -10,32 +10,38 @@ import java.util.Date;
 import java.util.List;
 
 public class TextDAO extends AbstractDAO{
+    private static TextDAO instance = new TextDAO();
+    public static TextDAO getInstance(){
+        return instance;
+    }
+    private TextDAO(){}
+
     public long insert(Text text){
         ContentValues values = new ContentValues();
         values.put("title", text.getTitle());
         values.put("content", text.getContent());
-        values.put("colorId", text.getColorId());
+        values.put("color", text.getColorId());
         values.put("reminder", text.getReminder().getTime());
         values.put("modifiedDate", text.getModifiedDate().getTime());
         values.put("status",text.getStatus());
-        return database.insert("Text", null, values);
+        return database.getSqLiteDatabase().insert("Text", null, values);
     }
 
     public int update(Text text){
         ContentValues values = new ContentValues();
         values.put("title", text.getTitle());
         values.put("content", text.getContent());
-        values.put("colorId", text.getColorId());
+        values.put("color", text.getColorId());
         values.put("reminder", text.getReminder().getTime());
         values.put("modifiedDate", text.getModifiedDate().getTime());
         values.put("status",text.getStatus());
-        return database.update("Text", values, "id = ?", new String[]{text.getId()+""});
+        return database.getSqLiteDatabase().update("Text", values, "id = ?", new String[]{text.getId()+""});
     }
 
     public int changeStatus(long id, int status){
         ContentValues values = new ContentValues();
         values.put("status", status);
-        return database.update("Text", values, "id = ?", new String[]{id+""});
+        return database.getSqLiteDatabase().update("Text", values, "id = ?", new String[]{id+""});
     }
 
     @Override

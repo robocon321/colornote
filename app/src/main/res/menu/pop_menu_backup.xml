@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/mnBackupTime" android:title="12/01/2000" />
+    <item android:id="@+id/mnBackupView" android:title="View" />
+    <item android:id="@+id/mnBackupRestore" android:title="Restore"/>
+    <item android:id="@+id/mnBackupDelete" android:title="Delete" />
+    <item android:id="@+id/mnBackupSend" android:title="Send" />
+</menu>

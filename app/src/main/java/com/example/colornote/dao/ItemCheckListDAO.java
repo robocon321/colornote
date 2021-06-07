@@ -11,13 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemCheckListDAO extends AbstractDAO{
+    private static ItemCheckListDAO instance = new ItemCheckListDAO();
+    public static ItemCheckListDAO getInstance(){
+        return instance;
+    }
+    private ItemCheckListDAO(){}
     public long insert(ItemCheckList itemCheckList){
         ContentValues values = new ContentValues();
         values.put("content", itemCheckList.getContent());
         values.put("parentId", itemCheckList.getParentId());
         values.put("modifiedDate", itemCheckList.getModifiedDate().getTime());
         values.put("status", itemCheckList.getStatus());
-        return database.insert("ItemCheckList", null, values);
+        return database.getSqLiteDatabase().insert("ItemCheckList", null, values);
     }
 
     public int update(ItemCheckList itemCheckList){
@@ -26,19 +31,19 @@ public class ItemCheckListDAO extends AbstractDAO{
         values.put("parentId", itemCheckList.getParentId());
         values.put("modifiedDate", itemCheckList.getModifiedDate().getTime());
         values.put("status", itemCheckList.getStatus());
-        return database.update("ItemCheckList", values, "id = ?", new String[]{itemCheckList.getId()+""});
+        return database.getSqLiteDatabase().update("ItemCheckList", values, "id = ?", new String[]{itemCheckList.getId()+""});
     }
 
     public int changeStatus(long id, int status){
         ContentValues values = new ContentValues();
         values.put("status", status);
-        return database.update("ItemCheckList", values, "id = ?", new String[]{id+""});
+        return database.getSqLiteDatabase().update("ItemCheckList", values, "id = ?", new String[]{id+""});
     }
 
     public List<ItemCheckList> getByStatus(int status){
         List<ItemCheckList> list = new ArrayList<>();
         String query = queryAll() + "WHERE status = "+status;
-        Cursor cursor = database.rawQuery(query, null);
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(query, null);
         RowMapper<ItemCheckList> mapper = new ItemCheckListMapper();
         while(cursor.moveToNext()){
             list.add(mapper.mappRow(cursor));
