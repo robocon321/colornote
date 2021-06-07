@@ -54,8 +54,8 @@ public class ColorFragment extends Fragment {
             EditText edtColor = view.findViewById(R.id.edtTitle);
             EditText edtAmount = view.findViewById(R.id.edtAmount);
 
-            edtColor.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
-            edtColor.setText(color.getContent());
+            edtColor.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? "#ffffff" : color.getColorMain()));
+            edtColor.setText(color.getContent() == null ? "":color.getContent());
             edtColor.setFocusable(isEdit);
             edtAmount.setFocusable(isEdit);
 

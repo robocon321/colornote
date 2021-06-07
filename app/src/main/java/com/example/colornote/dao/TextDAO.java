@@ -21,7 +21,7 @@ public class TextDAO extends AbstractDAO{
         values.put("title", text.getTitle());
         values.put("content", text.getContent());
         values.put("color", text.getColorId());
-        values.put("reminder", text.getReminder().getTime());
+        values.put("reminderId", text.getReminderId());
         values.put("modifiedDate", text.getModifiedDate().getTime());
         values.put("status",text.getStatus());
         return database.getSqLiteDatabase().insert("Text", null, values);
@@ -32,7 +32,7 @@ public class TextDAO extends AbstractDAO{
         values.put("title", text.getTitle());
         values.put("content", text.getContent());
         values.put("color", text.getColorId());
-        values.put("reminder", text.getReminder().getTime());
+        values.put("reminderId", text.getReminderId());
         values.put("modifiedDate", text.getModifiedDate().getTime());
         values.put("status",text.getStatus());
         return database.getSqLiteDatabase().update("Text", values, "id = ?", new String[]{text.getId()+""});

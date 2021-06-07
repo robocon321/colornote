@@ -16,9 +16,7 @@ public class CheckListMapper implements RowMapper<CheckList>{
         checkList.setId(cursor.getInt(0));
         checkList.setTitle(cursor.getString(1));
         checkList.setColorId(cursor.getInt(2));
-        if(cursor.getString(3) != null){
-           checkList.setReminder(new Date(cursor.getLong(3)));
-        }
+        checkList.setReminderId(cursor.getInt(3));
         checkList.setModifiedDate(new Date(cursor.getLong(4)));
         checkList.setStatus(cursor.getInt(5));
         return checkList;

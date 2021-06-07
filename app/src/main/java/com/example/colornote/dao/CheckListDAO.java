@@ -22,7 +22,7 @@ public class CheckListDAO extends AbstractDAO{
         ContentValues values = new ContentValues();
         values.put("title", checkList.getTitle());
         values.put("color", checkList.getColorId());
-        values.put("reminder", checkList.getReminder().getTime());
+        values.put("reminderId", checkList.getReminderId());
         values.put("modifiedDate", checkList.getModifiedDate().getTime());
         values.put("status",checkList.getStatus());
         return database.getSqLiteDatabase().insert("CheckList", null, values);
@@ -32,7 +32,7 @@ public class CheckListDAO extends AbstractDAO{
         ContentValues values = new ContentValues();
         values.put("title", checkList.getTitle());
         values.put("color", checkList.getColorId());
-        values.put("reminder", checkList.getReminder().getTime());
+        values.put("reminderId", checkList.getReminderId());
         values.put("modifiedDate", checkList.getModifiedDate().getTime());
         values.put("status",checkList.getStatus());
         return database.getSqLiteDatabase().update("CheckList", values, "id = ?", new String[]{checkList.getId()+""});
