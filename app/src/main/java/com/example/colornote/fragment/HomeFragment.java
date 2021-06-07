@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -185,7 +186,7 @@ public class HomeFragment extends Fragment {
             if(isShowAmount){
                 edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
                 edtColor.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 2f));
-                edtAmount.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
+                edtAmount.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()  == null ? "#ffffff" : color.getColorMain()));
                 edtAmount.setText(ColorDAO.getInstance().countTask(color.getId())+"");
             }else {
                 edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0f));
@@ -206,7 +207,9 @@ public class HomeFragment extends Fragment {
                         tasks.clear();
                         tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
                         tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
-                        tasks.removeIf(task -> task.getColorId() != color.getId());
+                        if(color.getId() != 1){
+                            tasks.removeIf(task -> task.getColorId() != color.getId());
+                        }
                         adapter.notifyDataSetChanged();
                         dialogEditColor.dismiss();
                     }

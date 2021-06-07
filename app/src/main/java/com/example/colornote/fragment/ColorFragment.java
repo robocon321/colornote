@@ -92,7 +92,9 @@ public class ColorFragment extends Fragment {
                     tasks.clear();
                     tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
                     tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
-                    tasks.removeIf(task -> task.getColorId() != color.getId());
+                    if(color.getId() != 1){
+                        tasks.removeIf(task -> task.getColorId() != color.getId());
+                    }
                     HomeFragment.adapter.notifyDataSetChanged();
                     HomeFragment.dialogSortFragment.dismiss();
                 }
