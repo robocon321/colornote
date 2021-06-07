@@ -123,7 +123,6 @@ public class DeviceFragment extends Fragment{
             path = activity.getApplicationInfo().dataDir+"/backups/";
         else
             path = "/data/data"+activity.getPackageName()+"/backups/";
-        path += "/"+name;
         return path;
     }
 
@@ -167,10 +166,12 @@ public class DeviceFragment extends Fragment{
     public ArrayList<BackupInfo> getBackupInfos(){
         ArrayList<BackupInfo> list = new ArrayList<>();
         File none = new File(buildPathBackup("aaa.txt", getActivity()));
+        if(!none.exists()) none.mkdirs();
         File parent = none.getParentFile();
 
         for(File file : parent.listFiles()){
-            list.add(getBackupInfoFromNameFile(file));
+            BackupInfo info = getBackupInfoFromNameFile(file);
+            if(info != null) list.add(getBackupInfoFromNameFile(file));
         }
 
         return list;
@@ -182,12 +183,14 @@ public class DeviceFragment extends Fragment{
 
         String path = file.getName();
         String[] arr = path.split("_");
-
-        info.setDate(new Date(Long.parseLong(arr[0])));
-        info.setType(Boolean.parseBoolean(arr[1]));
-        info.setPassword(arr[2]);
-
-        return info;
+        if(arr.length == 3){
+            info.setDate(new Date(Long.parseLong(arr[0])));
+            info.setType(Boolean.parseBoolean(arr[1]));
+            info.setPassword(arr[2]);
+            return info;
+        }else {
+            return null;
+        }
     }
 
     @Override

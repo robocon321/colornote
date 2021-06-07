@@ -3,6 +3,7 @@ package com.example.colornote.activity;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.PagerAdapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -31,6 +33,7 @@ import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.BackupInfo;
 import com.example.colornote.model.CheckList;
 import com.example.colornote.model.Task;
+import com.example.colornote.util.Constant;
 import com.example.colornote.util.DateConvert;
 
 import java.util.ArrayList;
@@ -149,5 +152,26 @@ public class DetailItemBackupActivity extends AppCompatActivity {
                 });
             }
         });
+        spTaskBackup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int type = position;
+                int status = spStatusBackup.getSelectedItemPosition();
+                filterData(type, status);
+            }
+        });
+        spStatusBackup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int type = spTaskBackup.getSelectedItemPosition();
+                int status = position;
+                filterData(type, status);
+            }
+        });
+    }
+
+    public void filterData(int type, int status){
+        tasks.clear();
+
     }
 }
