@@ -7,7 +7,7 @@ public abstract class Task {
     protected int id;
     protected String title;
     protected int colorId;
-    protected Date reminder;
+    protected int reminderId;
     protected Date modifiedDate;
     protected int status;
 
@@ -38,12 +38,12 @@ public abstract class Task {
         this.title = title;
     }
 
-    public Date getReminder() {
-        return reminder;
+    public int getReminderId() {
+        return reminderId;
     }
 
-    public void setReminder(Date reminder) {
-        this.reminder = reminder;
+    public void setReminderId(int reminderId) {
+        this.reminderId = reminderId;
     }
 
     public Date getModifiedDate() {
@@ -86,9 +86,7 @@ public abstract class Task {
     public static Comparator<Task> compareByReminderTime = new Comparator<Task>() {
         @Override
         public int compare(Task t1, Task t2) {
-            if(t1.reminder == null) return -1;
-            else if(t1.reminder != null && t2.reminder == null) return 1;
-            else return t1.reminder.compareTo(t2.reminder);
+            return t1.getReminderId()>t2.getReminderId() ? 1: -1;
         }
     };
 }
