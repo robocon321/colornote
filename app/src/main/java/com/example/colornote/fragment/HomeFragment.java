@@ -98,7 +98,7 @@ public class HomeFragment extends Fragment {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     builder.setView(R.layout.layout_view_option);
                 }
-                builder.setTitle("View");
+                builder.setTitle("Tuyen");
                 AlertDialog dialog = builder.create();
 
                 dialog.show();
