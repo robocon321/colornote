@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.cardview.widget.CardView
+    <com.example.colornote.viewpager.CustomCardView
         android:id="@+id/cvTask"
         app:cardCornerRadius="10dp"
         app:cardElevation="2dp"
@@ -18,7 +18,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <View
+            <com.example.colornote.viewpager.CustomViewEmpty
                 android:id="@+id/colorSub"
                 android:layout_alignParentTop="true"
                 android:layout_marginBottom="5dp"
@@ -54,5 +54,5 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+    </com.example.colornote.viewpager.CustomCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
