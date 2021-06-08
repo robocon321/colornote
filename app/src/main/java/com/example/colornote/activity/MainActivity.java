@@ -1,40 +1,27 @@
 package com.example.colornote.activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.example.colornote.R;
 import com.example.colornote.adapter.MainPagerAdapter;
-import com.example.colornote.dao.ColorDAO;
 import com.example.colornote.database.Database;
-import com.example.colornote.fragment.DialogSortFragment;
-import com.example.colornote.mapper.ColorMapper;
-import com.example.colornote.model.CheckList;
-import com.example.colornote.model.Color;
+import com.example.colornote.util.ISeletectedObserver;
+import com.example.colornote.util.SelectedObserverService;
 import com.example.colornote.util.Settings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ISeletectedObserver {
     BottomNavigationView bottomNavigationView;
     ViewPager viewPager;
     MainPagerAdapter adapter;
@@ -61,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         viewPager = findViewById(R.id.viewPagerMain);
         adapter = new MainPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+
+        SelectedObserverService.getInstance().addObserver(this);
     }
 
     public void setEvents(){
@@ -137,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
                         });
                         dialog.show();
 
-
                         break;
                     case R.id.mnCal:
                         break;
@@ -151,4 +139,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void update(boolean[] isSelected) {
+        if(fabAddTask.getVisibility() == View.VISIBLE && hasSelected(isSelected)){
+            fabAddTask.setVisibility(View.INVISIBLE);
+            findViewById(R.id.optionSelected).setVisibility(View.VISIBLE);
+        }
+        if(fabAddTask.getVisibility() == View.INVISIBLE && !hasSelected(isSelected)){
+            fabAddTask.setVisibility(View.VISIBLE);
+            findViewById(R.id.optionSelected).setVisibility(View.INVISIBLE);
+        }
+    }
+
+    public boolean hasSelected(boolean[] isSelected){
+        for(int i=0;i<isSelected.length;i++){
+            if(isSelected[i]) return true;
+        }
+        return false;
+    }
 }
