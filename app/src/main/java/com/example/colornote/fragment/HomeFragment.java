@@ -14,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -59,6 +61,7 @@ public class HomeFragment extends Fragment {
     TextDAO textDAO = TextDAO.getInstance();
     Dialog dialogEditColor;
     ImageView imgEdit, imgNumber;
+    public static boolean[] isSelected;
 
     @Nullable
     @Override
@@ -308,5 +311,28 @@ public class HomeFragment extends Fragment {
         });
 
         builder.show();
+    }
+
+    // for selected
+
+    public static void unselected(int start, int end){
+        if(end > isSelected.length) end = isSelected.length;
+        if(start < 0) start = 0;
+        if(start > end) return ;
+        for(int i=start; i<end; i++) isSelected[i] = false;
+    }
+
+    public static void selected(int start, int end){
+        if(end>isSelected.length) end=isSelected.length;
+        if(start < 0) start =0;
+        if(start > end) return;
+        for(int i=start;i<end;i++) isSelected[i] = true;
+    }
+
+    public static boolean hasSelected(){
+        for(int i=0;i<isSelected.length;i++){
+            if(isSelected[i]) return true;
+        }
+        return false;
     }
 }

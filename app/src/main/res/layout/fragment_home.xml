@@ -32,6 +32,13 @@
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
 
+    <View
+        android:visibility="invisible"
+        android:layout_alignParentTop="true"
+        android:background="@color/purple_200"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
+
     <Button
         android:id="@+id/btnSort"
         android:layout_width="match_parent"
@@ -53,4 +60,10 @@
         android:numColumns="1"
         android:verticalSpacing="5dp"
         android:layout_below="@id/btnSort"/>
+    <View
+        android:visibility="invisible"
+        android:layout_alignParentBottom="true"
+        android:background="@color/purple_200"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"/>
 </RelativeLayout>
