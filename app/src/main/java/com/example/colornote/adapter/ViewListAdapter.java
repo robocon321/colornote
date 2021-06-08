@@ -8,16 +8,20 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 
 import com.example.colornote.R;
 import com.example.colornote.dao.ColorDAO;
+import com.example.colornote.fragment.HomeFragment;
 import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
 import com.example.colornote.util.Constant;
 import com.example.colornote.util.DateConvert;
+import com.example.colornote.viewpager.CustomCardView;
+import com.example.colornote.viewpager.CustomViewEmpty;
 
 import java.util.ArrayList;
 
@@ -49,6 +53,8 @@ public class ViewListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View  view, ViewGroup parent) {
+        HomeFragment.isSelected = new boolean[tasks.size()];
+
         ViewHolder holder = null;
         Task task = tasks.get(position);
         if(view == null){
@@ -75,13 +81,49 @@ public class ViewListAdapter extends BaseAdapter {
         holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.MAIN_COLOR : color.getColorMain()));
         holder.colorSub.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.SUB_COLOR : color.getColorSub()));
 
+        ViewHolder finalHolder = holder;
+
+        holder.cvTask.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if(HomeFragment.isSelected[position] == false){
+                    ((CustomCardView) v).addBorder();
+                    ((CustomViewEmpty) finalHolder.colorSub).addBorder();
+                    HomeFragment.isSelected[position] = true;
+                }else{
+                    ((CustomCardView) v).removeBorder();
+                    ((CustomViewEmpty) finalHolder.colorSub).removeBorder();
+                    HomeFragment.isSelected[position] = false;
+                }
+
+                return true;
+            }
+        });
+
+        holder.cvTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(HomeFragment.hasSelected()){
+                    if(HomeFragment.isSelected[position] == false){
+                        ((CustomCardView) v).addBorder();
+                        ((CustomViewEmpty) finalHolder.colorSub).addBorder();
+                        HomeFragment.isSelected[position] = true;
+                    }else{
+                        ((CustomCardView) v).removeBorder();
+                        ((CustomViewEmpty) finalHolder.colorSub).removeBorder();
+                        HomeFragment.isSelected[position] = false;
+                    }
+                }
+            }
+        });
+
         return view;
     }
 
     public class ViewHolder{
         TextView txtTitle, txtTime;
         ImageView imgCheck;
-        CardView cvTask;
+        CustomCardView cvTask;
         View colorSub;
     }
 
