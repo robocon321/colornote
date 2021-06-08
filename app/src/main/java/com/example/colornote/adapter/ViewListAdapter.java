@@ -1,7 +1,6 @@
 package com.example.colornote.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
 import com.example.colornote.util.Constant;
 import com.example.colornote.util.DateConvert;
+import com.example.colornote.util.SelectedObserverService;
 import com.example.colornote.viewpager.CustomCardView;
 import com.example.colornote.viewpager.CustomViewEmpty;
 
@@ -53,7 +53,7 @@ public class ViewListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View  view, ViewGroup parent) {
-        HomeFragment.isSelected = new boolean[tasks.size()];
+        SelectedObserverService.getInstance().setSelected(new boolean[tasks.size()]);
 
         ViewHolder holder = null;
         Task task = tasks.get(position);
@@ -86,14 +86,14 @@ public class ViewListAdapter extends BaseAdapter {
         holder.cvTask.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(HomeFragment.isSelected[position] == false){
+                if(SelectedObserverService.getInstance().getIsSelected()[position] == false){
                     ((CustomCardView) v).addBorder();
                     ((CustomViewEmpty) finalHolder.colorSub).addBorder();
-                    HomeFragment.isSelected[position] = true;
+                    SelectedObserverService.getInstance().selected(position, position+1);
                 }else{
                     ((CustomCardView) v).removeBorder();
                     ((CustomViewEmpty) finalHolder.colorSub).removeBorder();
-                    HomeFragment.isSelected[position] = false;
+                    SelectedObserverService.getInstance().unselected(position, position+1);
                 }
 
                 return true;
@@ -103,15 +103,15 @@ public class ViewListAdapter extends BaseAdapter {
         holder.cvTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(HomeFragment.hasSelected()){
-                    if(HomeFragment.isSelected[position] == false){
+                if(SelectedObserverService.getInstance().hasSelected()){
+                    if(SelectedObserverService.getInstance().getIsSelected()[position] == false){
                         ((CustomCardView) v).addBorder();
                         ((CustomViewEmpty) finalHolder.colorSub).addBorder();
-                        HomeFragment.isSelected[position] = true;
+                        SelectedObserverService.getInstance().selected(position, position+1);
                     }else{
                         ((CustomCardView) v).removeBorder();
                         ((CustomViewEmpty) finalHolder.colorSub).removeBorder();
-                        HomeFragment.isSelected[position] = false;
+                        SelectedObserverService.getInstance().unselected(position, position+1);
                     }
                 }
             }

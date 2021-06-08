@@ -34,5 +34,41 @@
         app:layout_anchor="@id/bottomAppBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/optionSelected"
+        android:visibility="invisible"
+        android:background="#D3D3D3"
+        app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        app:tabIndicatorColor="#D3D3D3"
+        app:tabTextColor="@color/black"
+        app:tabIconTint="@color/black"
+        android:layout_height="70dp">
+        <com.google.android.material.tabs.TabItem
+            android:text="Archive"
+            android:icon="@drawable/ic_archive"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <com.google.android.material.tabs.TabItem
+            android:text="Delete"
+            android:icon="@drawable/ic_delete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <com.google.android.material.tabs.TabItem
+            android:text="Color"
+            android:icon="@drawable/ic_art"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <com.google.android.material.tabs.TabItem
+            android:text="Reminder"
+            android:icon="@drawable/cus_ic_reminder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <com.google.android.material.tabs.TabItem
+            android:text="More"
+            android:icon="@drawable/ic_option"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.google.android.material.tabs.TabLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -14,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +21,6 @@ import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,12 +43,14 @@ import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
+import com.example.colornote.util.ISeletectedObserver;
+import com.example.colornote.util.SelectedObserverService;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements ISeletectedObserver {
     Toolbar toolbar;
     Button btnSort;
     static GridView gvTask;
@@ -61,7 +61,7 @@ public class HomeFragment extends Fragment {
     TextDAO textDAO = TextDAO.getInstance();
     Dialog dialogEditColor;
     ImageView imgEdit, imgNumber;
-    public static boolean[] isSelected;
+    View toolbarHidden;
 
     @Nullable
     @Override
@@ -78,6 +78,7 @@ public class HomeFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         btnSort = view.findViewById(R.id.btnSort);
         gvTask = view.findViewById(R.id.gvTask);
+        toolbarHidden = view.findViewById(R.id.toolbarHidden);
 
         tasks = new ArrayList<>();
         tasks.addAll(textDAO.getAll(new TextMapper()));
@@ -87,6 +88,8 @@ public class HomeFragment extends Fragment {
         Collections.sort(tasks, Task.compareByTitle);
         adapter.notifyDataSetChanged();
         gvTask.setAdapter(adapter);
+
+        SelectedObserverService.getInstance().addObserver(this);
     }
 
     public void setEvents(){
@@ -313,23 +316,18 @@ public class HomeFragment extends Fragment {
         builder.show();
     }
 
-    // for selected
-
-    public static void unselected(int start, int end){
-        if(end > isSelected.length) end = isSelected.length;
-        if(start < 0) start = 0;
-        if(start > end) return ;
-        for(int i=start; i<end; i++) isSelected[i] = false;
+    @Override
+    public void update(boolean[] isSelected) {
+        Log.e("EEE", hasSelected(isSelected)+"");
+        if(toolbarHidden.getVisibility() == View.VISIBLE && !hasSelected(isSelected)){
+            toolbarHidden.setVisibility(View.INVISIBLE);
+        }
+        if(toolbarHidden.getVisibility() == View.INVISIBLE && hasSelected(isSelected)){
+            toolbarHidden.setVisibility(View.VISIBLE);
+        }
     }
 
-    public static void selected(int start, int end){
-        if(end>isSelected.length) end=isSelected.length;
-        if(start < 0) start =0;
-        if(start > end) return;
-        for(int i=start;i<end;i++) isSelected[i] = true;
-    }
-
-    public static boolean hasSelected(){
+    public boolean hasSelected(boolean[] isSelected){
         for(int i=0;i<isSelected.length;i++){
             if(isSelected[i]) return true;
         }
