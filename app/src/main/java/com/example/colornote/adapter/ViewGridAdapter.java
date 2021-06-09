@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,15 +25,11 @@ import com.example.colornote.viewpager.CustomViewEmpty;
 
 import java.util.ArrayList;
 
-public class ViewGridAdapter extends BaseAdapter {
-    ArrayList<Task> tasks;
-    Context context;
-    ColorDAO colorDAO;
+public class ViewGridAdapter extends ViewAdapter {
 
     public ViewGridAdapter(ArrayList<Task> tasks, Context context){
-        this.tasks = tasks;
-        this.context = context;
-        colorDAO = ColorDAO.getInstance();
+        super(tasks, context);
+
     }
 
     @Override
@@ -52,6 +49,7 @@ public class ViewGridAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View  view, ViewGroup parent) {
+        this.parent = (GridView) parent;
         SelectedObserverService.getInstance().setSelected(new boolean[tasks.size()]);
         ViewHolder holder = null;
         Task task = tasks.get(position);
@@ -82,14 +80,11 @@ public class ViewGridAdapter extends BaseAdapter {
             @Override
             public boolean onLongClick(View v) {
                 if(SelectedObserverService.getInstance().getIsSelected()[position] == false){
-                    ((CustomCardView) v).addBorder();
-                    ((CustomViewEmpty) finalHolder.colorSub).addBorder();
                     SelectedObserverService.getInstance().getIsSelected()[position] = true;
                 }else{
-                    ((CustomCardView) v).removeBorder();
-                    ((CustomViewEmpty) finalHolder.colorSub).removeBorder();
                     SelectedObserverService.getInstance().getIsSelected()[position] = false;
                 }
+                updateBorderView();
 
                 return true;
             }
@@ -100,14 +95,11 @@ public class ViewGridAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if(SelectedObserverService.getInstance().hasSelected()){
                     if(SelectedObserverService.getInstance().getIsSelected()[position] == false){
-                        ((CustomCardView) v).addBorder();
-                        ((CustomViewEmpty) finalHolder.colorSub).addBorder();
                         SelectedObserverService.getInstance().getIsSelected()[position] = true;
                     }else{
-                        ((CustomCardView) v).removeBorder();
-                        ((CustomViewEmpty) finalHolder.colorSub).removeBorder();
                         SelectedObserverService.getInstance().getIsSelected()[position] = false;
                     }
+                    updateBorderView();
                 }
             }
         });
