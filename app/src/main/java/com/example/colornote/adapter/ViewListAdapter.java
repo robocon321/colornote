@@ -31,16 +31,10 @@ import com.example.colornote.viewpager.CustomViewEmpty;
 import java.util.ArrayList;
 import java.util.logging.Handler;
 
-public class ViewListAdapter extends BaseAdapter {
-    ArrayList<Task> tasks;
-    Context context;
-    ColorDAO colorDAO;
-    GridView parent;
+public class ViewListAdapter extends ViewAdapter {
 
     public ViewListAdapter(ArrayList<Task> tasks, Context context){
-        this.tasks = tasks;
-        this.context = context;
-        colorDAO = ColorDAO.getInstance();
+        super(tasks, context);
     }
 
     @Override
@@ -121,31 +115,6 @@ public class ViewListAdapter extends BaseAdapter {
         return view;
     }
 
-    @Override
-    public void notifyDataSetChanged() {
-        super.notifyDataSetChanged();
-        SelectedObserverService.getInstance().setSelected(new boolean[tasks.size()]);
-    }
-
-    public void changeBorder(View v, boolean isSelected){
-        if(isSelected){
-            ((CustomCardView) v.findViewById(R.id.cvTask)).addBorder();
-            ((CustomViewEmpty) v.findViewById(R.id.colorSub)).addBorder();
-        }else{
-            ((CustomCardView) v.findViewById(R.id.cvTask)).removeBorder();
-            ((CustomViewEmpty) v.findViewById(R.id.colorSub)).removeBorder();
-        }
-    }
-
-    public void updateBorderView(){
-        boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
-        for (int i=0;i<isSelected.length;i++){
-            if(i<=parent.getLastVisiblePosition() && i >= parent.getFirstVisiblePosition()) {
-                View view = parent.getChildAt(i - parent.getFirstVisiblePosition());
-                changeBorder(view, isSelected[i]);
-            }
-        }
-    }
 
     public class ViewHolder{
         TextView txtTitle, txtTime;

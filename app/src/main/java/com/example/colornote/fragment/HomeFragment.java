@@ -32,6 +32,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.colornote.R;
 import com.example.colornote.activity.BackupActivity;
+import com.example.colornote.adapter.ViewAdapter;
 import com.example.colornote.adapter.ViewDetailsAdapter;
 import com.example.colornote.adapter.ViewGridAdapter;
 import com.example.colornote.adapter.ViewLargeGridAdapter;
@@ -55,7 +56,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     Toolbar toolbar;
     Button btnSort;
     static GridView gvTask;
-    static BaseAdapter adapter;
+    static ViewAdapter adapter;
     public static ArrayList<Task> tasks;
     static DialogSortFragment dialogSortFragment;
     CheckListDAO checkListDAO = CheckListDAO.getInstance();
@@ -110,7 +111,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
             @Override
             public void onClick(View v) {
                 SelectedObserverService.getInstance().reset();
-                ((ViewListAdapter)adapter).updateBorderView();
+                adapter.updateBorderView();
             }
         });
 
@@ -183,7 +184,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
         return super.onOptionsItemSelected(item);
     }
 
-    public static void changeAdapter(BaseAdapter newAdapter, int numCol){
+    public static void changeAdapter(ViewAdapter newAdapter, int numCol){
         adapter = newAdapter;
         adapter.notifyDataSetChanged();
         gvTask.setNumColumns(numCol);
