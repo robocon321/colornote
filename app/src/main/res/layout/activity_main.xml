@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/optionSelected"
+        android:id="@+id/tabLayoutOption"
         android:visibility="invisible"
         android:background="#D3D3D3"
         app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget"
@@ -46,26 +47,31 @@
         app:tabIconTint="@color/black"
         android:layout_height="70dp">
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabArchive"
             android:text="Archive"
             android:icon="@drawable/ic_archive"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabDelete"
             android:text="Delete"
             android:icon="@drawable/ic_delete"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabColor"
             android:text="Color"
             android:icon="@drawable/ic_art"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabReminder"
             android:text="Reminder"
             android:icon="@drawable/cus_ic_reminder"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tabMore"
             android:text="More"
             android:icon="@drawable/ic_option"
             android:layout_width="match_parent"

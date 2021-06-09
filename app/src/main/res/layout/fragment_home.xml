@@ -3,10 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="top"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:fastScrollEnabled="false"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
+        android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#F3F3F3">
@@ -31,42 +34,40 @@
                 android:textSize="30dp" />
         </RelativeLayout>
     </androidx.appcompat.widget.Toolbar>
-
-    <RelativeLayout
-        android:id="@+id/toolbarHidden"
-        android:visibility="invisible"
-        android:layout_alignParentTop="true"
-        android:background="#C8C8C8"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-        <ImageView
-            android:id="@+id/imgClose"
-            android:src="@drawable/ic_close_dark"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:layout_width="25dp"
-            android:layout_height="25dp"/>
-        <TextView
-            android:id="@+id/txtCount"
-            android:textColor="@color/black"
-            android:text="1/6"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:layout_marginLeft="15dp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/imgClose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <ImageView
-            android:id="@+id/imgRange"
-            android:src="@drawable/ic_range"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="10dp"
-            android:layout_width="25dp"
-            android:layout_height="25dp"/>
-    </RelativeLayout>
-
+   <RelativeLayout
+            android:id="@+id/toolbarHidden"
+            android:visibility="invisible"
+            android:layout_alignParentTop="true"
+            android:background="#C8C8C8"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <ImageView
+                android:id="@+id/imgClose"
+                android:src="@drawable/ic_close_dark"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"/>
+            <TextView
+                android:id="@+id/txtCount"
+                android:textColor="@color/black"
+                android:text="1/6"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:layout_marginLeft="15dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/imgClose"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"/>
+            <ImageView
+                android:id="@+id/imgRange"
+                android:src="@drawable/ic_range"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"/>
+        </RelativeLayout>
     <Button
         android:id="@+id/btnSort"
         android:layout_width="match_parent"

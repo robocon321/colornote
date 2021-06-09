@@ -1,9 +1,10 @@
 package com.example.colornote.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Comparator;
 
-public abstract class Task {
+public abstract class Task implements Serializable {
     protected int id;
     protected String title;
     protected int colorId;

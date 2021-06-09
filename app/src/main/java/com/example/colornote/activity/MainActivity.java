@@ -2,6 +2,7 @@ package com.example.colornote.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Dialog;
@@ -11,21 +12,29 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.colornote.R;
 import com.example.colornote.adapter.MainPagerAdapter;
 import com.example.colornote.database.Database;
+import com.example.colornote.fragment.HomeFragment;
+import com.example.colornote.model.Task;
 import com.example.colornote.util.ISeletectedObserver;
 import com.example.colornote.util.SelectedObserverService;
 import com.example.colornote.util.Settings;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ISeletectedObserver {
     BottomNavigationView bottomNavigationView;
     ViewPager viewPager;
     MainPagerAdapter adapter;
     FloatingActionButton fabAddTask;
+    TabLayout tabLayoutOption;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         Settings.getInstance().setSharedPreferences(getSharedPreferences("settings", MODE_PRIVATE));
 
         fabAddTask = findViewById(R.id.fabAddTask);
+        tabLayoutOption = findViewById(R.id.tabLayoutOption);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setBackground(null);
@@ -136,18 +146,47 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                 }
             }
         });
+        tabLayoutOption.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getPosition() == 3){
+                    onChangeReminderActivitiy();
+                }
+            }
 
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+    }
+
+    public void onChangeReminderActivitiy(){
+        boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+        if(SelectedObserverService.getInstance().count() == 1) {
+            for(int i=0;i<isSelected.length;i++){
+                if(isSelected[i]){
+                    Intent intent = new Intent(MainActivity.this, ReminderActivity.class);
+                    intent.putExtra("task",HomeFragment.tasks.get(i));
+                    startActivity(intent);
+                    break ;
+                }
+            }
+        }
     }
 
     @Override
     public void update(boolean[] isSelected) {
         if(fabAddTask.getVisibility() == View.VISIBLE && hasSelected(isSelected)){
             fabAddTask.setVisibility(View.INVISIBLE);
-            findViewById(R.id.optionSelected).setVisibility(View.VISIBLE);
+            findViewById(R.id.tabLayoutOption).setVisibility(View.VISIBLE);
         }
         if(fabAddTask.getVisibility() == View.INVISIBLE && !hasSelected(isSelected)){
             fabAddTask.setVisibility(View.VISIBLE);
-            findViewById(R.id.optionSelected).setVisibility(View.INVISIBLE);
+            findViewById(R.id.tabLayoutOption).setVisibility(View.INVISIBLE);
         }
     }
 
