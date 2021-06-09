@@ -14,9 +14,27 @@ public class SelectedObserverService {
         return instance;
     }
 
-    public boolean[] isSelected;
+    private boolean[] isSelected;
 
     private SelectedObserverService(){}
+
+    public void reset(){
+        unselected(0, isSelected.length);
+    }
+
+    public int count(){
+        int result = 0;
+        for(int i=0;i<isSelected.length;i++){
+            result += isSelected[i] ? 1 : 0;
+        }
+        return result;
+    }
+
+    public int size(){return isSelected.length;}
+
+    public String getRatio(){
+        return count()+"/"+size();
+    }
 
     public void unselected(int start, int end){
         if(end > isSelected.length) end = isSelected.length;

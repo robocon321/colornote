@@ -49,7 +49,7 @@
         android:id="@+id/btnSortBackup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/toolbarBackup"
         android:backgroundTint="#F6F6F6"
         android:drawableRight="@drawable/ic_icon_down"
         android:fontFamily="@font/arial"

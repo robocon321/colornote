@@ -1,11 +1,15 @@
 package com.example.colornote.adapter;
 
 import android.content.Context;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,16 +23,19 @@ import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
 import com.example.colornote.util.Constant;
 import com.example.colornote.util.DateConvert;
+import com.example.colornote.util.ISeletectedObserver;
 import com.example.colornote.util.SelectedObserverService;
 import com.example.colornote.viewpager.CustomCardView;
 import com.example.colornote.viewpager.CustomViewEmpty;
 
 import java.util.ArrayList;
+import java.util.logging.Handler;
 
 public class ViewListAdapter extends BaseAdapter {
     ArrayList<Task> tasks;
     Context context;
     ColorDAO colorDAO;
+    GridView parent;
 
     public ViewListAdapter(ArrayList<Task> tasks, Context context){
         this.tasks = tasks;
@@ -53,7 +60,7 @@ public class ViewListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View  view, ViewGroup parent) {
-        SelectedObserverService.getInstance().setSelected(new boolean[tasks.size()]);
+        this.parent = (GridView) parent;
 
         ViewHolder holder = null;
         Task task = tasks.get(position);
@@ -87,14 +94,11 @@ public class ViewListAdapter extends BaseAdapter {
             @Override
             public boolean onLongClick(View v) {
                 if(SelectedObserverService.getInstance().getIsSelected()[position] == false){
-                    ((CustomCardView) v).addBorder();
-                    ((CustomViewEmpty) finalHolder.colorSub).addBorder();
                     SelectedObserverService.getInstance().selected(position, position+1);
                 }else{
-                    ((CustomCardView) v).removeBorder();
-                    ((CustomViewEmpty) finalHolder.colorSub).removeBorder();
                     SelectedObserverService.getInstance().unselected(position, position+1);
                 }
+                updateBorderView();
 
                 return true;
             }
@@ -105,19 +109,42 @@ public class ViewListAdapter extends BaseAdapter {
             public void onClick(View v) {
                 if(SelectedObserverService.getInstance().hasSelected()){
                     if(SelectedObserverService.getInstance().getIsSelected()[position] == false){
-                        ((CustomCardView) v).addBorder();
-                        ((CustomViewEmpty) finalHolder.colorSub).addBorder();
                         SelectedObserverService.getInstance().selected(position, position+1);
                     }else{
-                        ((CustomCardView) v).removeBorder();
-                        ((CustomViewEmpty) finalHolder.colorSub).removeBorder();
                         SelectedObserverService.getInstance().unselected(position, position+1);
                     }
+                    updateBorderView();
                 }
             }
         });
 
         return view;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        SelectedObserverService.getInstance().setSelected(new boolean[tasks.size()]);
+    }
+
+    public void changeBorder(View v, boolean isSelected){
+        if(isSelected){
+            ((CustomCardView) v.findViewById(R.id.cvTask)).addBorder();
+            ((CustomViewEmpty) v.findViewById(R.id.colorSub)).addBorder();
+        }else{
+            ((CustomCardView) v.findViewById(R.id.cvTask)).removeBorder();
+            ((CustomViewEmpty) v.findViewById(R.id.colorSub)).removeBorder();
+        }
+    }
+
+    public void updateBorderView(){
+        boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+        for (int i=0;i<isSelected.length;i++){
+            if(i<=parent.getLastVisiblePosition() && i >= parent.getFirstVisiblePosition()) {
+                View view = parent.getChildAt(i - parent.getFirstVisiblePosition());
+                changeBorder(view, isSelected[i]);
+            }
+        }
     }
 
     public class ViewHolder{

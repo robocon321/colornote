@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +20,8 @@ import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -55,12 +56,13 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     Button btnSort;
     static GridView gvTask;
     static BaseAdapter adapter;
-    static ArrayList<Task> tasks;
+    public static ArrayList<Task> tasks;
     static DialogSortFragment dialogSortFragment;
     CheckListDAO checkListDAO = CheckListDAO.getInstance();
     TextDAO textDAO = TextDAO.getInstance();
     Dialog dialogEditColor;
-    ImageView imgEdit, imgNumber;
+    TextView txtCount;
+    ImageView imgEdit, imgNumber, imgRange, imgClose;
     View toolbarHidden;
 
     @Nullable
@@ -79,6 +81,9 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
         btnSort = view.findViewById(R.id.btnSort);
         gvTask = view.findViewById(R.id.gvTask);
         toolbarHidden = view.findViewById(R.id.toolbarHidden);
+        txtCount = view.findViewById(R.id.txtCount);
+        imgRange = view.findViewById(R.id.imgRange);
+        imgClose = view.findViewById(R.id.imgClose);
 
         tasks = new ArrayList<>();
         tasks.addAll(textDAO.getAll(new TextMapper()));
@@ -100,6 +105,15 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
                 dialogSortFragment.show(getActivity().getSupportFragmentManager(),"Show");
             }
         });
+
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectedObserverService.getInstance().reset();
+                ((ViewListAdapter)adapter).updateBorderView();
+            }
+        });
+
     }
 
 
@@ -318,13 +332,14 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
 
     @Override
     public void update(boolean[] isSelected) {
-        Log.e("EEE", hasSelected(isSelected)+"");
         if(toolbarHidden.getVisibility() == View.VISIBLE && !hasSelected(isSelected)){
             toolbarHidden.setVisibility(View.INVISIBLE);
         }
         if(toolbarHidden.getVisibility() == View.INVISIBLE && hasSelected(isSelected)){
             toolbarHidden.setVisibility(View.VISIBLE);
         }
+
+        txtCount.setText(SelectedObserverService.getInstance().getRatio());
     }
 
     public boolean hasSelected(boolean[] isSelected){
