@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -115,6 +116,13 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
             }
         });
 
+        imgRange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectedObserverService.getInstance().selectRange();
+                adapter.updateBorderView();
+            }
+        });
     }
 
 
@@ -332,15 +340,24 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     }
 
     @Override
-    public void update(boolean[] isSelected) {
-        if(toolbarHidden.getVisibility() == View.VISIBLE && !hasSelected(isSelected)){
+    public void update(SelectedObserverService s) {
+        if(toolbarHidden.getVisibility() == View.VISIBLE && !s.hasSelected()){
             toolbarHidden.setVisibility(View.INVISIBLE);
+
         }
-        if(toolbarHidden.getVisibility() == View.INVISIBLE && hasSelected(isSelected)){
+        if(toolbarHidden.getVisibility() == View.INVISIBLE && s.hasSelected()){
             toolbarHidden.setVisibility(View.VISIBLE);
         }
 
-        txtCount.setText(SelectedObserverService.getInstance().getRatio());
+        if(s.hasRange()){
+            imgRange.setImageResource(R.drawable.ic_range_active);
+            imgRange.setEnabled(true);
+        }else{
+            imgRange.setImageResource(R.drawable.ic_range_nonactive);
+            imgRange.setEnabled(false);
+        }
+
+        txtCount.setText(s.getRatio());
     }
 
     public boolean hasSelected(boolean[] isSelected){
@@ -348,5 +365,11 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
             if(isSelected[i]) return true;
         }
         return false;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        SelectedObserverService.getInstance().removeObserver(this);
     }
 }

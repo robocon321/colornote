@@ -50,7 +50,6 @@ public class ViewGridAdapter extends ViewAdapter {
     @Override
     public View getView(int position, View  view, ViewGroup parent) {
         this.parent = (GridView) parent;
-        SelectedObserverService.getInstance().setSelected(new boolean[tasks.size()]);
         ViewHolder holder = null;
         Task task = tasks.get(position);
         if(view == null){
@@ -80,9 +79,9 @@ public class ViewGridAdapter extends ViewAdapter {
             @Override
             public boolean onLongClick(View v) {
                 if(SelectedObserverService.getInstance().getIsSelected()[position] == false){
-                    SelectedObserverService.getInstance().getIsSelected()[position] = true;
+                    SelectedObserverService.getInstance().selected(position,position + 1);
                 }else{
-                    SelectedObserverService.getInstance().getIsSelected()[position] = false;
+                    SelectedObserverService.getInstance().unselected(position,position + 1);
                 }
                 updateBorderView();
 
@@ -95,14 +94,17 @@ public class ViewGridAdapter extends ViewAdapter {
             public void onClick(View v) {
                 if(SelectedObserverService.getInstance().hasSelected()){
                     if(SelectedObserverService.getInstance().getIsSelected()[position] == false){
-                        SelectedObserverService.getInstance().getIsSelected()[position] = true;
+                        SelectedObserverService.getInstance().selected(position,position + 1);
                     }else{
-                        SelectedObserverService.getInstance().getIsSelected()[position] = false;
+                        SelectedObserverService.getInstance().unselected(position,position + 1);
                     }
                     updateBorderView();
                 }
             }
         });
+
+        updateBorderView();
+
         return view;
     }
 

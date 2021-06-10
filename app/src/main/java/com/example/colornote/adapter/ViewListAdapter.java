@@ -112,6 +112,8 @@ public class ViewListAdapter extends ViewAdapter {
             }
         });
 
+        updateBorderView();
+
         return view;
     }
 

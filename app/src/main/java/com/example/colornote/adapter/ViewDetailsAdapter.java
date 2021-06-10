@@ -50,7 +50,6 @@ public class ViewDetailsAdapter extends ViewAdapter {
     @Override
     public View getView(int position, View  view, ViewGroup parent) {
         this.parent = (GridView) parent;
-        SelectedObserverService.getInstance().setSelected(new boolean[tasks.size()]);
         ViewHolder holder = null;
         Task task = tasks.get(position);
         if(view == null){
@@ -106,6 +105,9 @@ public class ViewDetailsAdapter extends ViewAdapter {
                 }
             }
         });
+
+        updateBorderView();
+
         return view;
     }
 
