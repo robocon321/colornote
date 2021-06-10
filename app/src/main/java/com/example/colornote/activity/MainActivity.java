@@ -1,17 +1,25 @@
 package com.example.colornote.activity;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.colornote.R;
@@ -19,6 +27,7 @@ import com.example.colornote.adapter.MainPagerAdapter;
 import com.example.colornote.database.Database;
 import com.example.colornote.fragment.HomeFragment;
 import com.example.colornote.model.Task;
+import com.example.colornote.util.ColorTransparentUtils;
 import com.example.colornote.util.ISeletectedObserver;
 import com.example.colornote.util.SelectedObserverService;
 import com.example.colornote.util.Settings;
@@ -34,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
     ViewPager viewPager;
     MainPagerAdapter adapter;
     FloatingActionButton fabAddTask;
-    TabLayout tabLayoutOption;
+    LinearLayout tabLayoutOption, tabArchive, tabDelete, tabColor, tabReminder, tabMore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +58,13 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         Settings.getInstance().setSharedPreferences(getSharedPreferences("settings", MODE_PRIVATE));
 
         fabAddTask = findViewById(R.id.fabAddTask);
+
         tabLayoutOption = findViewById(R.id.tabLayoutOption);
+        tabArchive = findViewById(R.id.tabArchive);
+        tabDelete = findViewById(R.id.tabDelete);
+        tabColor = findViewById(R.id.tabColor);
+        tabReminder = findViewById(R.id.tabReminder);
+        tabMore = findViewById(R.id.tabMore);
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setBackground(null);
@@ -146,20 +161,11 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                 }
             }
         });
-        tabLayoutOption.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                if(tab.getPosition() == 3){
-                    onChangeReminderActivitiy();
-                }
-            }
 
+        tabReminder.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+            public void onClick(View v) {
+                onChangeReminderActivitiy();
             }
         });
     }
@@ -178,15 +184,36 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     public void update(SelectedObserverService s) {
         if(fabAddTask.getVisibility() == View.VISIBLE && s.hasSelected()){
             fabAddTask.setVisibility(View.INVISIBLE);
-            findViewById(R.id.tabLayoutOption).setVisibility(View.VISIBLE);
+            bottomNavigationView.setVisibility(View.INVISIBLE);
+            tabLayoutOption.setVisibility(View.VISIBLE);
         }
         if(fabAddTask.getVisibility() == View.INVISIBLE && !s.hasSelected()){
             fabAddTask.setVisibility(View.VISIBLE);
-            findViewById(R.id.tabLayoutOption).setVisibility(View.INVISIBLE);
+            bottomNavigationView.setVisibility(View.VISIBLE);
+            tabLayoutOption.setVisibility(View.INVISIBLE);
+        }
+
+        if(s.count() != 1){
+            tabReminder.setEnabled(false);
+            ((TextView) tabReminder.getChildAt(1)).setTextColor(Color.parseColor("#757575"));
+            ((ImageView) tabReminder.getChildAt(0)).setImageResource(R.drawable.ic_reminder_nonactive);
+
+            tabMore.setEnabled(false);
+            ((ImageView) tabMore.getChildAt(0)).setImageResource(R.drawable.ic_option_nonactive);
+            ((TextView) tabMore.getChildAt(1)).setTextColor(Color.parseColor("#757575"));
+        }else{
+            tabReminder.setEnabled(true);
+            ((TextView) tabReminder.getChildAt(1)).setTextColor(Color.parseColor("#000000"));
+            ((ImageView) tabReminder.getChildAt(0)).setImageResource(R.drawable.ic_reminder_active);
+
+            tabMore.setEnabled(true);
+            ((ImageView) tabMore.getChildAt(0)).setImageResource(R.drawable.ic_option_active);
+            ((TextView) tabMore.getChildAt(1)).setTextColor(Color.parseColor("#000000"));
         }
     }
 
