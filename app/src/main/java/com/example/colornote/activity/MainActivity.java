@@ -179,21 +179,21 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
     }
 
     @Override
-    public void update(boolean[] isSelected) {
-        if(fabAddTask.getVisibility() == View.VISIBLE && hasSelected(isSelected)){
+    public void update(SelectedObserverService s) {
+        if(fabAddTask.getVisibility() == View.VISIBLE && s.hasSelected()){
             fabAddTask.setVisibility(View.INVISIBLE);
             findViewById(R.id.tabLayoutOption).setVisibility(View.VISIBLE);
         }
-        if(fabAddTask.getVisibility() == View.INVISIBLE && !hasSelected(isSelected)){
+        if(fabAddTask.getVisibility() == View.INVISIBLE && !s.hasSelected()){
             fabAddTask.setVisibility(View.VISIBLE);
             findViewById(R.id.tabLayoutOption).setVisibility(View.INVISIBLE);
         }
     }
 
-    public boolean hasSelected(boolean[] isSelected){
-        for(int i=0;i<isSelected.length;i++){
-            if(isSelected[i]) return true;
-        }
-        return false;
+    @Override
+    public void onStop() {
+        super.onStop();
+        SelectedObserverService.getInstance().removeObserver(this);
     }
+
 }
