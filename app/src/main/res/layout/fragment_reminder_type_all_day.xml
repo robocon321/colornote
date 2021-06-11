@@ -66,6 +66,9 @@
         android:id="@+id/spRepetition"
         android:layout_marginVertical="5dp"
         android:layout_marginHorizontal="5dp"
+        android:spinnerMode="dropdown"
+        local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

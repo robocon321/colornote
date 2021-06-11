@@ -18,8 +18,10 @@ import com.example.colornote.activity.ReminderActivity;
 import java.util.ArrayList;
 
 public class ReminderTypeTimeAlarmFragment extends Fragment {
-    Spinner spType;
+    Spinner spType, spRepetition;
     int current = 2;
+    ArrayList<String> types, repetitions;
+    ArrayAdapter adapterTypes, adapterRepetitions;
 
     @Nullable
     @Override
@@ -31,14 +33,27 @@ public class ReminderTypeTimeAlarmFragment extends Fragment {
     }
     public void init(View view){
         spType = view.findViewById(R.id.spType);
-        ArrayList<String> types = new ArrayList<>();
+        types = new ArrayList<>();
         types.add("None");
         types.add("All day");
         types.add("Time alarm");
         types.add("Pin to status bar");
-        ArrayAdapter adapter = new ArrayAdapter(getActivity(), R.layout.item_spinner_reminder, types);
-        spType.setAdapter(adapter);
+        adapterTypes = new ArrayAdapter(getActivity(), R.layout.item_spinner_reminder, types);
+        spType.setAdapter(adapterTypes);
         spType.setSelection(current);
+
+        spRepetition = view.findViewById(R.id.spRepetition);
+        repetitions = new ArrayList<>();
+        repetitions.add("One-time event");
+        repetitions.add("Daily");
+        repetitions.add("Every weekday");
+        repetitions.add("Weekly");
+        repetitions.add("Bi-weekly");
+        repetitions.add("Monthly");
+        repetitions.add("Yearly");
+        adapterRepetitions = new ArrayAdapter(getActivity(), R.layout.item_spinner_reminder, repetitions);
+        spRepetition.setAdapter(adapterRepetitions);
+        spRepetition.setSelection(0);
     }
 
     public void setEvents(){

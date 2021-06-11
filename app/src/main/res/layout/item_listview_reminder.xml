@@ -9,5 +9,5 @@
     android:gravity="left|center"
     android:textColor="#FFFFFF"
     android:paddingVertical="10dp"
-    android:paddingHorizontal="5dp"
+    android:paddingLeft="30dp"
     />

@@ -29,6 +29,16 @@ public class Constant {
     public final static int LARGE_GRID = 3;
 
     // Color default
-    public static String MAIN_COLOR = "#FFD54F";
-    public static String SUB_COLOR = "#FFC107";
+    public final static String MAIN_COLOR = "#FFD54F";
+    public final static String SUB_COLOR = "#FFC107";
+
+    // to Milliseconds
+
+    public final static long YEAR = 31556952000L;
+    public final static long MONTH = 2629800000L;
+    public final static long WEEK = 604800000L;
+    public final static long DAY = 86400000L;
+    public final static long HOUR = 3600000L;
+    public final static long MINUTE = 60000L;
+    public final static long SECOND = 1000L;
 }
