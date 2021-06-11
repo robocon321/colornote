@@ -12,8 +12,11 @@ import com.example.colornote.fragment.ReminderTypeAllDayFragment;
 import com.example.colornote.fragment.ReminderTypeNoneFragment;
 import com.example.colornote.fragment.ReminderTypePinFragment;
 import com.example.colornote.fragment.ReminderTypeTimeAlarmFragment;
+import com.example.colornote.model.Reminder;
 
 public class ReminderActivity extends AppCompatActivity {
+    public Reminder reminder = new Reminder();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
