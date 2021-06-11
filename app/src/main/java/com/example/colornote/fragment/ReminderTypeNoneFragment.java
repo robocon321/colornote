@@ -31,6 +31,7 @@ import com.example.colornote.model.CheckList;
 import com.example.colornote.model.Reminder;
 import com.example.colornote.model.Task;
 import com.example.colornote.model.Text;
+import com.example.colornote.util.Constant;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -105,6 +106,27 @@ public class ReminderTypeNoneFragment extends Fragment {
                 ((ReminderActivity) getActivity()).switchFragment(1);
             }
         });
+
+        btn15Minute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Calendar cal = ((ReminderActivity) getActivity()).cal;
+                cal.setTimeInMillis(cal.getTimeInMillis()+ 15 * Constant.MINUTE);
+                ((ReminderActivity) getActivity()).switchFragment(2);
+            }
+        });
+
+        btn30Minute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Calendar cal = ((ReminderActivity) getActivity()).cal;
+                cal.setTimeInMillis(cal.getTimeInMillis()+ 30 * Constant.MINUTE);
+                ((ReminderActivity) getActivity()).switchFragment(2);
+            }
+        });
+
     }
 
     public void createNotification(){
