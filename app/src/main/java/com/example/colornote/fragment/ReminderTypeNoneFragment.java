@@ -22,6 +22,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.colornote.R;
+import com.example.colornote.activity.MainActivity;
 import com.example.colornote.activity.ReminderActivity;
 import com.example.colornote.activity.Text_Activity;
 import com.example.colornote.dao.CheckListDAO;
@@ -41,7 +42,6 @@ public class ReminderTypeNoneFragment extends Fragment {
     Spinner spType;
     Button btnToday, btnPin, btn15Minute, btn30Minute;
     int current = 0;
-    Task task;
     private String CHANNEL_ID = "AABB";
 
     @Nullable
@@ -67,7 +67,6 @@ public class ReminderTypeNoneFragment extends Fragment {
         btn30Minute = view.findViewById(R.id.btn30Minute);
 
         Intent intent = getActivity().getIntent();
-        task = ((ReminderActivity) getActivity()).task;
         ArrayList<String> types = new ArrayList<>();
         types.add("None");
         types.add("All day");
@@ -110,7 +109,6 @@ public class ReminderTypeNoneFragment extends Fragment {
         btn15Minute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Calendar cal = ((ReminderActivity) getActivity()).cal;
                 cal.setTimeInMillis(cal.getTimeInMillis()+ 15 * Constant.MINUTE);
                 ((ReminderActivity) getActivity()).switchFragment(2);
@@ -120,7 +118,6 @@ public class ReminderTypeNoneFragment extends Fragment {
         btn30Minute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Calendar cal = ((ReminderActivity) getActivity()).cal;
                 cal.setTimeInMillis(cal.getTimeInMillis()+ 30 * Constant.MINUTE);
                 ((ReminderActivity) getActivity()).switchFragment(2);
@@ -131,16 +128,17 @@ public class ReminderTypeNoneFragment extends Fragment {
 
     public void createNotification(){
         Intent intentText = new Intent(getActivity(), Text_Activity.class);
-        intentText.putExtra("task", task);
+        intentText.putExtra("task", ((ReminderActivity) getActivity()).task);
         intentText.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intentText, 0);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(getActivity(), CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_text)
-                .setContentTitle(task.getTitle())
-                .setContentText(task.showContent())
+                .setContentTitle(((ReminderActivity) getActivity()).task.getTitle())
+                .setContentText(((ReminderActivity) getActivity()).task.showContent())
                 // Set the intent that will fire when the user taps the notification
                 .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         // Create the NotificationChannel, but only on API 26+ because
@@ -155,10 +153,10 @@ public class ReminderTypeNoneFragment extends Fragment {
             // or other notification behaviors after this
             NotificationManager notificationManager = getActivity().getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
-            notificationManager.notify(100, mBuilder.build());
+            notificationManager.notify(((ReminderActivity) getActivity()).task.getId(), mBuilder.build());
         }else{
             NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(100, mBuilder.build());
+            notificationManager.notify(((ReminderActivity) getActivity()).task.getId(), mBuilder.build());
         }
     }
 
@@ -168,15 +166,19 @@ public class ReminderTypeNoneFragment extends Fragment {
         reminder.setStartDate(new Date());
         int idReminder = (int) ReminderDAO.getInstance().insert(reminder);
 
-        task.setReminderId(idReminder);
+        ((ReminderActivity) getActivity()).task.setReminderId(idReminder);
 
-        if(task.getClass().equals(Text.class)){
-            Text text = (Text) task;
+        if(((ReminderActivity) getActivity()).task.getClass().equals(Text.class)){
+            Text text = (Text) ((ReminderActivity) getActivity()).task;
             TextDAO.getInstance().update(text);
         }
-        if(task.getClass().equals(CheckList.class)){
-            CheckList checkList = (CheckList) task;
+        if(((ReminderActivity) getActivity()).task.getClass().equals(CheckList.class)){
+            CheckList checkList = (CheckList) ((ReminderActivity) getActivity()).task;
             CheckListDAO.getInstance().update(checkList);
         }
+
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+
     }
 }
