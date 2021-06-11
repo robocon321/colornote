@@ -59,10 +59,10 @@ public class Database {
         sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'YTU','asdkj ase983w3 lksd', 2, null, '2020-03-15', 3)");
         sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'kd','2938 sdkk w23kd', 7, null, '2020-03-05', 3)");
 
-        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'as983', 2, -1, '2021-03-02', 3)");
-        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, '98 ksd2983', 3, -1, '2021-01-07', 2)");
-        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'DKW', 7, -1, '2021-08-17', 3)");
-        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'TaHahha', 5, -1, '2021-02-17', 2)");
+        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'as983', 2, null, '2021-03-02', 3)");
+        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, '98 ksd2983', 3, null, '2021-01-07', 2)");
+        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'DKW', 7, null, '2021-08-17', 3)");
+        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'TaHahha', 5, null, '2021-02-17', 2)");
 
         sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, 'lkdsk lksd oi3498 sdkoi lksdoiek oiwe kdoi', 1, '2020-02-02', 3);");
         sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, '98dk sod89 klisd98 lkđ kdsoi ', 1, '2020-04-02', 3);");
