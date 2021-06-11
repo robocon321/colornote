@@ -52,10 +52,18 @@ public class DateConvert implements Comparator<DateConvert>{
     public String showTime(){
         Calendar cal = Calendar.getInstance();
         if(cal.get(Calendar.YEAR) == year && cal.get(Calendar.MONTH) + 1 == month  && cal.get(Calendar.DAY_OF_MONTH) == day){
-            return this.hour +":"+this.minute;
+            return getTime();
         }else {
-            return this.year + "/" + this.month + "/" + this.day;
+            return getDate();
         }
+    }
+
+    public String getTime(){
+        return this.hour +":"+this.minute;
+    }
+
+    public String getDate(){
+        return this.year + "/" + this.month + "/" + this.day;
     }
 
     @Override

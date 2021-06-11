@@ -33,6 +33,7 @@ import com.example.colornote.model.Task;
 import com.example.colornote.model.Text;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class ReminderTypeNoneFragment extends Fragment {
@@ -50,6 +51,13 @@ public class ReminderTypeNoneFragment extends Fragment {
         setEvents();
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
     public void init(View view){
         spType = view.findViewById(R.id.spType);
         btnToday = view.findViewById(R.id.btnToday);
@@ -58,8 +66,7 @@ public class ReminderTypeNoneFragment extends Fragment {
         btn30Minute = view.findViewById(R.id.btn30Minute);
 
         Intent intent = getActivity().getIntent();
-        task = (Task) intent.getSerializableExtra("task");
-
+        task = ((ReminderActivity) getActivity()).task;
         ArrayList<String> types = new ArrayList<>();
         types.add("None");
         types.add("All day");
@@ -88,6 +95,14 @@ public class ReminderTypeNoneFragment extends Fragment {
             public void onClick(View v) {
                 createNotification();
                 insertReminder();
+            }
+        });
+
+        btnToday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ReminderActivity) getActivity()).cal = Calendar.getInstance();
+                ((ReminderActivity) getActivity()).switchFragment(1);
             }
         });
     }

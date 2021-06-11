@@ -13,14 +13,20 @@ import com.example.colornote.fragment.ReminderTypeNoneFragment;
 import com.example.colornote.fragment.ReminderTypePinFragment;
 import com.example.colornote.fragment.ReminderTypeTimeAlarmFragment;
 import com.example.colornote.model.Reminder;
+import com.example.colornote.model.Task;
+
+import java.util.Calendar;
 
 public class ReminderActivity extends AppCompatActivity {
     public Reminder reminder = new Reminder();
+    public Calendar cal = Calendar.getInstance();
+    public Task task;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder);
+        task = (Task) getIntent().getSerializableExtra("task");
         switchFragment(0);
     }
 

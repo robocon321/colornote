@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.example.colornote.R;
 import com.example.colornote.activity.ReminderActivity;
 import com.example.colornote.model.Reminder;
+import com.example.colornote.model.Task;
 import com.example.colornote.util.Constant;
 import com.example.colornote.util.DateConvert;
 
@@ -36,6 +37,8 @@ public class ReminderTypeAllDayFragment extends Fragment {
     ArrayAdapter adapterTypes, adapterRepetitions;
     Button btnToday, btnDate;
     Reminder reminder = new Reminder();
+    Task task;
+    Calendar cal;
 
     @Nullable
     @Override
@@ -46,8 +49,13 @@ public class ReminderTypeAllDayFragment extends Fragment {
         return view;
     }
     public void init(View view){
+        task = ((ReminderActivity) getActivity()).task;
+        cal = ((ReminderActivity) getActivity()).cal;
+
         btnToday = view.findViewById(R.id.btnToday);
+
         btnDate = view.findViewById(R.id.btnDate);
+        btnDate.setText(new DateConvert(cal.getTime()).getDate());
 
         spType = view.findViewById(R.id.spType);
         types = new ArrayList<>();
@@ -71,6 +79,12 @@ public class ReminderTypeAllDayFragment extends Fragment {
         adapterRepetitions = new ArrayAdapter(getActivity(), R.layout.item_spinner_reminder, repetitions);
         spRepetition.setAdapter(adapterRepetitions);
         spRepetition.setSelection(0);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        btnDate.setText(new DateConvert(cal.getTime()).getDate());
     }
 
     public void setEvents(){
