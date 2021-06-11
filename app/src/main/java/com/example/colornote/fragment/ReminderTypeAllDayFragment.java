@@ -1,6 +1,7 @@
 package com.example.colornote.fragment;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -36,9 +38,6 @@ public class ReminderTypeAllDayFragment extends Fragment {
     ArrayList<String> types, repetitions;
     ArrayAdapter adapterTypes, adapterRepetitions;
     Button btnToday, btnDate;
-    Reminder reminder = new Reminder();
-    Task task;
-    Calendar cal;
 
     @Nullable
     @Override
@@ -49,13 +48,12 @@ public class ReminderTypeAllDayFragment extends Fragment {
         return view;
     }
     public void init(View view){
-        task = ((ReminderActivity) getActivity()).task;
-        cal = ((ReminderActivity) getActivity()).cal;
-
         btnToday = view.findViewById(R.id.btnToday);
-
         btnDate = view.findViewById(R.id.btnDate);
-        btnDate.setText(new DateConvert(cal.getTime()).getDate());
+        btnDate.setText(new DateConvert(((ReminderActivity) getActivity()).cal.getTime()).getDate());
+
+        ((ReminderActivity) getActivity()).reminder.setType(1);
+        ((ReminderActivity) getActivity()).reminder.setStartDate(((ReminderActivity) getActivity()).cal.getTime());
 
         spType = view.findViewById(R.id.spType);
         types = new ArrayList<>();
@@ -84,7 +82,9 @@ public class ReminderTypeAllDayFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        btnDate.setText(new DateConvert(cal.getTime()).getDate());
+        btnDate.setText(new DateConvert(((ReminderActivity) getActivity()).cal.getTime()).getDate());
+        ((ReminderActivity) getActivity()).reminder.setType(1);
+        ((ReminderActivity) getActivity()).reminder.setStartDate(((ReminderActivity) getActivity()).cal.getTime());
     }
 
     public void setEvents(){
@@ -104,6 +104,61 @@ public class ReminderTypeAllDayFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 showDialogTime();
+            }
+        });
+
+        spRepetition.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ((ReminderActivity) getActivity()).reminder.setRepetition(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        btnDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ReminderActivity) getActivity()).cal = Calendar.getInstance();
+                DatePickerDialog dialog = new DatePickerDialog(getActivity(),
+                        AlertDialog.THEME_DEVICE_DEFAULT_DARK,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                int yearDis = ((ReminderActivity) getActivity()).cal.get(Calendar.YEAR) - year;
+                                int monthDis = ((ReminderActivity) getActivity()).cal.get(Calendar.MONTH) - month;
+                                int dayDis = ((ReminderActivity) getActivity()).cal.get(Calendar.DATE) - dayOfMonth;
+
+                                if(yearDis > 0){
+                                    btnToday.setText(yearDis +" YEAR"+(yearDis == 1 ? "":"S")+" AGO");
+                                }else if(yearDis < 0){
+                                    btnToday.setText(-yearDis +" YEAR"+(yearDis == -1 ? "":"S")+" LATER");
+                                }else {
+                                    if(monthDis > 0){
+                                        btnToday.setText(monthDis +" MONTH"+(monthDis == 1 ? "":"S")+" AGO");
+                                    }else if(monthDis < 0){
+                                        btnToday.setText(-monthDis +" MONTH"+(monthDis == -1 ? "":"S")+" LATER");
+                                    }else {
+                                        if(dayDis > 0){
+                                            btnToday.setText(dayDis +" DAY"+(dayDis == 1 ? "":"S")+" AGO");
+                                        }else if(dayDis < 0){
+                                            btnToday.setText(-dayDis +" DAY"+(dayDis == -1 ? "":"S")+" LATER");
+                                        }else {
+                                            btnToday.setText("Today");
+                                        }
+                                    }
+                                }
+                                ((ReminderActivity) getActivity()).cal.set(year, month, dayOfMonth);
+                                ((ReminderActivity) getActivity()).reminder.setStartDate(((ReminderActivity) getActivity()).cal.getTime());
+
+                                btnDate.setText(new DateConvert(((ReminderActivity) getActivity()).cal.getTime()).getDate());
+                            }
+                        },
+                        ((ReminderActivity) getActivity()).cal.get(Calendar.YEAR), ((ReminderActivity) getActivity()).cal.get(Calendar.MONTH), ((ReminderActivity) getActivity()).cal.get(Calendar.DATE));
+                dialog.show();
             }
         });
     }
@@ -133,19 +188,19 @@ public class ReminderTypeAllDayFragment extends Fragment {
         lvTime.setAdapter(adapter);
         builder.setView(view);
         AlertDialog dialog = builder.create();
+        dialog.setCanceledOnTouchOutside(true);
         dialog.show();
         lvTime.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ((ReminderActivity) getActivity()).cal = Calendar.getInstance();
                 btnToday.setText(dates.get(position));
-                long dateLong = 0;
                 if(position == 0){
                     Toast.makeText(getActivity(), "No date", Toast.LENGTH_SHORT).show();
-                    dateLong = -1;
                 }else if(position == 1){
-                    dateLong = Calendar.getInstance().getTimeInMillis();
+                    ((ReminderActivity) getActivity()).cal.setTimeInMillis(Calendar.getInstance().getTimeInMillis());
                 }else if(position == 2){
-                    dateLong = Calendar.getInstance().getTimeInMillis()+ Constant.DAY;
+                    ((ReminderActivity) getActivity()).cal.setTimeInMillis(Calendar.getInstance().getTimeInMillis()+ Constant.DAY);
                 }else if(position == 10){
                     Toast.makeText(getActivity(), "Specific date", Toast.LENGTH_SHORT).show();
                 }else {
@@ -153,11 +208,11 @@ public class ReminderTypeAllDayFragment extends Fragment {
                     position += (position >= today - 1) ? 2 : 0;
                     int distance = position >= today - 1? position - (today-1) : 7 - ((today-1) - position);
 
-                    dateLong = Calendar.getInstance().getTimeInMillis() + distance * Constant.DAY;
+                    ((ReminderActivity) getActivity()).cal.setTimeInMillis(Calendar.getInstance().getTimeInMillis() + distance * Constant.DAY);
                 }
 
-                reminder.setStartDate(new Date(dateLong));
-                btnDate.setText(new DateConvert(reminder.getStartDate()).showTime());
+                ((ReminderActivity) getActivity()). reminder.setStartDate(((ReminderActivity) getActivity()).cal.getTime());
+                btnDate.setText(new DateConvert(((ReminderActivity) getActivity()).reminder.getStartDate()).getDate());
                 dialog.dismiss();
             }
         });

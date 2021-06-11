@@ -164,9 +164,13 @@ public class ReminderTypeNoneFragment extends Fragment {
         Reminder reminder = ((ReminderActivity) getActivity()).reminder;
         reminder.setType(3);
         reminder.setStartDate(new Date());
-        int idReminder = (int) ReminderDAO.getInstance().insert(reminder);
 
-        ((ReminderActivity) getActivity()).task.setReminderId(idReminder);
+        if( ((ReminderActivity) getActivity()).task.getReminderId() == 0){
+            int idReminder = (int) ReminderDAO.getInstance().insert(reminder);
+        }else {
+            ReminderDAO.getInstance().update(reminder);
+        }
+
 
         if(((ReminderActivity) getActivity()).task.getClass().equals(Text.class)){
             Text text = (Text) ((ReminderActivity) getActivity()).task;
@@ -179,6 +183,5 @@ public class ReminderTypeNoneFragment extends Fragment {
 
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
-
     }
 }
