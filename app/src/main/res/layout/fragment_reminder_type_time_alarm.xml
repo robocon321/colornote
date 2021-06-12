@@ -89,4 +89,16 @@
         local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btnEndDate"
+        android:visibility="invisible"
+        android:drawableLeft="@drawable/ic_white_calendar"
+        android:gravity="left|center"
+        android:text="Never"
+        android:backgroundTint="@color/task_gray"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

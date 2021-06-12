@@ -36,7 +36,7 @@ public class ReminderTypeTimeAlarmFragment extends Fragment {
     int current = 2;
     ArrayList<String> types, repetitions;
     ArrayAdapter adapterTypes, adapterRepetitions;
-    Button btnDate, btnToday, btnTime;
+    Button btnDate, btnToday, btnTime, btnEndDate;
 
     @Nullable
     @Override
@@ -65,6 +65,7 @@ public class ReminderTypeTimeAlarmFragment extends Fragment {
         btnDate = view.findViewById(R.id.btnDate);
         btnTime = view.findViewById(R.id.btnTime);
         btnToday = view.findViewById(R.id.btnToday);
+        btnEndDate = view.findViewById(R.id.btnEndDate);
 
         btnToday.setText("5 minutes");
         btnDate.setText(new DateConvert(((ReminderActivity) getActivity()).cal.getTime()).getDate());
@@ -132,7 +133,6 @@ public class ReminderTypeTimeAlarmFragment extends Fragment {
                         },
                         ((ReminderActivity) getActivity()).cal.get(Calendar.YEAR), ((ReminderActivity) getActivity()).cal.get(Calendar.MONTH), ((ReminderActivity) getActivity()).cal.get(Calendar.DATE));
                 dialog.show();
-
             }
         });
 
@@ -162,6 +162,13 @@ public class ReminderTypeTimeAlarmFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 ((ReminderActivity) getActivity()).reminder.setRepetition(position);
+                if (position > 0) {
+                    btnEndDate.setVisibility(View.VISIBLE);
+                    btnEndDate.setEnabled(true);
+                } else {
+                    btnEndDate.setVisibility(View.INVISIBLE);
+                    btnEndDate.setEnabled(false);
+                }
             }
 
             @Override
@@ -170,6 +177,26 @@ public class ReminderTypeTimeAlarmFragment extends Fragment {
             }
         });
 
+        btnEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(((ReminderActivity) getActivity()).reminder.getEndDate() == null ? cal.getTime() : ((ReminderActivity) getActivity()).reminder.getEndDate());
+                DatePickerDialog dialog = new DatePickerDialog(getActivity(),
+                        AlertDialog.THEME_DEVICE_DEFAULT_DARK,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                cal.set(year, month, dayOfMonth);
+                                ((ReminderActivity) getActivity()).reminder.setEndDate(cal.getTime());
+
+                                btnEndDate.setText(new DateConvert(cal.getTime()).getDate());
+                            }
+                        },
+                        cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+                dialog.show();
+            }
+        });
     }
 
     public void showDistanceTime(int year, int month, int dayOfMonth, int hour, int minute){
