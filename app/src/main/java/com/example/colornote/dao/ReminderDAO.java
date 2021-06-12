@@ -23,4 +23,29 @@ public class ReminderDAO extends AbstractDAO{
         cursor.moveToNext();
         return new ReminderMapper().mappRow(cursor);
     }
+
+    public long insert(Reminder reminder){
+        ContentValues values = new ContentValues();
+        values.put("type", reminder.getType());
+        values.put("startTime", reminder.getStartDate() == null ? null : reminder.getStartDate().getTime());
+        values.put("endTime", reminder.getEndDate() == null ? null : reminder.getEndDate().getTime());
+        values.put("repetition", reminder.getRepetition());
+        values.put("status", reminder.getStatus());
+        return database.getSqLiteDatabase().insert("Reminder", null, values);
+    }
+
+    public int update(Reminder reminder){
+        ContentValues values = new ContentValues();
+        values.put("type", reminder.getType());
+        values.put("startTime", reminder.getStartDate() == null ? null : reminder.getStartDate().getTime());
+        values.put("endTime", reminder.getEndDate() == null ? null : reminder.getEndDate().getTime());
+        values.put("repetition", reminder.getRepetition());
+        values.put("status", reminder.getStatus());
+        return database.getSqLiteDatabase().update("Reminder", values, "id = ?", new String[]{reminder.getId()+""});
+    }
+
+    public void delete(int id){
+        String sql = "DELETE FROM Reminder WHERE id = "+id;
+        database.getSqLiteDatabase().execSQL(sql);
+    }
 }

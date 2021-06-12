@@ -218,9 +218,18 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
-        SelectedObserverService.getInstance().removeObserver(this);
+    protected void onResume() {
+        super.onResume();
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SelectedObserverService.getInstance().removeObserver(this);
+    }
 }

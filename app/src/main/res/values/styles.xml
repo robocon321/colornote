@@ -16,4 +16,5 @@
     <style name="Theme.Spinner.Light" parent="Widget.AppCompat.DropDownItem.Spinner">
         <item name="android:textColor">@color/white</item>
     </style>
+
 </resources>

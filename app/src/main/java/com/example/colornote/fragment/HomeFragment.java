@@ -368,8 +368,8 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         SelectedObserverService.getInstance().removeObserver(this);
     }
 }
