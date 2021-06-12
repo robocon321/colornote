@@ -37,6 +37,7 @@
         android:layout_height="wrap_content"/>
     <LinearLayout
         android:id="@+id/tabLayoutOption"
+        android:visibility="invisible"
         android:background="#D3D3D3"
         android:weightSum="5"
         android:layout_width="match_parent"

@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <Button
-        android:id="@+id/btnFromTime"
+        android:id="@+id/btnToday"
         android:gravity="left|center"
         android:text="TODAY"
         android:backgroundTint="@color/task_gray"
