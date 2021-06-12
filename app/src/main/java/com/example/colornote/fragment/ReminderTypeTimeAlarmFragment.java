@@ -166,6 +166,7 @@ public class ReminderTypeTimeAlarmFragment extends Fragment {
                     btnEndDate.setVisibility(View.VISIBLE);
                     btnEndDate.setEnabled(true);
                 } else {
+                    ((ReminderActivity) getActivity()).reminder.setEndDate(null);
                     btnEndDate.setVisibility(View.INVISIBLE);
                     btnEndDate.setEnabled(false);
                 }
