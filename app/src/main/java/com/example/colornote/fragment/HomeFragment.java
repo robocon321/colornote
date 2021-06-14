@@ -185,6 +185,7 @@ public class HomeFragment extends Fragment {
             if(isShowAmount){
                 edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
                 edtColor.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 2f));
+                edtAmount.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()  == null ? "#ffffff" : color.getColorMain()));
                 edtAmount.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
                 edtAmount.setText(ColorDAO.getInstance().countTask(color.getId())+"");
             }else {

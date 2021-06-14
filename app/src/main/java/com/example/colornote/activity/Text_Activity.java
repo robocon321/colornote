@@ -81,6 +81,7 @@ public class Text_Activity extends AppCompatActivity {
             case R.id.edit:
                 getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24);
                 checkIcon = true;
+                return true;
             case R.id.color:
                 Dialog dialog = new Dialog(Text_Activity.this);
                 dialog.setContentView(R.layout.dialog_color);
@@ -96,24 +97,25 @@ public class Text_Activity extends AppCompatActivity {
                 button_gray = dialog.findViewById(R.id.btn_gray);
                 button_white = dialog.findViewById(R.id.btn_white);
 
-                changeColorActionbar(button_red);
-                changeColorActionbar(button_blue_1);
-                changeColorActionbar(button_orange);
-                changeColorActionbar(button_yellow);
-                changeColorActionbar(button_green);
-                changeColorActionbar(button_purple);
-                changeColorActionbar(button_gray);
-                changeColorActionbar(button_blue);
-                changeColorActionbar(button_white);
+                changeColorActionbar(button_red,dialog);
+                changeColorActionbar(button_blue_1,dialog);
+                changeColorActionbar(button_orange,dialog);
+                changeColorActionbar(button_yellow,dialog);
+                changeColorActionbar(button_green,dialog);
+                changeColorActionbar(button_purple,dialog);
+                changeColorActionbar(button_gray,dialog);
+                changeColorActionbar(button_blue,dialog);
+                changeColorActionbar(button_white,dialog);
 
                 dialog.show();
+                return true;
             default:break;
 
         }
 
         return super.onOptionsItemSelected(item);
     }
-    public void changeColorActionbar(Button button){
+    public void changeColorActionbar(Button button,Dialog dialog){
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +123,7 @@ public class Text_Activity extends AppCompatActivity {
                 Drawable drawable = button.getBackground();
                 ActionBar actionBar = getSupportActionBar();
                 actionBar.setBackgroundDrawable(drawable);
+                dialog.cancel();
             }
         });
     }

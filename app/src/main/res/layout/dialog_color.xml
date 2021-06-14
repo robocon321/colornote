@@ -12,69 +12,70 @@
         android1:layout_width="100dp"
         android1:layout_height="100dp"
         android1:layout_margin="10dp"
-        android1:background="#EE0038"
-        app:backgroundTint="#EE0038" />
+        android1:background="#f7d539"
+        app:backgroundTint="#f7d539" />
 
     <Button
         android1:id="@+id/btn_orange"
         android1:layout_width="100dp"
         android1:layout_height="100dp"
         android1:layout_margin="10dp"
-        android1:background="#FFAB02"
-        app:backgroundTint="#FFAB02" />
+        android1:background="#ff7f24"
+        app:backgroundTint="#ff7f24" />
 
     <Button
         android1:id="@+id/btn_yellow"
         android1:layout_width="100dp"
         android1:layout_height="100dp"
         android1:layout_margin="10dp"
-        android1:background="#FFDD02"
-        app:backgroundTint="#FFDD02" />
+        android1:background="#ff2b2b"
+        app:backgroundTint="#ff2b2b" />
 
     <Button
         android1:id="@+id/btn_green"
         android1:layout_width="100dp"
         android1:layout_height="100dp"
         android1:layout_margin="10dp"
-        android1:background="#26FF00"
-        app:backgroundTint="#26FF00" />
+        android1:background="#48fc3a"
+        app:backgroundTint="#48fc3a" />
 
     <Button
         android1:id="@+id/btn_blue"
         android1:layout_width="100dp"
         android1:layout_height="100dp"
         android1:layout_margin="10dp"
-        android1:background="#0066FF"
-        app:backgroundTint="#0066FF" />
+        android1:background="#286fc7"
+        app:backgroundTint="#286fc7" />
 
     <Button
         android1:id="@+id/btn_purple"
         android1:layout_width="100dp"
         android1:layout_height="100dp"
         android1:layout_margin="10dp"
-        android1:background="@color/purple_500" />
+        android1:background="#e4a8ff"
+        android1:backgroundTint="#e4a8ff"/>
 
     <Button
         android1:id="@+id/btn_blue_1"
         android1:layout_width="100dp"
         android1:layout_height="100dp"
         android1:layout_margin="10dp"
-        android1:background="#00FFDA"
-        app:backgroundTint="#00FFDA" />
+        android1:background="#000000"
+        app:backgroundTint="#000000" />
 
     <Button
         android1:id="@+id/btn_gray"
         android1:layout_width="100dp"
         android1:layout_height="100dp"
         android1:layout_margin="10dp"
-        android1:background="@color/gray"
-        app:backgroundTint="@color/gray" />
+        android1:background="#948787"
+        app:backgroundTint="#948787" />
 
     <Button
         android1:id="@+id/btn_white"
         android1:layout_width="100dp"
         android1:layout_height="100dp"
         android1:layout_margin="10dp"
-        android1:background="@color/white"
-        app:backgroundTint="@color/white" />
+        android1:background="#ededed"
+        app:backgroundTint="#ededed" />
 </GridLayout>
