@@ -24,4 +24,16 @@
         <item>December</item>
     </array>
     <!--Trung-->
+<!--    tuyen-->
+    <string-array name="spnLeft_Archive">
+        <item>All</item>
+        <item>Notes</item>
+        <item>Calendar</item>
+    </string-array>
+    <string-array name="spnRight_Archive">
+        <item>All</item>
+        <item>Normal</item>
+        <item>Archived</item>
+    </string-array>
+<!--    tuyen-->
 </resources>

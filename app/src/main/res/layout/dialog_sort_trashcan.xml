@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/btnSortModified_TrashCan"
+        android:fontFamily="@font/arial"
+        android:textSize="20dp"
+        android:text="by modified time"
+        android:textColor="@color/black"
+        android:gravity="left|center"
+        android:textAllCaps="false"
+        style="?android:attr/buttonBarButtonStyle"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetRight="0dp"
+        android:insetLeft="0dp"
+        android:paddingLeft="20dp"
+        android:drawableLeft="@drawable/cus_ic_clock_modified"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+    <Button
+        android:id="@+id/btnSortCreated_TrashCan"
+        android:fontFamily="@font/arial"
+        android:textSize="20dp"
+        android:text="by created time"
+        android:textColor="@color/black"
+        android:gravity="left|center"
+        android:textAllCaps="false"
+        style="?android:attr/buttonBarButtonStyle"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetRight="0dp"
+        android:insetLeft="0dp"
+        android:paddingLeft="20dp"
+        android:drawableLeft="@drawable/cus_ic_clock_create"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+    <Button
+        android:id="@+id/btnSortAlphabeta_TrasCan"
+        android:fontFamily="@font/arial"
+        android:textSize="20dp"
+        android:text="alphabetically"
+        android:textColor="@color/black"
+        android:gravity="left|center"
+        android:textAllCaps="false"
+        style="?android:attr/buttonBarButtonStyle"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetRight="0dp"
+        android:insetLeft="0dp"
+        android:paddingLeft="20dp"
+        android:drawableLeft="@drawable/ic_sort_az"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+
+    <Button
+        android:id="@+id/btnSortColor_TrashCan"
+        android:fontFamily="@font/arial"
+        android:textSize="20dp"
+        android:text="by color"
+        android:textColor="@color/black"
+        android:gravity="left|center"
+        android:textAllCaps="false"
+        style="?android:attr/buttonBarButtonStyle"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:insetRight="0dp"
+        android:insetLeft="0dp"
+        android:paddingLeft="20dp"
+        android:drawableLeft="@drawable/cus_ic_by_color"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent" />
+
+
+</LinearLayout>
