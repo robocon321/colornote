@@ -139,7 +139,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     builder.setView(R.layout.fragment_view_option);
                 }
-                builder.setTitle("View");
+                builder.setTitle("Tuyen");
                 AlertDialog dialog = builder.create();
 
                 dialog.show();
