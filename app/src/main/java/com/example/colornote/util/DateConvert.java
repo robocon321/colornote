@@ -21,8 +21,8 @@ public class DateConvert implements Comparator<DateConvert>{
         this.minute= calendar.get(Calendar.MINUTE);
         this.hour = calendar.get(Calendar.HOUR_OF_DAY);
         this.day = calendar.get(Calendar.DAY_OF_MONTH);
-        this.month = calendar.get(Calendar.MONTH);
-        this.year = calendar.get(Calendar.YEAR) - 1900;
+        this.month = calendar.get(Calendar.MONTH) + 1;
+        this.year = calendar.get(Calendar.YEAR);
     }
 
     public int getDay() {
@@ -52,10 +52,18 @@ public class DateConvert implements Comparator<DateConvert>{
     public String showTime(){
         Calendar cal = Calendar.getInstance();
         if(cal.get(Calendar.YEAR) == year && cal.get(Calendar.MONTH) + 1 == month  && cal.get(Calendar.DAY_OF_MONTH) == day){
-            return this.hour +":"+this.minute;
+            return getTime();
         }else {
-            return this.year + "/" + this.month + "/" + this.day;
+            return getDate();
         }
+    }
+
+    public String getTime(){
+        return this.hour +":"+this.minute;
+    }
+
+    public String getDate(){
+        return this.year + "/" + this.month + "/" + this.day;
     }
 
     @Override

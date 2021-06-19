@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activity.MainActivity">
-
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPagerMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="top"
-        app:layout_anchor="@id/bottomAppBar"
-        app:layout_anchorGravity="top"/>
-
+        android:layout_marginBottom="50dp"/>
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
@@ -38,5 +35,123 @@
         app:layout_anchor="@id/bottomAppBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
-
+    <LinearLayout
+        android:id="@+id/tabLayoutOption"
+        android:visibility="invisible"
+        android:background="#D3D3D3"
+        android:weightSum="5"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:id="@+id/tabArchive"
+            android:orientation="vertical"
+            android:background="?attr/selectableItemBackground"
+            android:paddingVertical="10dp"
+            android:weightSum="2"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/ic_archive"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+            <TextView
+                android:text="Archive"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/tabDelete"
+            android:orientation="vertical"
+            android:background="?attr/selectableItemBackground"
+            android:weightSum="2"
+            android:paddingVertical="10dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/ic_delete"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+            <TextView
+                android:text="Delete"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/tabColor"
+            android:orientation="vertical"
+            android:weightSum="2"
+            android:paddingVertical="10dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/ic_art"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+            <TextView
+                android:text="Color"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/tabReminder"
+            android:orientation="vertical"
+            android:background="?attr/selectableItemBackground"
+            android:weightSum="2"
+            android:paddingVertical="10dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/ic_reminder_active"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+            <TextView
+                android:text="Reminder"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/tabMore"
+            android:orientation="vertical"
+            android:background="?attr/selectableItemBackground"
+            android:weightSum="2"
+            android:paddingVertical="10dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/ic_option_active"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+            <TextView
+                android:text="More"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+        </LinearLayout>
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

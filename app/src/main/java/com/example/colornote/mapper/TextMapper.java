@@ -19,9 +19,7 @@ public class TextMapper implements RowMapper<Text> {
         text.setTitle(cursor.getString(1));
         text.setContent(cursor.getString(2));
         text.setColorId(cursor.getInt(3));
-        if(cursor.getString(4) != null) {
-            text.setReminder(new Date(cursor.getLong(4)));
-        }
+        text.setReminderId(cursor.getInt(4));
         text.setModifiedDate(new Date(cursor.getLong(5)));
         text.setStatus(cursor.getInt(6));
         return text;
