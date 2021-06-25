@@ -11,7 +11,6 @@ import com.example.colornote.model.ItemCheckList;
 
 import java.util.ArrayList;
 import java.util.List;
-
 public class CheckListDAO extends AbstractDAO{
     private static CheckListDAO instance = new CheckListDAO();
     public static CheckListDAO getInstance(){
@@ -69,5 +68,10 @@ public class CheckListDAO extends AbstractDAO{
     @Override
     public String queryAll() {
         return "SELECT * FROM CheckList";
+    }
+
+    @Override
+    public String queryWithKey() {
+        return "Select * from CheckList Where title LIKE ? OR content LIKE ? or modifiedDate like ?";
     }
 }

@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,8 +15,8 @@
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp">
 
-        <TextView
-            android:id="@+id/txtSearch"
+        <EditText
+            android:id="@+id/edtSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/boder_textview_search"
@@ -23,6 +24,15 @@
             android:padding="5dp"
             android:textSize="20sp" />
 
+
     </LinearLayout>
+
+    <GridView
+        android:id="@+id/gvTaskSearch"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btnSort"
+        android:numColumns="1"
+        android:verticalSpacing="5dp" />
 
 </LinearLayout>
