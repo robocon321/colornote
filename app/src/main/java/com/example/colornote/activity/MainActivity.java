@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         viewPager = findViewById(R.id.viewPagerMain);
         adapter = new MainPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(1);
 
         SelectedObserverService.getInstance().addObserver(this);
     }
@@ -106,11 +107,11 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
             public void onPageSelected(int position) {
+                SelectedObserverService.getInstance().reset();
                 for(int i=0;i<adapter.getCount();i++){
                     bottomNavigationView.getMenu().getItem(i).setChecked(false);
                 }

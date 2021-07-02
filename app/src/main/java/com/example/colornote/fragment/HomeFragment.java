@@ -385,6 +385,6 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     public void onResume() {
         super.onResume();
         loadTask();
+        Toast.makeText(getActivity(), "Hello world", Toast.LENGTH_SHORT).show();
     }
-
 }
