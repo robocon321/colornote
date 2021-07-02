@@ -88,9 +88,8 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
         imgClose = view.findViewById(R.id.imgClose);
 
         tasks = new ArrayList<>();
-        tasks.addAll(textDAO.getAll(new TextMapper()));
-        tasks.addAll(checkListDAO.getAll(new CheckListMapper()));
         adapter = new ViewListAdapter(tasks, getActivity());
+        loadTask();
 
         Collections.sort(tasks, Task.compareByTitle);
         adapter.notifyDataSetChanged();
@@ -374,4 +373,18 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
         super.onDestroy();
         SelectedObserverService.getInstance().removeObserver(this);
     }
+
+    public void loadTask(){
+        tasks.clear();
+        tasks.addAll(textDAO.getAll(new TextMapper()));
+        tasks.addAll(checkListDAO.getAll(new CheckListMapper()));
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadTask();
+    }
+
 }
