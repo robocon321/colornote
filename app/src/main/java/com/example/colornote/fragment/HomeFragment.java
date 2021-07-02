@@ -341,11 +341,13 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     @Override
     public void update(SelectedObserverService s) {
         if(toolbarHidden.getVisibility() == View.VISIBLE && !s.hasSelected()){
+            btnSort.setClickable(true);
             toolbar.setVisibility(View.VISIBLE);
             toolbarHidden.setVisibility(View.INVISIBLE);
 
         }
         if(toolbarHidden.getVisibility() == View.INVISIBLE && s.hasSelected()){
+            btnSort.setClickable(false);
             toolbar.setVisibility(View.INVISIBLE);
             toolbarHidden.setVisibility(View.VISIBLE);
         }
@@ -385,6 +387,5 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     public void onResume() {
         super.onResume();
         loadTask();
-        Toast.makeText(getActivity(), "Hello world", Toast.LENGTH_SHORT).show();
     }
 }
