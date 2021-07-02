@@ -55,7 +55,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment implements ISeletectedObserver {
     Toolbar toolbar;
-    Button btnSort;
+    public static Button btnSort;
     static GridView gvTask;
     static ViewAdapter adapter;
     public static ArrayList<Task> tasks;
@@ -240,6 +240,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
                         }
                         adapter.notifyDataSetChanged();
                         dialogEditColor.dismiss();
+                        HomeFragment.btnSort.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? "#F6F6F6" : color.getColorMain()));
                     }
                 });
             }else{
