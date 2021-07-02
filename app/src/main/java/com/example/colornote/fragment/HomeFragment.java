@@ -342,10 +342,12 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     @Override
     public void update(SelectedObserverService s) {
         if(toolbarHidden.getVisibility() == View.VISIBLE && !s.hasSelected()){
+            toolbar.setVisibility(View.VISIBLE);
             toolbarHidden.setVisibility(View.INVISIBLE);
 
         }
         if(toolbarHidden.getVisibility() == View.INVISIBLE && s.hasSelected()){
+            toolbar.setVisibility(View.INVISIBLE);
             toolbarHidden.setVisibility(View.VISIBLE);
         }
 
