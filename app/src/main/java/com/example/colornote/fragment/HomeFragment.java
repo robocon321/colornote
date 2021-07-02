@@ -378,8 +378,8 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
 
     public void loadTask(){
         tasks.clear();
-        tasks.addAll(textDAO.getAll(new TextMapper()));
-        tasks.addAll(checkListDAO.getAll(new CheckListMapper()));
+        tasks.addAll(textDAO.getTextEnable());
+        tasks.addAll(checkListDAO.getCheckListEnable());
         adapter.notifyDataSetChanged();
     }
 

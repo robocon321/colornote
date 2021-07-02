@@ -1,11 +1,15 @@
 package com.example.colornote.dao;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.colornote.database.Database;
+import com.example.colornote.mapper.RowMapper;
+import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.Text;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +40,17 @@ public class TextDAO extends AbstractDAO{
         values.put("modifiedDate", text.getModifiedDate().getTime());
         values.put("status",text.getStatus());
         return database.getSqLiteDatabase().update("Text", values, "id = ?", new String[]{text.getId()+""});
+    }
+
+    public List<Text> getTextEnable(){
+        List<Text> list = new ArrayList<>();
+        String sql = queryAll() + " WHERE status = 2 OR status = 3";
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
+        RowMapper<Text> mapper= new TextMapper();
+        while(cursor.moveToNext()){
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
     }
 
     public int changeStatus(long id, int status){
