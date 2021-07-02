@@ -88,9 +88,8 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
         imgClose = view.findViewById(R.id.imgClose);
 
         tasks = new ArrayList<>();
-        tasks.addAll(textDAO.getAll(new TextMapper()));
-        tasks.addAll(checkListDAO.getAll(new CheckListMapper()));
         adapter = new ViewListAdapter(tasks, getActivity());
+        loadTask();
 
         Collections.sort(tasks, Task.compareByTitle);
         adapter.notifyDataSetChanged();
@@ -342,11 +341,13 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     @Override
     public void update(SelectedObserverService s) {
         if(toolbarHidden.getVisibility() == View.VISIBLE && !s.hasSelected()){
+            btnSort.setClickable(true);
             toolbar.setVisibility(View.VISIBLE);
             toolbarHidden.setVisibility(View.INVISIBLE);
 
         }
         if(toolbarHidden.getVisibility() == View.INVISIBLE && s.hasSelected()){
+            btnSort.setClickable(false);
             toolbar.setVisibility(View.INVISIBLE);
             toolbarHidden.setVisibility(View.VISIBLE);
         }
@@ -373,5 +374,18 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     public void onDestroy() {
         super.onDestroy();
         SelectedObserverService.getInstance().removeObserver(this);
+    }
+
+    public void loadTask(){
+        tasks.clear();
+        tasks.addAll(textDAO.getTextEnable());
+        tasks.addAll(checkListDAO.getCheckListEnable());
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadTask();
     }
 }

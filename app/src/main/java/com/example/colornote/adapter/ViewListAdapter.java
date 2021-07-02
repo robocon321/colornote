@@ -1,6 +1,7 @@
 package com.example.colornote.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -75,6 +76,10 @@ public class ViewListAdapter extends ViewAdapter {
         }
 
         holder.txtTitle.setText(task.getTitle());
+        if(task.isComplete()){
+            holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#737373"));
+        }
         holder.imgCheck.setImageResource(task.isComplete() ? R.drawable.ic_check : 0);
         holder.txtTime.setText(new DateConvert(task.getModifiedDate()).showTime());
 
