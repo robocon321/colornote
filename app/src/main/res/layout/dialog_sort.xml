@@ -13,7 +13,7 @@
         app:tabIconTint="@color/tab_non_selected"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    <com.example.colornote.viewpager.CustomViewPager
+    <com.example.colornote.customview.CustomViewPager
         android:id="@+id/viewPagerSort"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

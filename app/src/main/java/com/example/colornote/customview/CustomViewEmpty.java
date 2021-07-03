@@ -1,4 +1,4 @@
-package com.example.colornote.viewpager;
+package com.example.colornote.customview;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -14,6 +14,7 @@ import androidx.annotation.RequiresApi;
 public class CustomViewEmpty extends View {
     private Paint paint = new Paint();
     private boolean isSelected = false;
+
     public CustomViewEmpty(Context context) {
         super(context);
         setBorder();

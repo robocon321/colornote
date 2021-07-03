@@ -8,12 +8,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -88,7 +91,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
         imgClose = view.findViewById(R.id.imgClose);
 
         tasks = new ArrayList<>();
-        adapter = new ViewListAdapter(tasks, getActivity());
+        adapter = new ViewDetailsAdapter(tasks, getActivity());
         loadTask();
 
         Collections.sort(tasks, Task.compareByTitle);
