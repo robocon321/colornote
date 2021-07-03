@@ -97,6 +97,7 @@ public class ColorFragment extends Fragment {
                     }
                     HomeFragment.adapter.notifyDataSetChanged();
                     HomeFragment.dialogSortFragment.dismiss();
+                    HomeFragment.btnSort.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? "#F6F6F6" : color.getColorMain()));
                 }
             });
 

@@ -2,35 +2,23 @@ package com.example.colornote.adapter;
 
 import android.content.Context;
 import android.graphics.Paint;
-import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.cardview.widget.CardView;
 
 import com.example.colornote.R;
-import com.example.colornote.dao.ColorDAO;
-import com.example.colornote.fragment.HomeFragment;
 import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
 import com.example.colornote.util.Constant;
 import com.example.colornote.util.DateConvert;
-import com.example.colornote.util.ISeletectedObserver;
 import com.example.colornote.util.SelectedObserverService;
-import com.example.colornote.viewpager.CustomCardView;
-import com.example.colornote.viewpager.CustomViewEmpty;
+import com.example.colornote.customview.CustomCardView;
 
 import java.util.ArrayList;
-import java.util.logging.Handler;
 
 public class ViewListAdapter extends ViewAdapter {
 
@@ -76,11 +64,13 @@ public class ViewListAdapter extends ViewAdapter {
         }
 
         holder.txtTitle.setText(task.getTitle());
-        if(task.isComplete()){
+        if(task.isComplete()) {
             holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#737373"));
+            holder.imgCheck.setImageResource(R.drawable.ic_check);
+        }else{
+            holder.imgCheck.setImageResource(0);
         }
-        holder.imgCheck.setImageResource(task.isComplete() ? R.drawable.ic_check : 0);
         holder.txtTime.setText(new DateConvert(task.getModifiedDate()).showTime());
 
         Color color = colorDAO.get(new ColorMapper(), task.getColorId());

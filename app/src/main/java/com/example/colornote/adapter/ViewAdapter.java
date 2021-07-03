@@ -3,7 +3,6 @@ package com.example.colornote.adapter;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 
@@ -11,8 +10,8 @@ import com.example.colornote.R;
 import com.example.colornote.dao.ColorDAO;
 import com.example.colornote.model.Task;
 import com.example.colornote.util.SelectedObserverService;
-import com.example.colornote.viewpager.CustomCardView;
-import com.example.colornote.viewpager.CustomViewEmpty;
+import com.example.colornote.customview.CustomCardView;
+import com.example.colornote.customview.CustomViewEmpty;
 
 import java.util.ArrayList;
 
@@ -36,10 +35,8 @@ public abstract class ViewAdapter extends BaseAdapter {
     public void changeBorder(View v, boolean isSelected){
         if(isSelected){
             ((CustomCardView) v.findViewById(R.id.cvTask)).addBorder();
-            ((CustomViewEmpty) v.findViewById(R.id.colorSub)).addBorder();
         }else{
             ((CustomCardView) v.findViewById(R.id.cvTask)).removeBorder();
-            ((CustomViewEmpty) v.findViewById(R.id.colorSub)).removeBorder();
         }
     }
 

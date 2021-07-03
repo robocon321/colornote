@@ -1,11 +1,10 @@
 package com.example.colornote.adapter;
 
 import android.content.Context;
-import android.util.Log;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,15 +12,12 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 
 import com.example.colornote.R;
-import com.example.colornote.dao.ColorDAO;
-import com.example.colornote.fragment.HomeFragment;
+import com.example.colornote.customview.CustomCardView;
 import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
 import com.example.colornote.util.Constant;
 import com.example.colornote.util.SelectedObserverService;
-import com.example.colornote.viewpager.CustomCardView;
-import com.example.colornote.viewpager.CustomViewEmpty;
 
 import java.util.ArrayList;
 
@@ -69,7 +65,13 @@ public class ViewGridAdapter extends ViewAdapter {
 
         holder.txtTitle.setText(task.getTitle());
         holder.txtContent.setText(task.showContent());
-        holder.imgCheck.setImageResource(task.isComplete() ? R.drawable.ic_check : 0);
+        if(task.isComplete()) {
+            holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#737373"));
+            holder.imgCheck.setImageResource(R.drawable.ic_check);
+        }else{
+            holder.imgCheck.setImageResource(0);
+        }
 
         Color color = colorDAO.get(new ColorMapper(), task.getColorId());
         holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.MAIN_COLOR : color.getColorMain()));
@@ -111,7 +113,7 @@ public class ViewGridAdapter extends ViewAdapter {
     public class ViewHolder{
         TextView txtTitle, txtContent;
         ImageView imgCheck;
-        CardView cvTask;
+        CustomCardView cvTask;
         View colorSub;
     }
 

@@ -76,8 +76,8 @@
         android:backgroundTint="#F6F6F6"
         android:drawableRight="@drawable/ic_icon_down"
         android:fontFamily="@font/arial"
-        android:paddingLeft="100dp"
-        android:paddingRight="100dp"
+        android:paddingLeft="70dp"
+        android:paddingRight="70dp"
         android:text="Sort by modified time"
         android:textAllCaps="false"
         android:textColor="@color/black" />
