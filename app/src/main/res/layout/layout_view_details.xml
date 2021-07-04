@@ -3,10 +3,10 @@
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.cardview.widget.CardView
+    <com.example.colornote.customview.CustomCardView
         android:id="@+id/cvTask"
         app:cardCornerRadius="10dp"
-        app:contentPaddingRight="10dp"
+        app:contentPadding="1dp"
         app:cardElevation="2dp"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="5dp"
@@ -60,5 +60,5 @@
                     android:layout_height="wrap_content"/>
             </RelativeLayout>
         </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+    </com.example.colornote.customview.CustomCardView>
 </LinearLayout>

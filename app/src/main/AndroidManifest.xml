@@ -9,8 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ColorNote">
-        <activity
-            android:name=".activity.DetailItemBackupActivity"/>
+        <activity android:name=".activity.TrashCanActivity"/>
+        <activity android:name=".activity.ArchiveActivity" />
+        <activity android:name=".activity.DetailItemBackupActivity"/>
+        <activity android:name=".activity.ReminderActivity"></activity>
+        <activity android:name=".activity.DetailItemBackupActivity" />
+
         <activity
             android:name=".activity.BackupActivity"
             android:theme="@style/Theme.AppCompat.DayNight.DarkActionBar" />

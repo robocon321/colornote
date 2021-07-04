@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/mnColorOption" android:title="Color Setting" app:showAsAction="always" android:icon="@drawable/ic_by_color"/>
-    <item android:title="option" app:showAsAction="always" android:icon="@drawable/ic_option">
+    <item android:title="option" app:showAsAction="always" android:icon="@drawable/ic_option_active">
         <menu>
             <item android:id="@+id/mnView" android:title="View" android:icon="@drawable/ic_view" />
             <item android:id="@+id/mnBackup" android:title="Backup" android:icon="@drawable/ic_backup" />

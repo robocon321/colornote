@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+        <Button
+            android:text="  Default"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:drawableLeft="@drawable/ic_theme_default"
+            android:gravity="left"
+             />
+
+        <Button
+            android:text="  Soft"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:gravity="left"
+            android:drawableLeft="@drawable/ic_theme_soft"
+            />
+        <Button
+            android:text="  Dark"
+            android:textSize="16sp"
+            android:textAllCaps="false"
+            android:fontFamily="@font/arial"
+            android:textColor="@color/black"
+            android:layout_marginLeft="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:gravity="left"
+            android:drawableLeft="@drawable/ic_theme_dark"
+            />
+
+
+
+</LinearLayout>

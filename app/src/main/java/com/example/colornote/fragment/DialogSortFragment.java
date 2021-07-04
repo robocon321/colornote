@@ -9,11 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.colornote.R;
 import com.example.colornote.adapter.SortPagerAdapter;
-import com.example.colornote.viewpager.CustomViewPager;
+import com.example.colornote.customview.CustomViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 public class DialogSortFragment extends DialogFragment {

@@ -36,7 +36,7 @@
                android:layout_height="wrap_content"
                android:layout_marginLeft="10dp"
                android:layout_marginTop="5dp"
-               android:background="@drawable/ic_option"
+               android:background="@drawable/ic_option_active"
                android:layout_weight="1">
            </ImageButton>
 

@@ -7,12 +7,16 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +24,8 @@ import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +36,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.colornote.R;
 import com.example.colornote.activity.BackupActivity;
+import com.example.colornote.adapter.ViewAdapter;
 import com.example.colornote.adapter.ViewDetailsAdapter;
 import com.example.colornote.adapter.ViewGridAdapter;
 import com.example.colornote.adapter.ViewLargeGridAdapter;
@@ -42,22 +49,26 @@ import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
+import com.example.colornote.util.ISeletectedObserver;
+import com.example.colornote.util.SelectedObserverService;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements ISeletectedObserver {
     Toolbar toolbar;
-    Button btnSort;
+    public static Button btnSort;
     static GridView gvTask;
-    static BaseAdapter adapter;
-    static ArrayList<Task> tasks;
+    static ViewAdapter adapter;
+    public static ArrayList<Task> tasks;
     static DialogSortFragment dialogSortFragment;
     CheckListDAO checkListDAO = CheckListDAO.getInstance();
     TextDAO textDAO = TextDAO.getInstance();
     Dialog dialogEditColor;
-    ImageView imgEdit, imgNumber;
+    TextView txtCount;
+    ImageView imgEdit, imgNumber, imgRange, imgClose;
+    View toolbarHidden;
 
     @Nullable
     @Override
@@ -74,15 +85,20 @@ public class HomeFragment extends Fragment {
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
         btnSort = view.findViewById(R.id.btnSort);
         gvTask = view.findViewById(R.id.gvTask);
+        toolbarHidden = view.findViewById(R.id.toolbarHidden);
+        txtCount = view.findViewById(R.id.txtCount);
+        imgRange = view.findViewById(R.id.imgRange);
+        imgClose = view.findViewById(R.id.imgClose);
 
         tasks = new ArrayList<>();
-        tasks.addAll(textDAO.getAll(new TextMapper()));
-        tasks.addAll(checkListDAO.getAll(new CheckListMapper()));
-        adapter = new ViewListAdapter(tasks, getActivity());
+        adapter = new ViewDetailsAdapter(tasks, getActivity());
+        loadTask();
 
         Collections.sort(tasks, Task.compareByTitle);
         adapter.notifyDataSetChanged();
         gvTask.setAdapter(adapter);
+
+        SelectedObserverService.getInstance().addObserver(this);
     }
 
     public void setEvents(){
@@ -91,6 +107,22 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 dialogSortFragment =  new DialogSortFragment();
                 dialogSortFragment.show(getActivity().getSupportFragmentManager(),"Show");
+            }
+        });
+
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectedObserverService.getInstance().reset();
+                adapter.updateBorderView();
+            }
+        });
+
+        imgRange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectedObserverService.getInstance().selectRange();
+                adapter.updateBorderView();
             }
         });
     }
@@ -109,7 +141,7 @@ public class HomeFragment extends Fragment {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     builder.setView(R.layout.fragment_view_option);
                 }
-                builder.setTitle("View");
+                builder.setTitle("Tuyen");
                 AlertDialog dialog = builder.create();
 
                 dialog.show();
@@ -162,7 +194,7 @@ public class HomeFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public static void changeAdapter(BaseAdapter newAdapter, int numCol){
+    public static void changeAdapter(ViewAdapter newAdapter, int numCol){
         adapter = newAdapter;
         adapter.notifyDataSetChanged();
         gvTask.setNumColumns(numCol);
@@ -180,13 +212,16 @@ public class HomeFragment extends Fragment {
             View view = inflater.inflate(R.layout.item_color, glColor,false);
             EditText edtColor = view.findViewById(R.id.edtTitle);
             EditText edtAmount = view.findViewById(R.id.edtAmount);
-            view.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
+            view.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? "#ffffff" : color.getColorMain()));
 
             if(isShowAmount){
                 edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
                 edtColor.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 2f));
                 edtAmount.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()  == null ? "#ffffff" : color.getColorMain()));
-                edtAmount.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
+
+//                 edtAmount.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
+
+
                 edtAmount.setText(ColorDAO.getInstance().countTask(color.getId())+"");
             }else {
                 edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0f));
@@ -207,9 +242,12 @@ public class HomeFragment extends Fragment {
                         tasks.clear();
                         tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
                         tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
-                        tasks.removeIf(task -> task.getColorId() != color.getId());
+                        if(color.getId() != 1){
+                            tasks.removeIf(task -> task.getColorId() != color.getId());
+                        }
                         adapter.notifyDataSetChanged();
                         dialogEditColor.dismiss();
+                        HomeFragment.btnSort.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? "#F6F6F6" : color.getColorMain()));
                     }
                 });
             }else{
@@ -306,5 +344,56 @@ public class HomeFragment extends Fragment {
         });
 
         builder.show();
+    }
+
+    @Override
+    public void update(SelectedObserverService s) {
+        if(toolbarHidden.getVisibility() == View.VISIBLE && !s.hasSelected()){
+            btnSort.setClickable(true);
+            toolbar.setVisibility(View.VISIBLE);
+            toolbarHidden.setVisibility(View.INVISIBLE);
+
+        }
+        if(toolbarHidden.getVisibility() == View.INVISIBLE && s.hasSelected()){
+            btnSort.setClickable(false);
+            toolbar.setVisibility(View.INVISIBLE);
+            toolbarHidden.setVisibility(View.VISIBLE);
+        }
+
+        if(s.hasRange()){
+            imgRange.setImageResource(R.drawable.ic_range_active);
+            imgRange.setEnabled(true);
+        }else{
+            imgRange.setImageResource(R.drawable.ic_range_nonactive);
+            imgRange.setEnabled(false);
+        }
+
+        txtCount.setText(s.getRatio());
+    }
+
+    public boolean hasSelected(boolean[] isSelected){
+        for(int i=0;i<isSelected.length;i++){
+            if(isSelected[i]) return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        SelectedObserverService.getInstance().removeObserver(this);
+    }
+
+    public void loadTask(){
+        tasks.clear();
+        tasks.addAll(textDAO.getTextEnable());
+        tasks.addAll(checkListDAO.getCheckListEnable());
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadTask();
     }
 }

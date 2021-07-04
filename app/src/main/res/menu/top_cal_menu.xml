@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto">
 <item android:id="@+id/mnColorOption" android:title="Show Current Day" app:showAsAction="always" android:icon="@drawable/ic_calendar"/>
-<item android:title="option" app:showAsAction="always" android:icon="@drawable/ic_option">
+<item android:title="option" app:showAsAction="always" android:icon="@drawable/ic_option_active">
     <menu>
         <item
             android:id="@+id/mnView"

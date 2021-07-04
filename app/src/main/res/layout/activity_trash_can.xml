@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activity.TrashCanActivity">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ECE8E8"
+        app:titleTextColor="@color/black">
+
+        <ImageButton
+            android:id="@+id/btnBackTrashCan"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:src="@drawable/ic_arrow_back"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Trash Can"
+            android:textColor="@color/black"
+            android:textSize="24dp" />
+
+
+        <ImageButton
+            android:id="@+id/btnTrashCanTrashCan"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:src="@drawable/ic_trash_can"
+            android:textColor="@color/black" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <Button
+        android:id="@+id/btnSort_TrashCan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:backgroundTint="#F6F6F6"
+        android:drawableRight="@drawable/ic_icon_down"
+        android:fontFamily="@font/arial"
+        android:paddingLeft="100dp"
+        android:paddingRight="100dp"
+        android:text="Sort by deleted time"
+        android:textAllCaps="false"
+        android:textColor="@color/black" />
+    <GridView
+        android:id="@+id/gvListRemove"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="1" />
+</LinearLayout>
