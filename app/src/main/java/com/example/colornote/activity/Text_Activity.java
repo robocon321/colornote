@@ -21,6 +21,7 @@ import com.example.colornote.R;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.model.Text;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class Text_Activity extends AppCompatActivity {
@@ -69,7 +70,7 @@ public class Text_Activity extends AppCompatActivity {
         {
             case android.R.id.home:
                 if(checkIcon==false)
-                onBackPressed();
+                    onBackPressed();
                 else{
                     getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
                     addText(colorid);
@@ -88,14 +89,14 @@ public class Text_Activity extends AppCompatActivity {
                 Button button_red,button_orange,button_yellow,button_green,button_blue,
                         button_purple,button_black,button_gray,button_white_gray;
                 button_red = dialog.findViewById(R.id.btn_yellow);
-                button_black = dialog.findViewById(R.id.btn_black);
+                button_black = dialog.findViewById(R.id.btn_blue_1);
                 button_orange = dialog.findViewById(R.id.btn_orange);
                 button_yellow = dialog.findViewById(R.id.btn_red);
                 button_green = dialog.findViewById(R.id.btn_green);
                 button_blue = dialog.findViewById(R.id.btn_blue);
                 button_purple = dialog.findViewById(R.id.btn_purple);
                 button_gray = dialog.findViewById(R.id.btn_gray);
-                button_white_gray = dialog.findViewById(R.id.btn_white_gray);
+                button_white_gray = dialog.findViewById(R.id.btn_white);
 
                 changeColorActionbar(button_red,dialog,4);
                 changeColorActionbar(button_black,dialog,8);
@@ -135,7 +136,8 @@ public class Text_Activity extends AppCompatActivity {
         text.setTitle(title_text.getText().toString());
         text.setContent(edit_text.getText().toString());
         text.setColorId(color);
-        text.setModifiedDate(new Date(2020,5,19, 0,0,0));
+        Date date = Calendar.getInstance().getTime();
+        text.setModifiedDate(date);
         text.setReminderId(-1);
         text.setStatus(3);
 
