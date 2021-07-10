@@ -48,7 +48,7 @@ public class CheckListDAO extends AbstractDAO{
 
     public List<CheckList> getByStatus(int status){
         List<CheckList> list = new ArrayList<>();
-        String query = queryAll() + "WHERE status = "+status;
+        String query = queryAll() + " WHERE status = "+status;
         Cursor cursor = database.getSqLiteDatabase().rawQuery(query, null);
         RowMapper<CheckList> mapper = new CheckListMapper();
         while(cursor.moveToNext()){

@@ -1,0 +1,70 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        app:title="@string/online_sync"
+        app:iconSpaceReserved="false">
+        <Preference
+            android:key="online_backup"
+            android:title="@string/online_backup"
+            app:iconSpaceReserved="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="@string/general"
+        app:iconSpaceReserved="false">
+        <ListPreference
+            android:defaultValue="2"
+            android:dialogTitle="@string/default_screen"
+            android:entries="@array/default_screen_entries"
+            android:entryValues="@array/default_screen_entries"
+            android:key="xfsdg"
+            app:useSimpleSummaryProvider="true"
+            android:title="@string/default_screen"
+            app:iconSpaceReserved="false"/>
+        <ListPreference
+            android:defaultValue="5"
+            android:dialogTitle="@string/default_font_size"
+            android:entries="@array/default_font_size_entries"
+            android:entryValues="@array/default_font_size_entries"
+            android:key="fshgdf"
+            app:useSimpleSummaryProvider="true"
+            android:title="@string/default_font_size"
+            app:iconSpaceReserved="false"/>
+    </PreferenceCategory>
+<PreferenceCategory android:title="@string/sort"
+    app:iconSpaceReserved="false">
+    <ListPreference
+        android:defaultValue="6"
+        android:dialogTitle="@string/default_sort_order"
+        android:entries="@array/default_sort_order_entries"
+        android:entryValues="@array/default_sort_order_entries"
+        android:key="xfsssg"
+        app:useSimpleSummaryProvider="true"
+        android:title="@string/default_sort_order"
+        app:iconSpaceReserved="false"/>
+    <ListPreference
+        android:defaultValue="2"
+        android:dialogTitle="@string/default_sort_color"
+        android:entries="@array/default_sort_color_entries"
+        android:entryValues="@array/default_sort_color_entries"
+        android:key="xfsssgsdsd"
+        app:useSimpleSummaryProvider="true"
+        android:title="@string/default_sort_color"
+        app:iconSpaceReserved="false"/>
+</PreferenceCategory>
+    <PreferenceCategory app:title="@string/online_sync"
+        app:iconSpaceReserved="false">
+        <Preference
+            android:key="ádsd"
+            android:title="@string/color_note_FAQ"
+            app:summary="@string/app_vesion"
+            app:iconSpaceReserved="false"
+            />
+        <Preference
+            android:key="onlxp"
+            android:title="@string/about"
+            app:iconSpaceReserved="false"
+            />
+    </PreferenceCategory>
+
+</PreferenceScreen>

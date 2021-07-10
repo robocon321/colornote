@@ -57,20 +57,25 @@ public class ViewListAdapter extends ViewAdapter {
             holder.imgCheck = view.findViewById(R.id.imgCheck);
             holder.cvTask = view.findViewById(R.id.cvTask);
             holder.colorSub = view.findViewById(R.id.colorSub);
-
             view.setTag(holder);
         }else{
             holder = (ViewHolder) view.getTag();
         }
 
         holder.txtTitle.setText(task.getTitle());
-        if(task.isComplete()) {
+
+
+        if(task.isComplete()){
+            holder.imgCheck.setImageResource(R.drawable.ic_check);
             holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#737373"));
-            holder.imgCheck.setImageResource(R.drawable.ic_check);
-        }else{
-            holder.imgCheck.setImageResource(0);
-        }
+        }else
+            if(task.getStatus()==1){
+                holder.imgCheck.setImageResource(R.drawable.ic_trash_can);
+            }else{
+                holder.imgCheck.setImageResource(0);
+            }
+
         holder.txtTime.setText(new DateConvert(task.getModifiedDate()).showTime());
 
         Color color = colorDAO.get(new ColorMapper(), task.getColorId());

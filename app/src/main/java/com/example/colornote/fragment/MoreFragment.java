@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.colornote.R;
 import com.example.colornote.activity.ArchiveActivity;
+import com.example.colornote.activity.SettingsActivity;
 import com.example.colornote.activity.SignInActivity;
 import com.example.colornote.activity.TrashCanActivity;
 
@@ -43,6 +44,13 @@ public class MoreFragment extends Fragment {
     }
 
     private void addEvent() {
+        btnMoreSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
         btnMoreTrashCan.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
