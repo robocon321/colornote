@@ -49,7 +49,7 @@ public class ArchiveActivity extends AppCompatActivity {
             public void onClick(View v) {
                builder = new AlertDialog.Builder(activity);
                 LayoutInflater inflater = activity.getLayoutInflater();
-                View view =inflater.inflate(R.layout.dialog_theme,null);
+                View view =inflater.inflate(R.layout.dialog_type_note,null);
                 builder.setView(view).setTitle("Note Type");
                 AlertDialog dialog = builder.create();
                 dialog.show();

@@ -68,14 +68,22 @@ public class ViewListAdapter extends ViewAdapter {
             holder.imgCheck = view.findViewById(R.id.imgCheck);
             holder.cvTask = view.findViewById(R.id.cvTask);
             holder.colorSub = view.findViewById(R.id.colorSub);
-
             view.setTag(holder);
         }else{
             holder = (ViewHolder) view.getTag();
         }
 
         holder.txtTitle.setText(task.getTitle());
-        holder.imgCheck.setImageResource(task.isComplete() ? R.drawable.ic_check : 0);
+
+
+        if(task.isComplete()){
+            holder.imgCheck.setImageResource(R.drawable.ic_check);
+        }else
+            if(task.getStatus()==1){
+                holder.imgCheck.setImageResource(R.drawable.ic_trash_can);
+            }else{
+                holder.imgCheck.setImageResource(0);
+            }
         holder.txtTime.setText(new DateConvert(task.getModifiedDate()).showTime());
 
         Color color = colorDAO.get(new ColorMapper(), task.getColorId());
