@@ -79,7 +79,7 @@
         android:id="@+id/btnSortCalendar_Archive"
         android:fontFamily="@font/arial"
         android:textSize="20dp"
-        android:text="alphabetically"
+        android:text="by calendar date"
         android:textColor="@color/black"
         android:gravity="left|center"
         android:textAllCaps="false"
