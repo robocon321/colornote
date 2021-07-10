@@ -1,4 +1,4 @@
-package com.example.colornote.viewpager;
+package com.example.colornote.customview;
 
 import android.content.Context;
 import android.util.AttributeSet;

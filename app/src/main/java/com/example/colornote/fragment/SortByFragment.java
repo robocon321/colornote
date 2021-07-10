@@ -27,6 +27,7 @@ public class SortByFragment extends Fragment {
                 Collections.sort(HomeFragment.tasks, Task.compareByModifiedTime);
                 HomeFragment.adapter.notifyDataSetChanged();
                 HomeFragment.dialogSortFragment.dismiss();
+                HomeFragment.btnSort.setText("Sort by modified time");
             }
         });
 
@@ -36,6 +37,7 @@ public class SortByFragment extends Fragment {
                 Collections.sort(HomeFragment.tasks, Task.compareByTitle);
                 HomeFragment.adapter.notifyDataSetChanged();
                 HomeFragment.dialogSortFragment.dismiss();
+                HomeFragment.btnSort.setText("Sort by alphabetically");
             }
         });
 
@@ -45,6 +47,7 @@ public class SortByFragment extends Fragment {
                 Collections.sort(HomeFragment.tasks, Task.compareByReminderTime);
                 HomeFragment.adapter.notifyDataSetChanged();
                 HomeFragment.dialogSortFragment.dismiss();
+                HomeFragment.btnSort.setText("Sort by reminder time");
             }
         });
 
@@ -54,6 +57,7 @@ public class SortByFragment extends Fragment {
                 Collections.sort(HomeFragment.tasks, Task.compareByColor);
                 HomeFragment.adapter.notifyDataSetChanged();
                 HomeFragment.dialogSortFragment.dismiss();
+                HomeFragment.btnSort.setText("Sort by color");
             }
         });
         return view;

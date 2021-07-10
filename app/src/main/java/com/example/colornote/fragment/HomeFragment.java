@@ -8,12 +8,15 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,7 +58,7 @@ import java.util.List;
 
 public class HomeFragment extends Fragment implements ISeletectedObserver {
     Toolbar toolbar;
-    Button btnSort;
+    public static Button btnSort;
     static GridView gvTask;
     static ViewAdapter adapter;
     public static ArrayList<Task> tasks;
@@ -88,9 +91,8 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
         imgClose = view.findViewById(R.id.imgClose);
 
         tasks = new ArrayList<>();
-        tasks.addAll(textDAO.getAll(new TextMapper()));
-        tasks.addAll(checkListDAO.getAll(new CheckListMapper()));
-        adapter = new ViewListAdapter(tasks, getActivity());
+        adapter = new ViewDetailsAdapter(tasks, getActivity());
+        loadTask();
 
         Collections.sort(tasks, Task.compareByTitle);
         adapter.notifyDataSetChanged();
@@ -216,6 +218,10 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
                 edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
                 edtColor.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 2f));
                 edtAmount.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()  == null ? "#ffffff" : color.getColorMain()));
+
+//                 edtAmount.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain()));
+
+
                 edtAmount.setText(ColorDAO.getInstance().countTask(color.getId())+"");
             }else {
                 edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 0f));
@@ -241,6 +247,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
                         }
                         adapter.notifyDataSetChanged();
                         dialogEditColor.dismiss();
+                        HomeFragment.btnSort.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? "#F6F6F6" : color.getColorMain()));
                     }
                 });
             }else{
@@ -342,10 +349,14 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     @Override
     public void update(SelectedObserverService s) {
         if(toolbarHidden.getVisibility() == View.VISIBLE && !s.hasSelected()){
+            btnSort.setClickable(true);
+            toolbar.setVisibility(View.VISIBLE);
             toolbarHidden.setVisibility(View.INVISIBLE);
 
         }
         if(toolbarHidden.getVisibility() == View.INVISIBLE && s.hasSelected()){
+            btnSort.setClickable(false);
+            toolbar.setVisibility(View.INVISIBLE);
             toolbarHidden.setVisibility(View.VISIBLE);
         }
 
@@ -371,5 +382,18 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     public void onDestroy() {
         super.onDestroy();
         SelectedObserverService.getInstance().removeObserver(this);
+    }
+
+    public void loadTask(){
+        tasks.clear();
+        tasks.addAll(textDAO.getTextEnable());
+        tasks.addAll(checkListDAO.getCheckListEnable());
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadTask();
     }
 }
