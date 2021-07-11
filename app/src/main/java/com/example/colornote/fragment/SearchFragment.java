@@ -76,16 +76,14 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+                gvTaskSearch.deferNotifyDataSetChanged();
             }
         });
     }
 
     private void showWithChar(String s) {
-//        khong the add cung luc textdao va checklisdao
         lsTask.clear();
         lsTask.addAll(textDAO.getWithKey(new TextMapper(), s));
-        gvTaskSearch.deferNotifyDataSetChanged();
-//        lsTask.addAll(checkListDAO.getWithKey(new CheckListMapper(),s));
-//        gvTaskSearch.deferNotifyDataSetChanged();
+//        lsTask.addAll(checkListDAO.getWithKey(new CheckListMapper(), s)); chi add dc 1 list
     }
 }

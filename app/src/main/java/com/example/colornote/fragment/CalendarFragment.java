@@ -69,9 +69,6 @@ public class CalendarFragment extends Fragment {
     }
 
     private void addTask(EventDay eventDay) {
-        String getDate = new SimpleDateFormat("dd-MM-yyyy").format(eventDay.getCalendar().getTime());
-        Toast.makeText(getActivity(), "Toast: " + getDate, Toast.LENGTH_SHORT).show();
-
 //        add icon
 //        lsEvent.add(new EventDay(eventDay.getCalendar(),R.drawable.ic_calendar));
 //        calendarView.setEvents(lsEvent);
@@ -97,7 +94,9 @@ public class CalendarFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        dialog.show();
+        String getDate = new SimpleDateFormat("yyyy-MM-dd").format(eventDay.getCalendar().getTime());
+        Toast.makeText(getActivity(), "Toast: " + getDate, Toast.LENGTH_SHORT).show();
+//        dialog.show();
     }
 
     private void showDate() {
