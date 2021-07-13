@@ -26,7 +26,7 @@
             android:dialogTitle="@string/default_font_size"
             android:entries="@array/default_font_size_entries"
             android:entryValues="@array/default_font_size_entries"
-            android:key="fshgdf"
+            android:key="font_size"
             app:useSimpleSummaryProvider="true"
             android:title="@string/default_font_size"
             app:iconSpaceReserved="false"/>

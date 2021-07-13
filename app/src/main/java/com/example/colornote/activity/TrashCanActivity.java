@@ -2,10 +2,12 @@ package com.example.colornote.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -157,21 +159,21 @@ TextView txtCountTrashCanHidden;
     }
 
     private void addControls() {
-        barBottomTrashCanHidden = (GridLayout) findViewById(R.id.barBottomTrashCanHidden);
-        barTopTrashCanHidden = (RelativeLayout) findViewById(R.id.barTopTrashCanHidden);
+        barBottomTrashCanHidden = findViewById(R.id.barBottomTrashCanHidden);
+        barTopTrashCanHidden = findViewById(R.id.barTopTrashCanHidden);
         toolbar_TrashCan =  findViewById(R.id.toolbar_TrashCan);
-        imgRangeTrashCanHidden = (ImageView) findViewById(R.id.imgRangeTrashCanHidden);
-        imgCloseTrashCanHidden = (ImageView) findViewById(R.id.imgCloseTrashCanHidden);
-        txtCountTrashCanHidden = (TextView) findViewById(R.id.txtCountTrashCanHidden);
-        btnRestore = (ImageButton) findViewById(R.id.btnRestore);
-        btnDeletePermanently = (ImageButton) findViewById(R.id.btnDeletePermanently);
+        imgRangeTrashCanHidden =  findViewById(R.id.imgRangeTrashCanHidden);
+        imgCloseTrashCanHidden =  findViewById(R.id.imgCloseTrashCanHidden);
+        txtCountTrashCanHidden =  findViewById(R.id.txtCountTrashCanHidden);
+        btnRestore =  findViewById(R.id.btnRestore);
+        btnDeletePermanently =  findViewById(R.id.btnDeletePermanently);
 
 
 
-        btnBackTrashCan = (ImageButton) findViewById(R.id.btnBackTrashCan);
-        btnTrashCanTrashCan = (ImageButton) findViewById(R.id.btnTrashCanTrashCan);
-        btnSort_TrashCan = (Button) findViewById(R.id.btnSort_TrashCan);
-        gvListRemove = (GridView) findViewById(R.id.gvListRemove);
+        btnBackTrashCan =  findViewById(R.id.btnBackTrashCan);
+        btnTrashCanTrashCan =  findViewById(R.id.btnTrashCanTrashCan);
+        btnSort_TrashCan =  findViewById(R.id.btnSort_TrashCan);
+        gvListRemove =  findViewById(R.id.gvListRemove);
 
 //       imgItemTask=findViewById(R.id.imgCheck);
 
