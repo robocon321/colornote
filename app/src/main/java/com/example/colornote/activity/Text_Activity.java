@@ -3,8 +3,11 @@ package com.example.colornote.activity;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 
 import android.app.Dialog;
+import android.content.SharedPreferences;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -144,4 +147,12 @@ public class Text_Activity extends AppCompatActivity {
         Log.d("AA", textDAO.insert(text)+"");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(this);
+        int color =pre.getInt("default_color",0xFFF7D539);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setBackgroundDrawable(new ColorDrawable(color));
+    }
 }

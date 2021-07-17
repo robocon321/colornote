@@ -30,6 +30,18 @@
             app:useSimpleSummaryProvider="true"
             android:title="@string/default_font_size"
             app:iconSpaceReserved="false"/>
+        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+            android:defaultValue="0xFFF7D539"
+            android:key="default_color"
+            android:layout_width="200dp"
+            android:title="Default color"
+            app:cpv_colorShape="square"
+            app:cpv_allowCustom="false"
+            app:cpv_colorPresets="@array/color_palette"
+            app:cpv_previewSize="regular"
+            app:cpv_showColorShades="false"
+
+            app:iconSpaceReserved="false"/>
     </PreferenceCategory>
 <PreferenceCategory android:title="@string/sort"
     app:iconSpaceReserved="false">
@@ -65,6 +77,28 @@
             android:title="@string/about"
             app:iconSpaceReserved="false"
             />
+
+
+    </PreferenceCategory >
+<!--    <de.mrapp.android.preference.ColorPalettePreference-->
+<!--        android:dialogMessage="Choose a color from the palette below"-->
+<!--        app:iconSpaceReserved="false"-->
+<!--        app:showValueAsSummary="true"-->
+<!--        app:previewShape="square"-->
+<!--        app:dialogPreviewShape="square"-->
+<!--        app:dialogPreviewBorderColor="#fff"-->
+<!--        app:dialogButtonTextColor="#000"-->
+
+<!--        app:previewBackground="@color/color_palette_preference_default_value"-->
+<!--        android:title="Default color"-->
+<!--        app:colorPalette="@array/color_palette"  />-->
+    <PreferenceCategory
+        android:title="Demo"
+        app:iconSpaceReserved="false">
+
+
+
+
     </PreferenceCategory>
 
 </PreferenceScreen>
