@@ -1,5 +1,6 @@
 package com.example.colornote.fragment;
 
+import android.graphics.LinearGradient;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -54,6 +55,7 @@ public class SearchFragment extends Fragment {
         gvTaskSearch = (GridView) view.findViewById(R.id.gvTaskSearch);
         lsTask = new ArrayList<Task>();
 
+
         adapterTask = new ViewListAdapter(lsTask, getActivity());
         gvTaskSearch.setAdapter(adapterTask);
 
@@ -66,7 +68,7 @@ public class SearchFragment extends Fragment {
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                lsTask.clear();
             }
 
             @Override
@@ -76,14 +78,15 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                gvTaskSearch.deferNotifyDataSetChanged();
             }
         });
     }
 
     private void showWithChar(String s) {
+//        FIXME: duplicate by id and parentId
         lsTask.clear();
+        lsTask.addAll(checkListDAO.getWithKey(new CheckListMapper(), s));
         lsTask.addAll(textDAO.getWithKey(new TextMapper(), s));
-//        lsTask.addAll(checkListDAO.getWithKey(new CheckListMapper(), s)); chi add dc 1 list
+        gvTaskSearch.deferNotifyDataSetChanged();
     }
 }
