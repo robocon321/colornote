@@ -90,6 +90,6 @@ public class CheckListDAO extends AbstractDAO {
 
     @Override
     public String queryWithKey() {
-        return "Select distinct * from CHECKLIST join ItemCheckList on CHECKLIST.id = ItemCheckList.parentId Where CHECKLIST.title LIKE ? OR ItemCheckList.content LIKE ? or CHECKLIST.modifiedDate like ?";
+        return "SELECT * FROM CHECKLIST WHERE title LIKE ? or modifiedDate like ? OR id IN (SELECT parentId FROM ItemChecklist WHERE content like ?)";
     }
 }

@@ -66,6 +66,6 @@ public class TextDAO extends AbstractDAO{
 
     @Override
     public String queryWithKey() {
-        return "Select distinct * from Text Where title LIKE ? OR content LIKE ? or modifiedDate like ?";
+        return "Select * from Text Where title LIKE ? OR content LIKE ? or modifiedDate like ?";
     }
 }
