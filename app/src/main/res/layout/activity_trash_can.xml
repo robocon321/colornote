@@ -11,6 +11,7 @@
     tools:context=".activity.TrashCanActivity">
 
     <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_TrashCan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ECE8E8"
@@ -58,25 +59,26 @@
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <ImageView
-            android:id="@+id/imgClose"
+
+            android:id="@+id/imgCloseTrashCanHidden"
             android:src="@drawable/ic_close_dark"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:layout_width="25dp"
             android:layout_height="25dp"/>
         <TextView
-            android:id="@+id/txtCount"
+            android:id="@+id/txtCountTrashCanHidden"
             android:textColor="@color/black"
             android:text="1/6"
             android:textSize="25dp"
             android:textStyle="bold"
             android:layout_marginLeft="15dp"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/imgClose"
+            android:layout_toRightOf="@id/imgCloseTrashCanHidden"
             android:layout_width="100dp"
             android:layout_height="wrap_content"/>
         <ImageView
-            android:id="@+id/imgRange"
+            android:id="@+id/imgRangeTrashCanHidden"
             android:src="@drawable/ic_range_active"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
@@ -127,7 +129,8 @@
             android:layout_columnWeight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <ImageView
+            <ImageButton
+                android:id="@+id/btnRestore"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_baseline_restore_from_trash"
                 android:layout_width="wrap_content"
@@ -149,7 +152,8 @@
             android:layout_columnWeight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <ImageView
+            <ImageButton
+                android:id="@+id/btnDeletePermanently"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_baseline_delete_forever_24"
                 android:layout_width="wrap_content"

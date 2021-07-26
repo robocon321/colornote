@@ -1,13 +1,18 @@
 package com.example.colornote.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.preference.PreferenceManager;
 
 import com.example.colornote.R;
 import com.example.colornote.mapper.ColorMapper;
@@ -63,8 +68,29 @@ public class ViewListAdapter extends ViewAdapter {
         }
 
         holder.txtTitle.setText(task.getTitle());
+//
+        SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+    String font_size =pre.getString("font_size","100dp");
 
+    float size=0;
+        switch (font_size){
+            case "Tiny":     size=context.getResources().getDimensionPixelSize(R.dimen.font_size_tiny);
+                break;
+            case "Small":size=context.getResources().getDimensionPixelSize(R.dimen.font_size_small);
+                break;
+            case "Medium": size=context.getResources().getDimensionPixelSize(R.dimen.font_size_medium);
+                break;
+            case "Large": size=context.getResources().getDimensionPixelSize(R.dimen.font_size_large);
+                break;
+            case "Huge": size=context.getResources().getDimensionPixelSize(R.dimen.font_size_huge);
+                break;
+            default: size=context.getResources().getDimensionPixelSize(R.dimen.font_size);
+            break;
 
+        }
+        Toast.makeText(context, size+"", Toast.LENGTH_SHORT).show();
+        holder.txtTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);
+//
         if(task.isComplete()){
             holder.imgCheck.setImageResource(R.drawable.ic_check);
             holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -117,7 +143,42 @@ public class ViewListAdapter extends ViewAdapter {
         return view;
     }
 
-
+//public void changeSize(){
+//    SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(this);
+//    String font_size =pre.getString("font_size","100dp");
+//    txtTitle.setTextSize(100);
+//    float size=0;
+////        switch (font_size){
+////            case "Tiny":     size=getResources().getDimension(R.dimen.font_size_tiny);
+////                break;
+////            case "Small":size=getResources().getDimension(R.dimen.font_size_small);
+////                break;
+////            case "Medium": size=getResources().getDimension(R.dimen.font_size_medium);
+////                break;
+////            case "Large": size=getResources().getDimension(R.dimen.font_size_large);
+////                break;
+////            case "Huge": size=getResources().getDimension(R.dimen.font_size_huge);
+////                break;
+////            default: size=getResources().getDimension(R.dimen.font_size);
+////            break;
+////
+////        }
+//    switch (font_size){
+//        case "Tiny":     size=12;
+//            break;
+//        case "Small":size=14;
+//            break;
+//        case "Medium": size=17;
+//            break;
+//        case "Large": size=19;
+//            break;
+//        case "Huge": size=21;
+//            break;
+//        default: size=40;
+//            break;
+//
+//    }
+//}
     public class ViewHolder{
         TextView txtTitle, txtTime;
         ImageView imgCheck;
