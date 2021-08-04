@@ -88,7 +88,7 @@ public class ViewListAdapter extends ViewAdapter {
             break;
 
         }
-        Toast.makeText(context, size+"", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, size+"", Toast.LENGTH_SHORT).show();
         holder.txtTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);
 //
         if(task.isComplete()){
