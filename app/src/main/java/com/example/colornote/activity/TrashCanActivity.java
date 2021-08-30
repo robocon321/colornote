@@ -1,10 +1,13 @@
 package com.example.colornote.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.preference.PreferenceManager;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +17,7 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.colornote.R;
@@ -31,12 +35,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class TrashCanActivity extends AppCompatActivity implements ISeletectedObserver {
-    ImageButton btnBackTrashCan, btnTrashCanTrashCan;
+    ImageButton btnBackTrashCan, btnTrashCanTrashCan,btnDeletePermanently,btnRestore;
     Button btnSort_TrashCan, btnSortModified_TrashCan, btnSortCreated_TrashCan, btnSortAlphabeta_TrasCan, btnSortColor_TrashCan;
     AlertDialog.Builder builder;
     AlertDialog dialog;
 GridLayout barBottomTrashCanHidden;
 RelativeLayout barTopTrashCanHidden;
+Toolbar toolbar_TrashCan;
+ImageView imgRangeTrashCanHidden,imgCloseTrashCanHidden;
+TextView txtCountTrashCanHidden;
+
     ImageView imgItemTask;
     public static ViewAdapter adapter;
     static GridView gvListRemove;
@@ -128,17 +136,44 @@ RelativeLayout barTopTrashCanHidden;
             }
         });
 
+//select item
+        imgCloseTrashCanHidden.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectedObserverService.getInstance().reset();
+                adapter.updateBorderView();
+            }
+        });
+
+        imgRangeTrashCanHidden.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectedObserverService.getInstance().selectRange();
+                adapter.updateBorderView();
+            }
+        });
+
+
+
 
     }
 
     private void addControls() {
-        barBottomTrashCanHidden = (GridLayout) findViewById(R.id.barBottomTrashCanHidden);
-        barTopTrashCanHidden = (RelativeLayout) findViewById(R.id.barTopTrashCanHidden);
+        barBottomTrashCanHidden = findViewById(R.id.barBottomTrashCanHidden);
+        barTopTrashCanHidden = findViewById(R.id.barTopTrashCanHidden);
+        toolbar_TrashCan =  findViewById(R.id.toolbar_TrashCan);
+        imgRangeTrashCanHidden =  findViewById(R.id.imgRangeTrashCanHidden);
+        imgCloseTrashCanHidden =  findViewById(R.id.imgCloseTrashCanHidden);
+        txtCountTrashCanHidden =  findViewById(R.id.txtCountTrashCanHidden);
+        btnRestore =  findViewById(R.id.btnRestore);
+        btnDeletePermanently =  findViewById(R.id.btnDeletePermanently);
 
-        btnBackTrashCan = (ImageButton) findViewById(R.id.btnBackTrashCan);
-        btnTrashCanTrashCan = (ImageButton) findViewById(R.id.btnTrashCanTrashCan);
-        btnSort_TrashCan = (Button) findViewById(R.id.btnSort_TrashCan);
-        gvListRemove = (GridView) findViewById(R.id.gvListRemove);
+
+
+        btnBackTrashCan =  findViewById(R.id.btnBackTrashCan);
+        btnTrashCanTrashCan =  findViewById(R.id.btnTrashCanTrashCan);
+        btnSort_TrashCan =  findViewById(R.id.btnSort_TrashCan);
+        gvListRemove =  findViewById(R.id.gvListRemove);
 
 //       imgItemTask=findViewById(R.id.imgCheck);
 
@@ -150,11 +185,30 @@ RelativeLayout barTopTrashCanHidden;
         adapter.notifyDataSetChanged();
         gvListRemove.setAdapter(adapter);
 
+        SelectedObserverService.getInstance().addObserver(this);
 
     }
 
     @Override
     public void update(SelectedObserverService s) {
-
+        if(barTopTrashCanHidden.getVisibility() == View.VISIBLE && !s.hasSelected()){
+            toolbar_TrashCan.setVisibility(View.VISIBLE);
+            barTopTrashCanHidden.setVisibility(View.INVISIBLE);
+barBottomTrashCanHidden.setVisibility(View.INVISIBLE);
+        }
+        if(barTopTrashCanHidden.getVisibility() == View.INVISIBLE && s.hasSelected()){
+            toolbar_TrashCan.setVisibility(View.INVISIBLE);
+            barTopTrashCanHidden.setVisibility(View.VISIBLE);
+            barBottomTrashCanHidden.setVisibility(View.VISIBLE);
+        }
+        if(s.hasRange()){
+            imgRangeTrashCanHidden.setImageResource(R.drawable.ic_range_active);
+            imgRangeTrashCanHidden.setEnabled(true);
+        }else{
+            imgRangeTrashCanHidden.setImageResource(R.drawable.ic_range_nonactive);
+            imgRangeTrashCanHidden.setEnabled(false);
+        }
+        txtCountTrashCanHidden.setText(s.getRatio());
     }
+
 }

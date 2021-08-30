@@ -71,6 +71,27 @@ public class CheckListDAO extends AbstractDAO {
         }
         return list;
     }
+    public List<CheckList> getNoteCheckList() {
+        List<CheckList> list = new ArrayList<>();
+        String sql = queryAll() + " WHERE reminderId IS NULL" ;
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
+        RowMapper<CheckList> mapper= new CheckListMapper();
+        while(cursor.moveToNext()){
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
+    }
+
+    public List<CheckList> getCalendarCheckList() {
+        List<CheckList> list = new ArrayList<>();
+        String sql = queryAll() + " WHERE reminderId IS NOT NULL" ;
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
+        RowMapper<CheckList> mapper= new CheckListMapper();
+        while(cursor.moveToNext()){
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
+    }
 
     public List<CheckList> getCheckListEnable() {
         List<CheckList> list = new ArrayList<>();
