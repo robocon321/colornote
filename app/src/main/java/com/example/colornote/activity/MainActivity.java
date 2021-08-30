@@ -4,10 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
     MainPagerAdapter adapter;
     FloatingActionButton fabAddTask;
     LinearLayout tabLayoutOption, tabArchive, tabDelete, tabColor, tabReminder, tabMore;
-
+TextView txtTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(1);
 
+        txtTitle = findViewById(R.id.txtTitle);
         SelectedObserverService.getInstance().addObserver(this);
     }
 
@@ -228,4 +232,45 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         super.onDestroy();
         SelectedObserverService.getInstance().removeObserver(this);
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(this);
+//        String font_size =pre.getString("font_size","100dp");
+//        txtTitle.setTextSize(100);
+//        float size=0;
+////        switch (font_size){
+////            case "Tiny":     size=getResources().getDimension(R.dimen.font_size_tiny);
+////                break;
+////            case "Small":size=getResources().getDimension(R.dimen.font_size_small);
+////                break;
+////            case "Medium": size=getResources().getDimension(R.dimen.font_size_medium);
+////                break;
+////            case "Large": size=getResources().getDimension(R.dimen.font_size_large);
+////                break;
+////            case "Huge": size=getResources().getDimension(R.dimen.font_size_huge);
+////                break;
+////            default: size=getResources().getDimension(R.dimen.font_size);
+////            break;
+////
+////        }
+//        switch (font_size){
+//            case "Tiny":     size=12;
+//                break;
+//            case "Small":size=14;
+//                break;
+//            case "Medium": size=17;
+//                break;
+//            case "Large": size=19;
+//                break;
+//            case "Huge": size=21;
+//                break;
+//            default: size=40;
+//                break;
+//
+//        }
+//
+//
+//    }
 }
