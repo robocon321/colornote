@@ -60,7 +60,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     Toolbar toolbar;
     public static Button btnSort;
     static GridView gvTask;
-    static ViewAdapter adapter;
+    public static ViewAdapter adapter;
     public static ArrayList<Task> tasks;
     public static DialogSortFragment dialogSortFragment;
     Dialog dialogEditColor;

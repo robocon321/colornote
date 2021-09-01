@@ -43,6 +43,7 @@ import com.example.colornote.model.CheckList;
 import com.example.colornote.model.Task;
 import com.example.colornote.model.Text;
 import com.example.colornote.util.ColorTransparentUtils;
+import com.example.colornote.util.Constant;
 import com.example.colornote.util.ISeletectedObserver;
 import com.example.colornote.util.SelectedObserverService;
 import com.example.colornote.util.Settings;
@@ -199,6 +200,29 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                 changeColorTask();
             }
         });
+
+        tabArchive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                archiveTask();
+            }
+        });
+    }
+
+    public void archiveTask() {
+        boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+        for(int i = 0; i < isSelected.length ; i ++) {
+            if(isSelected[i]) {
+                Task task = HomeFragment.tasks.get(i);
+                task.setStatus(Constant.RECYCLE_BIN);
+                if(task.getClass().equals(Text.class)) TextDAO.getInstance().update((Text) task);
+                else {
+                    CheckListDAO.getInstance().update((CheckList) task);
+                }
+                HomeFragment.tasks.remove(i);
+                HomeFragment.adapter.notifyDataSetChanged();
+            }
+        }
     }
 
     public void changeColorTask() {
@@ -249,9 +273,10 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                     ItemCheckListDAO.getInstance().deleteByIdCheckList(task.getId());
                     CheckListDAO.getInstance().delete(task.getId());
                 }
+                HomeFragment.tasks.remove(i);
+                HomeFragment.adapter.notifyDataSetChanged();
             }
         }
-        HomeFragment.loadTask();
     }
 
     public void changeReminderActivitiy(){
