@@ -3,6 +3,7 @@ package com.example.colornote.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.colornote.database.Database;
 import com.example.colornote.mapper.RowMapper;
@@ -95,5 +96,10 @@ public class TextDAO extends AbstractDAO{
     @Override
     public String queryAll() {
         return "SELECT * FROM Text";
+    }
+
+    public void delete(int id){
+        String sql = "DELETE FROM Text WHERE id = "+id;
+        database.getSqLiteDatabase().execSQL(sql);
     }
 }

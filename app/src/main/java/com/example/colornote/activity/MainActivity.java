@@ -27,9 +27,13 @@ import android.widget.Toast;
 
 import com.example.colornote.R;
 import com.example.colornote.adapter.MainPagerAdapter;
+import com.example.colornote.dao.CheckListDAO;
+import com.example.colornote.dao.ItemCheckListDAO;
+import com.example.colornote.dao.TextDAO;
 import com.example.colornote.database.Database;
 import com.example.colornote.fragment.HomeFragment;
 import com.example.colornote.model.Task;
+import com.example.colornote.model.Text;
 import com.example.colornote.util.ColorTransparentUtils;
 import com.example.colornote.util.ISeletectedObserver;
 import com.example.colornote.util.SelectedObserverService;
@@ -47,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
     MainPagerAdapter adapter;
     FloatingActionButton fabAddTask;
     LinearLayout tabLayoutOption, tabArchive, tabDelete, tabColor, tabReminder, tabMore;
-TextView txtTitle;
+    TextView txtTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -173,6 +177,28 @@ TextView txtTitle;
                 onChangeReminderActivitiy();
             }
         });
+
+        tabDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteTask();
+            }
+        });
+    }
+
+    public void deleteTask() {
+        boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+        for(int i = 0; i < isSelected.length ; i ++) {
+            if(isSelected[i]) {
+                Task task = HomeFragment.tasks.get(i);
+                if(task.getClass().equals(Text.class)) TextDAO.getInstance().delete(task.getId());
+                else {
+                    ItemCheckListDAO.getInstance().deleteByIdCheckList(task.getId());
+                    CheckListDAO.getInstance().delete(task.getId());
+                }
+            }
+        }
+        HomeFragment.loadTask();
     }
 
     public void onChangeReminderActivitiy(){
