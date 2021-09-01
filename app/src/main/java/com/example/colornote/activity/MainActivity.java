@@ -8,7 +8,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -19,7 +21,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,10 +33,13 @@ import android.widget.Toast;
 import com.example.colornote.R;
 import com.example.colornote.adapter.MainPagerAdapter;
 import com.example.colornote.dao.CheckListDAO;
+import com.example.colornote.dao.ColorDAO;
 import com.example.colornote.dao.ItemCheckListDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.database.Database;
 import com.example.colornote.fragment.HomeFragment;
+import com.example.colornote.mapper.ColorMapper;
+import com.example.colornote.model.CheckList;
 import com.example.colornote.model.Task;
 import com.example.colornote.model.Text;
 import com.example.colornote.util.ColorTransparentUtils;
@@ -174,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         tabReminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onChangeReminderActivitiy();
+                changeReminderActivitiy();
             }
         });
 
@@ -184,6 +192,51 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                 deleteTask();
             }
         });
+
+        tabColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeColorTask();
+            }
+        });
+    }
+
+    public void changeColorTask() {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.layout_choose_color);
+        dialog.show();
+        GridLayout gvColor = dialog.findViewById(R.id.glColor);
+        List<com.example.colornote.model.Color> colors = ColorDAO.getInstance().getAll(new ColorMapper());
+        colors.remove(0);
+        for(com.example.colornote.model.Color c: colors) {
+            Button btn = new Button(this);
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+                params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+            }
+            btn.setLayoutParams(params);
+            btn.setBackgroundColor(Color.parseColor(c.getColorMain()));
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+                    for(int i = 0; i < isSelected.length ; i ++) {
+                        if(isSelected[i]) {
+                            Task task = HomeFragment.tasks.get(i);
+                            task.setColorId(c.getId());
+                            if(task.getClass().equals(Text.class)) TextDAO.getInstance().update((Text) task);
+                            else {
+                                CheckListDAO.getInstance().update((CheckList) task);
+                            }
+                        }
+                    }
+                    HomeFragment.loadTask();
+                    dialog.cancel();
+                }
+            });
+            gvColor.addView(btn);
+        }
     }
 
     public void deleteTask() {
@@ -201,7 +254,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         HomeFragment.loadTask();
     }
 
-    public void onChangeReminderActivitiy(){
+    public void changeReminderActivitiy(){
         boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
         if(SelectedObserverService.getInstance().count() == 1) {
             for(int i=0;i<isSelected.length;i++){
