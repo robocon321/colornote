@@ -120,9 +120,9 @@ public class DeviceFragment extends Fragment{
     public String buildPathBackup(String name, Activity activity){
         String path;
         if(Build.VERSION.SDK_INT >= 17)
-            path = activity.getApplicationInfo().dataDir+"/backups/";
+            path = activity.getApplicationInfo().dataDir+"/backups/"+name;
         else
-            path = "/data/data"+activity.getPackageName()+"/backups/";
+            path = "/data/data"+activity.getPackageName()+"/backups/"+name;
         return path;
     }
 
@@ -165,9 +165,8 @@ public class DeviceFragment extends Fragment{
 
     public ArrayList<BackupInfo> getBackupInfos(){
         ArrayList<BackupInfo> list = new ArrayList<>();
-        File none = new File(buildPathBackup("aaa.txt", getActivity()));
-        if(!none.exists()) none.mkdirs();
-        File parent = none.getParentFile();
+        File parent = new File(buildPathBackup("", getActivity()));
+        if(!parent.exists()) parent.mkdirs();
 
         for(File file : parent.listFiles()){
             BackupInfo info = getBackupInfoFromNameFile(file);

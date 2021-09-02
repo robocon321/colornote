@@ -62,9 +62,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     static GridView gvTask;
     static ViewAdapter adapter;
     public static ArrayList<Task> tasks;
-    static DialogSortFragment dialogSortFragment;
-    CheckListDAO checkListDAO = CheckListDAO.getInstance();
-    TextDAO textDAO = TextDAO.getInstance();
+    public static DialogSortFragment dialogSortFragment;
     Dialog dialogEditColor;
     TextView txtCount;
     ImageView imgEdit, imgNumber, imgRange, imgClose;
@@ -384,10 +382,10 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
         SelectedObserverService.getInstance().removeObserver(this);
     }
 
-    public void loadTask(){
+    public static void loadTask(){
         tasks.clear();
-        tasks.addAll(textDAO.getTextEnable());
-        tasks.addAll(checkListDAO.getCheckListEnable());
+        tasks.addAll(TextDAO.getInstance().getTextEnable());
+        tasks.addAll(CheckListDAO.getInstance().getCheckListEnable());
         adapter.notifyDataSetChanged();
     }
 

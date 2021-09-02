@@ -3,6 +3,7 @@ package com.example.colornote.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.colornote.database.Database;
 import com.example.colornote.mapper.RowMapper;
@@ -53,6 +54,39 @@ public class TextDAO extends AbstractDAO{
         return list;
     }
 
+    public List<Text> getNoteText() {
+        List<Text> list = new ArrayList<>();
+        String sql = queryAll() + " WHERE reminderId IS NULL" ;
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
+        RowMapper<Text> mapper= new TextMapper();
+        while(cursor.moveToNext()){
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
+    }
+
+    public List<Text> getCalendarText() {
+        List<Text> list = new ArrayList<>();
+        String sql = queryAll() + " WHERE reminderId IS NOT NULL" ;
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
+        RowMapper<Text> mapper= new TextMapper();
+        while(cursor.moveToNext()){
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
+    }
+
+    public List<Text> getByStatus(int status) {
+        List<Text> list = new ArrayList<>();
+        String sql = queryAll() + " WHERE status = " + status;
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
+        RowMapper<Text> mapper= new TextMapper();
+        while(cursor.moveToNext()){
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
+    }
+
     public int changeStatus(long id, int status){
         ContentValues values = new ContentValues();
         values.put("status", status);
@@ -62,5 +96,10 @@ public class TextDAO extends AbstractDAO{
     @Override
     public String queryAll() {
         return "SELECT * FROM Text";
+    }
+
+    public void delete(int id){
+        String sql = "DELETE FROM Text WHERE id = "+id;
+        database.getSqLiteDatabase().execSQL(sql);
     }
 }

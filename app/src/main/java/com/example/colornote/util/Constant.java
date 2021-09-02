@@ -20,7 +20,7 @@ public class Constant {
     // backup status
     public final static int ALL_STATUS = 0;
     public final static int NORMAL_STATUS = 1;
-    public final static int ARCHIEVED_STAUS = 2;
+    public final static int ARCHIEVED_STATUS = 2;
 
     // Settings VIEW
     public final static int LIST = 0;
