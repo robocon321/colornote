@@ -94,6 +94,7 @@
         android:textAllCaps="false"
         android:textColor="@color/black" />
     <GridView
+        android:verticalSpacing="5dp"
         android:id="@+id/gvListArchive"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

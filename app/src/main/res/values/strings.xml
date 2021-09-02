@@ -31,6 +31,7 @@
 
 
     <!--    tuyen-->
+
     <string-array name="spnLeft_Archive">
         <item>All</item>
         <item>Notes</item>
@@ -103,7 +104,6 @@
     </string-array>
     <string-array name="default_sort_order_entries">
         <item>by modified time</item>
-        <item>by created time</item>
         <item>alphabetically</item>
         <item>by color</item>
         <item>by reminder time</item>
