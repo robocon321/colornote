@@ -7,9 +7,11 @@
     android:orientation="vertical">
     <androidx.appcompat.widget.Toolbar
         app:titleTextColor="@color/black"
-        android:background="#ECE8E8"
+        android:background="?attr/android:windowBackground"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:text="More"
             android:textSize="24dp"
@@ -17,8 +19,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-    </androidx.appcompat.widget.Toolbar>
 
+    </androidx.appcompat.widget.Toolbar>
+    <View
+        android:background="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="0.3dp" />
     <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -41,14 +47,14 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="-122dp"
             android:text="Not signed in"
-            android:textColor="@color/black"
+            android:textColor="?attr/itemTextColor"
             android:textSize="20dp" />
 
         <ImageButton
             android:padding="20dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:backgroundTint="@color/white"
+            android:backgroundTint="@android:color/transparent"
             android:src="@drawable/ic_more_horiz"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -73,7 +79,7 @@
             android:fontFamily="@font/arial"
             android:text="Archive"
             android:layout_margin="12dp"
-            android:textColor="@color/black"
+            android:textColor="?attr/itemTextColor"
             android:textAllCaps="false"
             style="?android:attr/buttonBarButtonStyle"
             android:padding="12dp"
@@ -91,7 +97,7 @@
             android:layout_columnWeight="1"
             android:fontFamily="@font/arial"
             android:text="Trash can"
-            android:textColor="@color/black"
+            android:textColor="?attr/itemTextColor"
             android:textAllCaps="false"
             style="?android:attr/buttonBarButtonStyle"
             android:paddingTop="16dp"
@@ -108,7 +114,7 @@
             android:id="@+id/btnMoreSettings"
             android:fontFamily="@font/arial"
             android:text="Settings"
-            android:textColor="@color/black"
+            android:textColor="?attr/itemTextColor"
             android:textAllCaps="false"
             style="?android:attr/buttonBarButtonStyle"
             android:paddingTop="16dp"
@@ -124,7 +130,7 @@
             android:id="@+id/btnMoreTheme"
             android:fontFamily="@font/arial"
             android:text="Theme"
-            android:textColor="@color/black"
+            android:textColor="?attr/itemTextColor"
             android:textAllCaps="false"
             style="?android:attr/buttonBarButtonStyle"
             android:paddingTop="16dp"
@@ -140,7 +146,7 @@
             android:id="@+id/btnMoreFacebook"
             android:fontFamily="@font/arial"
             android:text="Facebook"
-            android:textColor="@color/black"
+            android:textColor="?attr/itemTextColor"
             android:textAllCaps="false"
             style="?android:attr/buttonBarButtonStyle"
             android:paddingTop="16dp"

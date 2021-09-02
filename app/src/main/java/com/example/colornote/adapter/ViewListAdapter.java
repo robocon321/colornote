@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +27,8 @@ import com.example.colornote.customview.CustomCardView;
 import java.util.ArrayList;
 
 public class ViewListAdapter extends ViewAdapter {
-
+    SharedPreferences sharedPreferences;
+    String themeName;
     public ViewListAdapter(ArrayList<Task> tasks, Context context){
         super(tasks, context);
     }
@@ -56,7 +58,7 @@ public class ViewListAdapter extends ViewAdapter {
             LayoutInflater inflater = LayoutInflater.from(context);
             holder = new ViewHolder();
             view = inflater.inflate(R.layout.layout_view_list, parent, false);
-
+            holder.task_item = view.findViewById(R.id.task_item);
             holder.txtTitle = view.findViewById(R.id.txtTitle);
             holder.txtTime = view.findViewById(R.id.txtTime);
             holder.imgCheck = view.findViewById(R.id.imgCheck);
@@ -88,7 +90,7 @@ public class ViewListAdapter extends ViewAdapter {
             break;
 
         }
-        Toast.makeText(context, size+"", Toast.LENGTH_SHORT).show();
+
         holder.txtTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);
 //
         if(task.isComplete()){
@@ -105,8 +107,19 @@ public class ViewListAdapter extends ViewAdapter {
         holder.txtTime.setText(new DateConvert(task.getModifiedDate()).showTime());
 
         Color color = colorDAO.get(new ColorMapper(), task.getColorId());
-        holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.MAIN_COLOR : color.getColorMain()));
+
         holder.colorSub.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.SUB_COLOR : color.getColorSub()));
+
+        sharedPreferences = context.getSharedPreferences("Theme", Context.MODE_PRIVATE);
+        themeName = sharedPreferences.getString("ThemeName", "Default");
+        if(themeName.equalsIgnoreCase("Dark")){
+            holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor( "#00000"));
+
+        }else{
+
+            holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.MAIN_COLOR : color.getColorMain()));
+        }
+
 
         ViewHolder finalHolder = holder;
 
@@ -184,6 +197,7 @@ public class ViewListAdapter extends ViewAdapter {
         ImageView imgCheck;
         CustomCardView cvTask;
         View colorSub;
+        LinearLayout task_item;
     }
 
 }

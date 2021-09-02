@@ -105,6 +105,7 @@
     android:layout_height="match_parent">
 
     <GridView
+        android:verticalSpacing="5dp"
         android:id="@+id/gvListRemove"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -8,7 +8,8 @@
 
 
         <Button
-            android:text="  Default"
+            android:id="@+id/btnThemeDefault"
+            android:text=" Default"
             android:textAllCaps="false"
             android:textSize="16sp"
             android:fontFamily="@font/arial"
@@ -21,20 +22,21 @@
             android:gravity="left"
              />
 
+<!--        <Button-->
+<!--            android:text=" Soft"-->
+<!--            android:textSize="16sp"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:fontFamily="@font/arial"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:layout_marginLeft="20dp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            style="?android:attr/buttonBarButtonStyle"-->
+<!--            android:gravity="left"-->
+<!--            android:drawableLeft="@drawable/ic_theme_soft"-->
+<!--            />-->
         <Button
-            android:text="  Soft"
-            android:textSize="16sp"
-            android:textAllCaps="false"
-            android:fontFamily="@font/arial"
-            android:textColor="@color/black"
-            android:layout_marginLeft="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="?android:attr/buttonBarButtonStyle"
-            android:gravity="left"
-            android:drawableLeft="@drawable/ic_theme_soft"
-            />
-        <Button
+            android:id="@+id/btnThemeDark"
             android:text="  Dark"
             android:textSize="16sp"
             android:textAllCaps="false"
