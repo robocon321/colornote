@@ -1,6 +1,7 @@
 package com.example.colornote.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +23,8 @@ import com.example.colornote.util.SelectedObserverService;
 import java.util.ArrayList;
 
 public class ViewGridAdapter extends ViewAdapter {
-
+    SharedPreferences sharedPreferences;
+    String themeName;
     public ViewGridAdapter(ArrayList<Task> tasks, Context context){
         super(tasks, context);
 
@@ -74,7 +76,16 @@ public class ViewGridAdapter extends ViewAdapter {
         }
 
         Color color = colorDAO.get(new ColorMapper(), task.getColorId());
-        holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.MAIN_COLOR : color.getColorMain()));
+        sharedPreferences = context.getSharedPreferences("Theme", Context.MODE_PRIVATE);
+        themeName = sharedPreferences.getString("ThemeName", "Default");
+        if(themeName.equalsIgnoreCase("Dark")){
+            holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor( "#000000"));
+
+        }else{
+            holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.MAIN_COLOR : color.getColorMain()));
+        }
+
+
         holder.colorSub.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.SUB_COLOR : color.getColorSub()));
         ViewHolder finalHolder = holder;
         holder.cvTask.setOnLongClickListener(new View.OnLongClickListener() {
