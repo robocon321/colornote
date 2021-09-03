@@ -232,10 +232,9 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                 else {
                     CheckListDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.ARCHIVE);
                 }
-                HomeFragment.tasks.remove(i);
-                HomeFragment.adapter.notifyDataSetChanged();
             }
         }
+        HomeFragment.loadTask();
     }
 
     public void changeColorTask() {
@@ -286,10 +285,9 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                     ItemCheckListDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.RECYCLE_BIN);
                     CheckListDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.RECYCLE_BIN);
                 }
-                HomeFragment.tasks.remove(i);
-                HomeFragment.adapter.notifyDataSetChanged();
             }
         }
+        HomeFragment.loadTask();
     }
 
     public void changeReminderActivitiy(){
