@@ -229,7 +229,7 @@ public class ReminderTypeAllDayFragment extends Fragment {
                 }else if(position == 1){
                     ((ReminderActivity) getActivity()).cal.setTimeInMillis(Calendar.getInstance().getTimeInMillis());
                 }else if(position == 2){
-                    ((ReminderActivity) getActivity()).cal.setTimeInMillis(Calendar.getInstance().getTimeInMillis()+ Constant.DAY);
+                    ((ReminderActivity) getActivity()).cal.setTimeInMillis(Calendar.getInstance().getTimeInMillis()+ Constant.TIME_TO_MILL.DAY);
                 }else if(position == 10){
                     Toast.makeText(getActivity(), "Specific date", Toast.LENGTH_SHORT).show();
                 }else {
@@ -237,7 +237,7 @@ public class ReminderTypeAllDayFragment extends Fragment {
                     position += (position >= today - 1) ? 2 : 0;
                     int distance = position >= today - 1? position - (today-1) : 7 - ((today-1) - position);
 
-                    ((ReminderActivity) getActivity()).cal.setTimeInMillis(Calendar.getInstance().getTimeInMillis() + distance * Constant.DAY);
+                    ((ReminderActivity) getActivity()).cal.setTimeInMillis(Calendar.getInstance().getTimeInMillis() + distance * Constant.TIME_TO_MILL.DAY);
                 }
 
                 ((ReminderActivity) getActivity()). reminder.setStartDate(((ReminderActivity) getActivity()).cal.getTime());

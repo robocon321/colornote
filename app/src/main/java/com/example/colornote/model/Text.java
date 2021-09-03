@@ -23,7 +23,7 @@ public class Text extends Task{
 
     @Override
     public boolean isComplete() {
-        return status == Constant.COMPLETE;
+        return status == Constant.STATUS.COMPLETE;
     }
 
 }

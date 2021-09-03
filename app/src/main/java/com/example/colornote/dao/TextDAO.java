@@ -9,6 +9,7 @@ import com.example.colornote.database.Database;
 import com.example.colornote.mapper.RowMapper;
 import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.Text;
+import com.example.colornote.util.Constant;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -45,7 +46,7 @@ public class TextDAO extends AbstractDAO{
 
     public List<Text> getTextEnable(){
         List<Text> list = new ArrayList<>();
-        String sql = queryAll() + " WHERE status = 2 OR status = 3";
+        String sql = queryAll() + " WHERE status = "+ Constant.STATUS.COMPLETE +" OR status = " + Constant.STATUS.NON_COMPLETE;
         Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
         RowMapper<Text> mapper= new TextMapper();
         while(cursor.moveToNext()){

@@ -27,7 +27,7 @@ public class CheckList extends Task{
         List<ItemCheckList> list = new ArrayList<>();
         list.addAll(CheckListDAO.getInstance().getItemCheckList(id));
         for(ItemCheckList item : list){
-            if(item.getStatus() == Constant.NON_COMPLETE)
+            if(item.getStatus() == Constant.STATUS.NON_COMPLETE)
                 return false;
         }
         return true;

@@ -8,9 +8,11 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -42,6 +44,7 @@ import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.model.CheckList;
 import com.example.colornote.model.Task;
 import com.example.colornote.model.Text;
+import com.example.colornote.receiver.ReminderReceiver;
 import com.example.colornote.util.ColorTransparentUtils;
 import com.example.colornote.util.Constant;
 import com.example.colornote.util.ISeletectedObserver;
@@ -52,6 +55,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ISeletectedObserver {
@@ -207,6 +211,16 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                 archiveTask();
             }
         });
+
+        tabMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                Intent intent = new Intent(MainActivity.this, ReminderReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000, pendingIntent);
+            }
+        });
     }
 
     public void archiveTask() {
@@ -214,10 +228,9 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         for(int i = 0; i < isSelected.length ; i ++) {
             if(isSelected[i]) {
                 Task task = HomeFragment.tasks.get(i);
-                task.setStatus(Constant.RECYCLE_BIN);
-                if(task.getClass().equals(Text.class)) TextDAO.getInstance().update((Text) task);
+                if(task.getClass().equals(Text.class)) TextDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.ARCHIVE);
                 else {
-                    CheckListDAO.getInstance().update((CheckList) task);
+                    CheckListDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.ARCHIVE);
                 }
                 HomeFragment.tasks.remove(i);
                 HomeFragment.adapter.notifyDataSetChanged();
@@ -268,10 +281,10 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         for(int i = 0; i < isSelected.length ; i ++) {
             if(isSelected[i]) {
                 Task task = HomeFragment.tasks.get(i);
-                if(task.getClass().equals(Text.class)) TextDAO.getInstance().delete(task.getId());
+                if(task.getClass().equals(Text.class)) TextDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.RECYCLE_BIN);
                 else {
-                    ItemCheckListDAO.getInstance().deleteByIdCheckList(task.getId());
-                    CheckListDAO.getInstance().delete(task.getId());
+                    ItemCheckListDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.RECYCLE_BIN);
+                    CheckListDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.RECYCLE_BIN);
                 }
                 HomeFragment.tasks.remove(i);
                 HomeFragment.adapter.notifyDataSetChanged();
