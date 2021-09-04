@@ -16,9 +16,10 @@
         app:titleTextColor="#020202" />
 
     <TextView
-        android:text="05/10/2021"
+        android:id="@+id/text_date"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="05/10/2021" />
     <EditText
         android:id="@+id/title_text"
         android:hint="Nhập tiêu đề"

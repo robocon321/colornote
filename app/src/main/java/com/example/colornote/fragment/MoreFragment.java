@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.LinearLayout;
 
@@ -31,6 +32,7 @@ public class MoreFragment extends Fragment {
     @Nullable
     Button btnMoreTrashCan,btnMoreArchive,btnMoreSettings,btnMoreTheme,btnThemeDark,btnThemeDefault;
     Dialog dialogTheme;
+  //  RelativeLayout relativeLayout_signIn;
     String themeName;
     SharedPreferences sharedPreferences;
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class MoreFragment extends Fragment {
         btnMoreArchive = (Button) view.findViewById(R.id.btnMoreArchive);
         btnMoreSettings = (Button) view.findViewById(R.id.btnMoreSettings);
         btnMoreTheme = (Button) view.findViewById(R.id.btnMoreTheme);
+       // relativeLayout_signIn = (RelativeLayout) view.findViewById(R.id.relative_signIn);
 
     }
 
@@ -100,6 +103,13 @@ public class MoreFragment extends Fragment {
                     }
                 });
 
+            }
+        });
+        relativeLayout_signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),SignInActivity.class);
+                getActivity().startActivity(intent);
             }
         });
     }
