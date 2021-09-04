@@ -54,15 +54,7 @@
         app:useSimpleSummaryProvider="true"
         android:title="@string/default_sort_order"
         app:iconSpaceReserved="false"/>
-    <ListPreference
-        android:defaultValue="2"
-        android:dialogTitle="@string/default_sort_color"
-        android:entries="@array/default_sort_color_entries"
-        android:entryValues="@array/default_sort_color_entries"
-        android:key="xfsssgsdsd"
-        app:useSimpleSummaryProvider="true"
-        android:title="@string/default_sort_color"
-        app:iconSpaceReserved="false"/>
+
 </PreferenceCategory>
     <PreferenceCategory app:title="@string/online_sync"
         app:iconSpaceReserved="false">
@@ -80,25 +72,6 @@
 
 
     </PreferenceCategory >
-<!--    <de.mrapp.android.preference.ColorPalettePreference-->
-<!--        android:dialogMessage="Choose a color from the palette below"-->
-<!--        app:iconSpaceReserved="false"-->
-<!--        app:showValueAsSummary="true"-->
-<!--        app:previewShape="square"-->
-<!--        app:dialogPreviewShape="square"-->
-<!--        app:dialogPreviewBorderColor="#fff"-->
-<!--        app:dialogButtonTextColor="#000"-->
 
-<!--        app:previewBackground="@color/color_palette_preference_default_value"-->
-<!--        android:title="Default color"-->
-<!--        app:colorPalette="@array/color_palette"  />-->
-    <PreferenceCategory
-        android:title="Demo"
-        app:iconSpaceReserved="false">
-
-
-
-
-    </PreferenceCategory>
 
 </PreferenceScreen>

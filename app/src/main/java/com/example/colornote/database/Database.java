@@ -1,6 +1,7 @@
 package com.example.colornote.database;
 
 import android.app.Activity;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 
@@ -25,19 +26,19 @@ public class Database {
         createDatabase("database.sqlite", activity);
     }
 
-    public String buildPathDatabase(String name, Activity activity){
+    public String buildPathDatabase(String name, Context context){
         String path;
         if(Build.VERSION.SDK_INT >= 17)
-            path = activity.getApplicationInfo().dataDir+"/databases/";
+            path = context.getApplicationInfo().dataDir+"/databases/";
         else
-            path = "/data/data"+activity.getPackageName()+"/databases/";
+            path = "/data/data"+context.getPackageName()+"/databases/";
         path += "/"+name;
         return path;
     }
 
-    public void createDatabase(String name, Activity activity){
-        String path = buildPathDatabase(name, activity);
-        File file = activity.getDatabasePath(path);
+    public void createDatabase(String name, Context context){
+        String path = buildPathDatabase(name, context);
+        File file = context.getDatabasePath(path);
         if(!file.exists()){
             sqLiteDatabase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.CREATE_IF_NECESSARY);
             createTable();

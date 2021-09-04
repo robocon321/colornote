@@ -6,8 +6,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceManager;
 
 import android.app.Dialog;
+
+import android.content.Context;
+
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
+
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,8 +19,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -31,7 +37,9 @@ public class Text_Activity extends AppCompatActivity {
     private int colorid;
     Toolbar toolbar;
     EditText title_text,edit_text;
+    TextView text_date;
     boolean checkIcon = true;
+    private long numEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +48,7 @@ public class Text_Activity extends AppCompatActivity {
         title_text = findViewById(R.id.title_text);
         edit_text = findViewById(R.id.edit_text);
         toolbar = findViewById(R.id.toolbar_text);
+        text_date = findViewById(R.id.text_date);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Title text");
@@ -133,7 +142,7 @@ public class Text_Activity extends AppCompatActivity {
             }
         });
     }
-    public void addText(int color){
+    public boolean addText(int color){
         Text text = new Text();
         TextDAO textDAO = TextDAO.getInstance();
         text.setTitle(title_text.getText().toString());
@@ -143,10 +152,18 @@ public class Text_Activity extends AppCompatActivity {
         text.setModifiedDate(date);
         text.setReminderId(-1);
         text.setStatus(3);
-
+        numEdit = textDAO.insert(text);
         Log.d("AA", textDAO.insert(text)+"");
+        closekeyboard();
+        return true;
     }
-
+    public void closekeyboard(){
+        View view = this.getCurrentFocus();
+        if(view!=null){
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(),0);
+        }
+}
     @Override
     protected void onResume() {
         super.onResume();

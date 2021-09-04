@@ -104,4 +104,10 @@ public class CheckListDAO extends AbstractDAO{
     public String queryAll() {
         return "SELECT * FROM CheckList";
     }
+
+    public void delete(int id){
+        String sql = "DELETE FROM CheckList WHERE id = "+id;
+        database.getSqLiteDatabase().execSQL(sql);
+    }
+
 }

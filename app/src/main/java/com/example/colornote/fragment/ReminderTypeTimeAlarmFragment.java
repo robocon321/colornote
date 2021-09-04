@@ -278,9 +278,9 @@ public class ReminderTypeTimeAlarmFragment extends Fragment {
                 boolean isMinute = arrTime[1].equals("minutes");
 
                 if(isMinute){
-                    cal.setTimeInMillis(cal.getTimeInMillis() + value * Constant.MINUTE);
+                    cal.setTimeInMillis(cal.getTimeInMillis() + value * Constant.TIME_TO_MILL.MINUTE);
                 }else {
-                    cal.setTimeInMillis(cal.getTimeInMillis() + value * Constant.HOUR);
+                    cal.setTimeInMillis(cal.getTimeInMillis() + value * Constant.TIME_TO_MILL.HOUR);
                 }
 
                 ((ReminderActivity) getActivity()).reminder.setStartDate(cal.getTime());
