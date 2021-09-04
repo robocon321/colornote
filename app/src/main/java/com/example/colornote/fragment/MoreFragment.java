@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.LinearLayout;
 
@@ -27,6 +28,7 @@ public class MoreFragment extends Fragment {
     @Nullable
     Button btnMoreTrashCan,btnMoreArchive,btnMoreSettings,btnMoreTheme;
     Dialog dialogTheme;
+    RelativeLayout relativeLayout_signIn;
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_more, container, false);
         addControls(view);
@@ -40,6 +42,7 @@ public class MoreFragment extends Fragment {
         btnMoreArchive = (Button) view.findViewById(R.id.btnMoreArchive);
         btnMoreSettings = (Button) view.findViewById(R.id.btnMoreSettings);
         btnMoreTheme = (Button) view.findViewById(R.id.btnMoreTheme);
+        relativeLayout_signIn = (RelativeLayout) view.findViewById(R.id.relative_signIn);
     }
 
     private void addEvent() {
@@ -66,6 +69,13 @@ public class MoreFragment extends Fragment {
                 builder.setView(view).setTitle("Theme");
                 AlertDialog dialog = builder.create();
                 dialog.show();
+            }
+        });
+        relativeLayout_signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),SignInActivity.class);
+                getActivity().startActivity(intent);
             }
         });
     }

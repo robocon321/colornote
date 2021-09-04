@@ -20,17 +20,18 @@
     </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout
-        android:orientation="horizontal"
+        android:id="@+id/relative_signIn"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
         <ImageView
 
             android:id="@+id/imgUser"
-            android:padding="16dp"
-            android:src="@drawable/ic_user"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:src="@drawable/ic_user" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -45,14 +46,14 @@
             android:textSize="20dp" />
 
         <ImageButton
-            android:padding="20dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
-            android:backgroundTint="@color/white"
-            android:src="@drawable/ic_more_horiz"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-</RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:backgroundTint="@color/white"
+            android:padding="20dp"
+            android:src="@drawable/ic_more_horiz" />
+    </RelativeLayout>
 
     <TableRow
         android:layout_width="match_parent"

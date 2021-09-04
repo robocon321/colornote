@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
 
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_checklist"
@@ -14,17 +16,31 @@
         android:theme="?attr/actionBarTheme" />
 
     <TextView
-        android:text="05/10/2021"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:text="05/10/2021" />
+
     <EditText
         android:id="@+id/title_checklist"
-        android:hint="Nhập tiêu đề"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:hint="Enter title" />
+
+    <Button
+
+        android:id="@+id/btn_additem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center|left"
+        android:text="Add item"
+        android:textColor="#6A6A6A"
+        app:backgroundTint="#FFFFFF"
+        app:icon="@drawable/ic_add"
+        app:iconTint="#807A7A" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

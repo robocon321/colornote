@@ -1,6 +1,6 @@
 package com.example.colornote.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class ItemCheckList {
     private int id;
