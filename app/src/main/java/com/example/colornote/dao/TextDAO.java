@@ -57,7 +57,7 @@ public class TextDAO extends AbstractDAO{
 
     public List<Text> getNoteText() {
         List<Text> list = new ArrayList<>();
-        String sql = queryAll() + " WHERE reminderId IS NULL" ;
+        String sql = queryAll() + " WHERE reminderId == 0" ;
         Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
         RowMapper<Text> mapper= new TextMapper();
         while(cursor.moveToNext()){
@@ -68,7 +68,7 @@ public class TextDAO extends AbstractDAO{
 
     public List<Text> getCalendarText() {
         List<Text> list = new ArrayList<>();
-        String sql = queryAll() + " WHERE reminderId IS NOT NULL" ;
+        String sql = queryAll() + " WHERE reminderId <> 0" ;
         Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
         RowMapper<Text> mapper= new TextMapper();
         while(cursor.moveToNext()){

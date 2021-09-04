@@ -215,26 +215,27 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         tabMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                Intent intent = new Intent(MainActivity.this, ReminderReceiver.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000, pendingIntent);
             }
         });
     }
 
     public void archiveTask() {
         boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+        ArrayList<Integer> taskIndexRemoves = new ArrayList<>();
         for(int i = 0; i < isSelected.length ; i ++) {
             if(isSelected[i]) {
                 Task task = HomeFragment.tasks.get(i);
+                taskIndexRemoves.add(i);
                 if(task.getClass().equals(Text.class)) TextDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.ARCHIVE);
                 else {
                     CheckListDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.ARCHIVE);
                 }
             }
         }
-        HomeFragment.loadTask();
+        for (int i = 0; i < taskIndexRemoves.size(); i ++) {
+            HomeFragment.tasks.remove(i);
+        }
+        HomeFragment.adapter.notifyDataSetChanged();
     }
 
     public void changeColorTask() {
@@ -277,9 +278,11 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
 
     public void deleteTask() {
         boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+        ArrayList<Integer> taskIndexRemoves = new ArrayList<>();
         for(int i = 0; i < isSelected.length ; i ++) {
             if(isSelected[i]) {
                 Task task = HomeFragment.tasks.get(i);
+                taskIndexRemoves.add(i);
                 if(task.getClass().equals(Text.class)) TextDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.RECYCLE_BIN);
                 else {
                     ItemCheckListDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.RECYCLE_BIN);
@@ -287,7 +290,10 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                 }
             }
         }
-        HomeFragment.loadTask();
+        for (int i = 0; i < taskIndexRemoves.size(); i ++) {
+            HomeFragment.tasks.remove(i);
+        }
+        HomeFragment.adapter.notifyDataSetChanged();
     }
 
     public void changeReminderActivitiy(){

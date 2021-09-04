@@ -45,8 +45,7 @@ public class ColorFragment extends Fragment {
         ArrayList<Task> tasks = HomeFragment.tasks;
 
         List<Color> colors = new ArrayList<Color>();
-        ColorDAO dao = ColorDAO.getInstance();
-        colors = dao.getAll(new ColorMapper());
+        colors = ColorDAO.getInstance().getAll(new ColorMapper());
 
         for(Color color : colors){
             LayoutInflater inflater = LayoutInflater.from(context);
@@ -90,8 +89,8 @@ public class ColorFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     tasks.clear();
-                    tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
-                    tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
+                    tasks.addAll(CheckListDAO.getInstance().getCheckListEnable());
+                    tasks.addAll(TextDAO.getInstance().getTextEnable());
                     if(color.getId() != 1){
                         tasks.removeIf(task -> task.getColorId() != color.getId());
                     }
