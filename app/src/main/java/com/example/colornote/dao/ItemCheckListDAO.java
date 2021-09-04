@@ -56,6 +56,17 @@ public class ItemCheckListDAO extends AbstractDAO{
         database.getSqLiteDatabase().execSQL(sql);
     }
 
+    public List<ItemCheckList> getByParentId(int parentId) {
+        List<ItemCheckList> list = new ArrayList<>();
+        String query = queryAll() + " WHERE parentId = " + parentId;
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(query, null);
+        RowMapper<ItemCheckList> mapper = new ItemCheckListMapper();
+        while(cursor.moveToNext()){
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
+    }
+
     @Override
     public String queryAll() {
         return "SELECT * FROM ItemCheckList";

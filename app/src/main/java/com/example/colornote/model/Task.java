@@ -90,4 +90,16 @@ public abstract class Task implements Serializable {
             return t1.getReminderId()>t2.getReminderId() ? 1: -1;
         }
     };
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", colorId=" + colorId +
+                ", reminderId=" + reminderId +
+                ", modifiedDate=" + modifiedDate +
+                ", status=" + status +
+                '}';
+    }
 }

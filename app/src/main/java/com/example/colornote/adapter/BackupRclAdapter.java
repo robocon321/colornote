@@ -180,7 +180,7 @@ public class BackupRclAdapter extends RecyclerView.Adapter<BackupRclAdapter.View
                                     Toast.makeText(ctw, "Restored", Toast.LENGTH_SHORT).show();
                                 }
                             });
-                            builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
@@ -207,7 +207,7 @@ public class BackupRclAdapter extends RecyclerView.Adapter<BackupRclAdapter.View
                                     notifyDataSetChanged();
                                 }
                             });
-                            builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
+                            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     dialog.dismiss();
