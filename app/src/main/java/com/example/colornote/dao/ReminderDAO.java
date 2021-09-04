@@ -21,6 +21,7 @@ public class ReminderDAO extends AbstractDAO {
         return "SELECT * FROM Reminder";
     }
 
+
     @Override
     public String queryWithKey() {
         return "Select * from Reminder Where title LIKE ? OR content LIKE ? or modifiedDate like ?";
@@ -29,6 +30,7 @@ public class ReminderDAO extends AbstractDAO {
     public Reminder getReminderById(int id) {
         String sql = queryAll() + "WHERE id = " + id;
         Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
+
         cursor.moveToNext();
         return new ReminderMapper().mappRow(cursor);
     }

@@ -61,6 +61,7 @@ TextView txtCountTrashCanHidden;
     }
 
     private void addEvents(Activity activity) {
+
         btnBackTrashCan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

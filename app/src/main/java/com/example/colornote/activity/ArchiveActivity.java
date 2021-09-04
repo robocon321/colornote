@@ -127,7 +127,7 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
         spnLeft_Archive.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(parent.getContext(), parent.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
@@ -138,7 +138,7 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
         spnRight_Archive.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(parent.getContext(), parent.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
+
             }
 
             @Override

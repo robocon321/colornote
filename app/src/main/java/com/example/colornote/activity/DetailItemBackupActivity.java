@@ -158,10 +158,10 @@ public class DetailItemBackupActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 tasks.clear();
-                if(i == Constant.ALL_STATUS) {
+                if(i == Constant.BACKUP_STATUS.ALL_STATUS) {
                     tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
                     tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
-                }else if(i == Constant.NORMAL_STATUS){
+                }else if(i == Constant.BACKUP_STATUS.NORMAL_STATUS){
                     tasks.addAll(TextDAO.getInstance().getTextEnable());
                     tasks.addAll(CheckListDAO.getInstance().getCheckListEnable());
                 }else {
@@ -180,10 +180,10 @@ public class DetailItemBackupActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 tasks.clear();
-                if(i == Constant.ALL_TABLE) {
+                if(i == Constant.BACKUP_TYPE.ALL_TABLE) {
                     tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
                     tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
-                } else if(i == Constant.NOTES_TABLE) {
+                } else if(i == Constant.BACKUP_TYPE.NOTES_TABLE) {
                     tasks.addAll(TextDAO.getInstance().getNoteText());
                     tasks.addAll(CheckListDAO.getInstance().getNoteCheckList());
                 } else {

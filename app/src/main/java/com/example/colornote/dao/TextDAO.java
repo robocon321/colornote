@@ -3,11 +3,13 @@ package com.example.colornote.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.colornote.database.Database;
 import com.example.colornote.mapper.RowMapper;
 import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.Text;
+import com.example.colornote.util.Constant;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,7 +46,7 @@ public class TextDAO extends AbstractDAO{
 
     public List<Text> getTextEnable(){
         List<Text> list = new ArrayList<>();
-        String sql = queryAll() + " WHERE status = 2 OR status = 3";
+        String sql = queryAll() + " WHERE status = "+ Constant.STATUS.COMPLETE +" OR status = " + Constant.STATUS.NON_COMPLETE;
         Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
         RowMapper<Text> mapper= new TextMapper();
         while(cursor.moveToNext()){
@@ -97,8 +99,14 @@ public class TextDAO extends AbstractDAO{
         return "SELECT * FROM Text";
     }
 
+
     @Override
     public String queryWithKey() {
-        return "Select * from Text Where title LIKE ? OR content LIKE ? or modifiedDate like ?";
+        return "Select * from Text Where title LIKE ? OR content LIKE ? or modifiedDate like ?";}
+
+    public void delete(int id){
+        String sql = "DELETE FROM Text WHERE id = "+id;
+        database.getSqLiteDatabase().execSQL(sql);
+
     }
 }
