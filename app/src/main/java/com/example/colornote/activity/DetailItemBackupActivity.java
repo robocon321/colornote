@@ -35,6 +35,7 @@ import com.example.colornote.adapter.ViewListAdapter;
 import com.example.colornote.dao.CheckListDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.database.Database;
+import com.example.colornote.fragment.HomeFragment;
 import com.example.colornote.mapper.CheckListMapper;
 import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.BackupInfo;
@@ -57,7 +58,7 @@ public class DetailItemBackupActivity extends AppCompatActivity implements ISele
     TextView txtDateBackup;
     GridView gvTaskBackup;
     ArrayAdapter<String> adapterTask, adapterStatus;
-    ImageView imgTypeTask, imgRange;
+    ImageView imgTypeTask, imgRange, imgClose;
     Button btnSortBackup;
     LinearLayout tabRestore;
     RelativeLayout toolbarHidden;
@@ -98,6 +99,7 @@ public class DetailItemBackupActivity extends AppCompatActivity implements ISele
         toolbarHidden = findViewById(R.id.toolbarHidden);
         imgRange = findViewById(R.id.imgRange);
         txtCount = findViewById(R.id.txtCount);
+        imgClose = findViewById(R.id.imgClose);
 
         List<String> arrTask = new ArrayList<>();
         arrTask.add("All");
@@ -209,6 +211,7 @@ public class DetailItemBackupActivity extends AppCompatActivity implements ISele
 
             }
         });
+
         imgTypeTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -254,7 +257,23 @@ public class DetailItemBackupActivity extends AppCompatActivity implements ISele
         tabRestore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Database.getInstance().createDatabase("database.sqlite", DetailItemBackupActivity.this);
 
+                boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+
+                for(int i = 0; i < isSelected.length ; i ++) {
+                    if(isSelected[i]) {
+                        Task task = tasks.get(i);
+                        if(task.getClass().equals(Text.class)) TextDAO.getInstance().insert((Text) task);
+                        else {
+                            CheckListDAO.getInstance().insert((CheckList) task);
+                        }
+                    }
+                }
+
+                Database.getInstance().setSqLiteDatabase(info.getPath());
+                SelectedObserverService.getInstance().reset();
+                adapter.updateBorderView();
             }
         });
 
@@ -265,6 +284,15 @@ public class DetailItemBackupActivity extends AppCompatActivity implements ISele
                 adapter.updateBorderView();
             }
         });
+
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectedObserverService.getInstance().reset();
+                adapter.updateBorderView();
+            }
+        });
+
     }
 
     public void sortTask(){
@@ -368,6 +396,7 @@ public class DetailItemBackupActivity extends AppCompatActivity implements ISele
     protected void onDestroy() {
         super.onDestroy();
         SelectedObserverService.getInstance().reset();
+        Database.getInstance().createDatabase("database.sqlite", DetailItemBackupActivity.this);
     }
 
     @Override

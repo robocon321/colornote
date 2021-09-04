@@ -49,6 +49,7 @@ import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
+import com.example.colornote.util.Constant;
 import com.example.colornote.util.ISeletectedObserver;
 import com.example.colornote.util.SelectedObserverService;
 
@@ -68,6 +69,64 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     ImageView imgEdit, imgNumber, imgRange, imgClose;
     View toolbarHidden;
 
+    public static int colorType = 1;
+    public static int sortType = Constant.SORT_BY.NO_SORT;
+    public static int viewType = Constant.VIEW.LIST;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static void filter() {
+        tasks.clear();
+        tasks.addAll(TextDAO.getInstance().getTextEnable());
+        tasks.addAll(CheckListDAO.getInstance().getCheckListEnable());
+
+        if(colorType != 1) {
+            tasks.removeIf(task -> task.getColorId() != colorType);
+            Color color = ColorDAO.getInstance().get(new ColorMapper(), colorType);
+            btnSort.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? Constant.MAIN_COLOR : color.getColorMain()));
+        }
+
+        switch (sortType){
+            case Constant.SORT_BY.MODIFIED_TIME:
+                Collections.sort(tasks, Task.compareByModifiedTime);
+                btnSort.setText("Sort by motified time");
+                break;
+            case Constant.SORT_BY.ALPHABECALLY:
+                Collections.sort(tasks, Task.compareByTitle);
+                btnSort.setText("Sort by alphabetically");
+                break;
+            case Constant.SORT_BY.COLOR:
+                Collections.sort(tasks, Task.compareByColor);
+                btnSort.setText("Sort by color");
+                break;
+            case Constant.SORT_BY.REMINDER:
+                Collections.sort(tasks, Task.compareByReminderTime);
+                btnSort.setText("Sort by reminder");
+                break;
+            default:
+                break;
+        }
+
+        switch (viewType) {
+            case Constant.VIEW.LIST:
+                adapter = new ViewListAdapter(tasks, btnSort.getContext());
+                gvTask.setNumColumns(1);
+                break;
+            case Constant.VIEW.DETAILS:
+                adapter = new ViewDetailsAdapter(tasks, btnSort.getContext());
+                gvTask.setNumColumns(1);
+                break;
+            case Constant.VIEW.GRID:
+                adapter = new ViewGridAdapter(tasks, btnSort.getContext());
+                gvTask.setNumColumns(3);
+                break;
+            case Constant.VIEW.LARGE_GRID:
+                adapter = new ViewLargeGridAdapter(tasks, btnSort.getContext());
+                gvTask.setNumColumns(2);
+                break;
+        }
+        adapter.notifyDataSetChanged();
+        gvTask.setAdapter(adapter);
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -139,7 +198,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     builder.setView(R.layout.fragment_view_option);
                 }
-                builder.setTitle("Tuyen");
+                builder.setTitle("View");
                 AlertDialog dialog = builder.create();
 
                 dialog.show();
@@ -149,37 +208,44 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
                 Button btnSortLargeGrid = dialog.findViewById(R.id.btnSortLargeGrid);
 
                 btnSortList.setOnClickListener(new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onClick(View v) {
-                        changeAdapter(new ViewListAdapter(tasks, getActivity()), 1);
+                        viewType = Constant.VIEW.LIST;
+                        filter();
                         dialog.cancel();
                     }
                 });
 
                 btnSortDetail.setOnClickListener(new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onClick(View v) {
-                        changeAdapter(new ViewDetailsAdapter(tasks, getActivity()), 1);
+                        viewType = Constant.VIEW.DETAILS;
+                        filter();
                         dialog.cancel();
                     }
                 });
 
                 btnSortGrid.setOnClickListener(new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onClick(View v) {
-                            changeAdapter(new ViewGridAdapter(tasks, getActivity()), 3);
+                        viewType = Constant.VIEW.GRID;
+                        filter();
                         dialog.cancel();
                     }
                 });
 
                 btnSortLargeGrid.setOnClickListener(new View.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onClick(View v) {
-                        changeAdapter(new ViewLargeGridAdapter(tasks, getActivity()), 2);
+                        viewType = Constant.VIEW.LARGE_GRID;
+                        filter();
                         dialog.cancel();
                     }
                 });
-
                 break;
             case R.id.mnBackup:
                 Intent intent = new Intent(getActivity(), BackupActivity.class);
@@ -190,13 +256,6 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
                 break;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    public static void changeAdapter(ViewAdapter newAdapter, int numCol){
-        adapter = newAdapter;
-        adapter.notifyDataSetChanged();
-        gvTask.setNumColumns(numCol);
-        gvTask.setAdapter(adapter);
     }
 
     public void addItemColorToGridLayout(Dialog dialog, Context context, GridLayout glColor, boolean isEdit, boolean isShowAmount){
@@ -237,15 +296,9 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onClick(View v) {
-                        tasks.clear();
-                        tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
-                        tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
-                        if(color.getId() != 1){
-                            tasks.removeIf(task -> task.getColorId() != color.getId());
-                        }
-                        adapter.notifyDataSetChanged();
+                        colorType = color.getId();
+                        filter();
                         dialogEditColor.dismiss();
-                        HomeFragment.btnSort.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? "#F6F6F6" : color.getColorMain()));
                     }
                 });
             }else{

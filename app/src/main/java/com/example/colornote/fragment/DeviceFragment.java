@@ -132,7 +132,6 @@ public class DeviceFragment extends Fragment{
     }
 
     public void copyFile(String src, String dst){
-        File fileSrc = new File(src);
         File fileDst = new File(dst);
         try {
             fileDst.getParentFile().mkdirs();

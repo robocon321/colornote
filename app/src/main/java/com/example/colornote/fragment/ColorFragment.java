@@ -88,15 +88,9 @@ public class ColorFragment extends Fragment {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onClick(View v) {
-                    tasks.clear();
-                    tasks.addAll(CheckListDAO.getInstance().getCheckListEnable());
-                    tasks.addAll(TextDAO.getInstance().getTextEnable());
-                    if(color.getId() != 1){
-                        tasks.removeIf(task -> task.getColorId() != color.getId());
-                    }
-                    HomeFragment.adapter.notifyDataSetChanged();
+                    HomeFragment.colorType = color.getId();
+                    HomeFragment.filter();
                     HomeFragment.dialogSortFragment.dismiss();
-                    HomeFragment.btnSort.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? "#F6F6F6" : color.getColorMain()));
                 }
             });
 

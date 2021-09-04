@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
     FloatingActionButton fabAddTask;
     LinearLayout tabLayoutOption, tabArchive, tabDelete, tabColor, tabReminder, tabMore;
     TextView txtTitle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -221,19 +222,19 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
 
     public void archiveTask() {
         boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
-        ArrayList<Integer> taskIndexRemoves = new ArrayList<>();
+        ArrayList<Task> taskRemoves = new ArrayList<>();
         for(int i = 0; i < isSelected.length ; i ++) {
             if(isSelected[i]) {
                 Task task = HomeFragment.tasks.get(i);
-                taskIndexRemoves.add(i);
+                taskRemoves.add(task);
                 if(task.getClass().equals(Text.class)) TextDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.ARCHIVE);
                 else {
                     CheckListDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.ARCHIVE);
                 }
             }
         }
-        for (int i = 0; i < taskIndexRemoves.size(); i ++) {
-            HomeFragment.tasks.remove(i);
+        for (Task t : taskRemoves) {
+            HomeFragment.tasks.remove(t);
         }
         HomeFragment.adapter.notifyDataSetChanged();
     }
@@ -278,11 +279,11 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
 
     public void deleteTask() {
         boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
-        ArrayList<Integer> taskIndexRemoves = new ArrayList<>();
+        ArrayList<Task> taskRemoves = new ArrayList<>();
         for(int i = 0; i < isSelected.length ; i ++) {
             if(isSelected[i]) {
                 Task task = HomeFragment.tasks.get(i);
-                taskIndexRemoves.add(i);
+                taskRemoves.add(task);
                 if(task.getClass().equals(Text.class)) TextDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.RECYCLE_BIN);
                 else {
                     ItemCheckListDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.RECYCLE_BIN);
@@ -290,8 +291,8 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                 }
             }
         }
-        for (int i = 0; i < taskIndexRemoves.size(); i ++) {
-            HomeFragment.tasks.remove(i);
+        for (Task t : taskRemoves) {
+            HomeFragment.tasks.remove(t);
         }
         HomeFragment.adapter.notifyDataSetChanged();
     }
@@ -354,7 +355,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         SelectedObserverService.getInstance().removeObserver(this);
     }
 
-//    @Override
+    //    @Override
 //    protected void onResume() {
 //        super.onResume();
 //        SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(this);
