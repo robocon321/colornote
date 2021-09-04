@@ -9,7 +9,7 @@
         app:cardCornerRadius="10dp"
         app:cardElevation="2dp"
         app:contentPadding="1dp"
-        android:layout_marginBottom="10dp"
+
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_width="match_parent"
@@ -23,6 +23,8 @@
                 android:layout_width="5dp"
                 android:layout_height="match_parent"/>
             <LinearLayout
+                android:id="@+id/task_item"
+
                 android:layout_toRightOf="@id/colorSub"
                 android:weightSum="10"
                 android:orientation="horizontal"
@@ -34,7 +36,7 @@
                     android:text="This is Title"
                     android:textColor="@color/black"
                     android:gravity="center_vertical"
-                    android:textSize="15dp"
+                    android:textSize="@dimen/font_size"
                     android:paddingLeft="5dp"
                     android:layout_weight="6"
                     android:layout_width="0dp"

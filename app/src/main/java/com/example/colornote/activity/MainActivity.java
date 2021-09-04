@@ -4,10 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -16,7 +23,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridLayout;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,10 +34,19 @@ import android.widget.Toast;
 
 import com.example.colornote.R;
 import com.example.colornote.adapter.MainPagerAdapter;
+import com.example.colornote.dao.CheckListDAO;
+import com.example.colornote.dao.ColorDAO;
+import com.example.colornote.dao.ItemCheckListDAO;
+import com.example.colornote.dao.TextDAO;
 import com.example.colornote.database.Database;
 import com.example.colornote.fragment.HomeFragment;
+import com.example.colornote.mapper.ColorMapper;
+import com.example.colornote.model.CheckList;
 import com.example.colornote.model.Task;
+import com.example.colornote.model.Text;
+import com.example.colornote.receiver.ReminderReceiver;
 import com.example.colornote.util.ColorTransparentUtils;
+import com.example.colornote.util.Constant;
 import com.example.colornote.util.ISeletectedObserver;
 import com.example.colornote.util.SelectedObserverService;
 import com.example.colornote.util.Settings;
@@ -36,6 +55,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ISeletectedObserver {
@@ -44,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
     MainPagerAdapter adapter;
     FloatingActionButton fabAddTask;
     LinearLayout tabLayoutOption, tabArchive, tabDelete, tabColor, tabReminder, tabMore;
-
+    TextView txtTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(1);
 
+        txtTitle = findViewById(R.id.txtTitle);
         SelectedObserverService.getInstance().addObserver(this);
     }
 
@@ -166,12 +187,110 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         tabReminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onChangeReminderActivitiy();
+                changeReminderActivitiy();
+            }
+        });
+
+        tabDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteTask();
+            }
+        });
+
+        tabColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                changeColorTask();
+            }
+        });
+
+        tabArchive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                archiveTask();
+            }
+        });
+
+        tabMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                Intent intent = new Intent(MainActivity.this, ReminderReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000, pendingIntent);
             }
         });
     }
 
-    public void onChangeReminderActivitiy(){
+    public void archiveTask() {
+        boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+        for(int i = 0; i < isSelected.length ; i ++) {
+            if(isSelected[i]) {
+                Task task = HomeFragment.tasks.get(i);
+                if(task.getClass().equals(Text.class)) TextDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.ARCHIVE);
+                else {
+                    CheckListDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.ARCHIVE);
+                }
+            }
+        }
+        HomeFragment.loadTask();
+    }
+
+    public void changeColorTask() {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.layout_choose_color);
+        dialog.show();
+        GridLayout gvColor = dialog.findViewById(R.id.glColor);
+        List<com.example.colornote.model.Color> colors = ColorDAO.getInstance().getAll(new ColorMapper());
+        colors.remove(0);
+        for(com.example.colornote.model.Color c: colors) {
+            Button btn = new Button(this);
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+                params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+            }
+            btn.setLayoutParams(params);
+            btn.setBackgroundColor(Color.parseColor(c.getColorMain()));
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+                    for(int i = 0; i < isSelected.length ; i ++) {
+                        if(isSelected[i]) {
+                            Task task = HomeFragment.tasks.get(i);
+                            task.setColorId(c.getId());
+                            if(task.getClass().equals(Text.class)) TextDAO.getInstance().update((Text) task);
+                            else {
+                                CheckListDAO.getInstance().update((CheckList) task);
+                            }
+                        }
+                    }
+                    HomeFragment.loadTask();
+                    dialog.cancel();
+                }
+            });
+            gvColor.addView(btn);
+        }
+    }
+
+    public void deleteTask() {
+        boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+        for(int i = 0; i < isSelected.length ; i ++) {
+            if(isSelected[i]) {
+                Task task = HomeFragment.tasks.get(i);
+                if(task.getClass().equals(Text.class)) TextDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.RECYCLE_BIN);
+                else {
+                    ItemCheckListDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.RECYCLE_BIN);
+                    CheckListDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.RECYCLE_BIN);
+                }
+            }
+        }
+        HomeFragment.loadTask();
+    }
+
+    public void changeReminderActivitiy(){
         boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
         if(SelectedObserverService.getInstance().count() == 1) {
             for(int i=0;i<isSelected.length;i++){
@@ -228,4 +347,45 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         super.onDestroy();
         SelectedObserverService.getInstance().removeObserver(this);
     }
+
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(this);
+//        String font_size =pre.getString("font_size","100dp");
+//        txtTitle.setTextSize(100);
+//        float size=0;
+////        switch (font_size){
+////            case "Tiny":     size=getResources().getDimension(R.dimen.font_size_tiny);
+////                break;
+////            case "Small":size=getResources().getDimension(R.dimen.font_size_small);
+////                break;
+////            case "Medium": size=getResources().getDimension(R.dimen.font_size_medium);
+////                break;
+////            case "Large": size=getResources().getDimension(R.dimen.font_size_large);
+////                break;
+////            case "Huge": size=getResources().getDimension(R.dimen.font_size_huge);
+////                break;
+////            default: size=getResources().getDimension(R.dimen.font_size);
+////            break;
+////
+////        }
+//        switch (font_size){
+//            case "Tiny":     size=12;
+//                break;
+//            case "Small":size=14;
+//                break;
+//            case "Medium": size=17;
+//                break;
+//            case "Large": size=19;
+//                break;
+//            case "Huge": size=21;
+//                break;
+//            default: size=40;
+//                break;
+//
+//        }
+//
+//
+//    }
 }

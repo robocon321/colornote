@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -19,11 +22,14 @@ import com.example.colornote.fragment.ReminderTypeAllDayFragment;
 import com.example.colornote.fragment.ReminderTypeNoneFragment;
 import com.example.colornote.fragment.ReminderTypePinFragment;
 import com.example.colornote.fragment.ReminderTypeTimeAlarmFragment;
+import com.example.colornote.mapper.CheckListMapper;
 import com.example.colornote.mapper.ReminderMapper;
+import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.CheckList;
 import com.example.colornote.model.Reminder;
 import com.example.colornote.model.Task;
 import com.example.colornote.model.Text;
+import com.example.colornote.receiver.ReminderReceiver;
 
 import java.util.Calendar;
 
@@ -47,6 +53,9 @@ public class ReminderActivity extends AppCompatActivity {
         btnDone = findViewById(R.id.btnDone);
 
         task = (Task) getIntent().getSerializableExtra("task");
+        if(task.getClass().equals(Text.class)) task = TextDAO.getInstance().get(new TextMapper(), task.getId());
+        else task = CheckListDAO.getInstance().get(new CheckListMapper(), task.getId());
+
         if(task.getReminderId() == 0){
             reminder = new Reminder();
         }else {
@@ -96,12 +105,31 @@ public class ReminderActivity extends AppCompatActivity {
                         }
                     } else {
                         ReminderDAO.getInstance().update(reminder);
+                        removeAlarm(reminder.getId());
                     }
+                    addAlarm(task, reminder.getId(), System.currentTimeMillis() + (reminder.getStartDate().getTime() - System.currentTimeMillis()));
                 }
 
                 backToMainActivity();
             }
         });
+    }
+
+    public void addAlarm(Task task, int requestCode, long start) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(this, ReminderReceiver.class);
+        Bundle bd = new Bundle();
+        bd.putSerializable("task", task);
+        intent.putExtra("bd", bd);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, start, pendingIntent);
+    }
+
+    public void removeAlarm(int requestCode) {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent = new Intent(ReminderActivity.this, ReminderReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        alarmManager.cancel(pendingIntent);
     }
 
     public void backToMainActivity(){
@@ -130,5 +158,10 @@ public class ReminderActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.layoutOption, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

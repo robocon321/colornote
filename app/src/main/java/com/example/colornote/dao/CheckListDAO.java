@@ -48,7 +48,7 @@ public class CheckListDAO extends AbstractDAO{
 
     public List<CheckList> getByStatus(int status){
         List<CheckList> list = new ArrayList<>();
-        String query = queryAll() + "WHERE status = "+status;
+        String query = queryAll() + " WHERE status = "+status;
         Cursor cursor = database.getSqLiteDatabase().rawQuery(query, null);
         RowMapper<CheckList> mapper = new CheckListMapper();
         while(cursor.moveToNext()){
@@ -62,6 +62,27 @@ public class CheckListDAO extends AbstractDAO{
         String query = ItemCheckListDAO.getInstance().queryAll() + " WHERE parentId = "+parentId;
         Cursor cursor = database.getSqLiteDatabase().rawQuery(query, null);
         RowMapper<ItemCheckList> mapper = new ItemCheckListMapper();
+        while(cursor.moveToNext()){
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
+    }
+    public List<CheckList> getNoteCheckList() {
+        List<CheckList> list = new ArrayList<>();
+        String sql = queryAll() + " WHERE reminderId IS NULL" ;
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
+        RowMapper<CheckList> mapper= new CheckListMapper();
+        while(cursor.moveToNext()){
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
+    }
+
+    public List<CheckList> getCalendarCheckList() {
+        List<CheckList> list = new ArrayList<>();
+        String sql = queryAll() + " WHERE reminderId IS NOT NULL" ;
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
+        RowMapper<CheckList> mapper= new CheckListMapper();
         while(cursor.moveToNext()){
             list.add(mapper.mappRow(cursor));
         }
@@ -83,4 +104,10 @@ public class CheckListDAO extends AbstractDAO{
     public String queryAll() {
         return "SELECT * FROM CheckList";
     }
+
+    public void delete(int id){
+        String sql = "DELETE FROM CheckList WHERE id = "+id;
+        database.getSqLiteDatabase().execSQL(sql);
+    }
+
 }

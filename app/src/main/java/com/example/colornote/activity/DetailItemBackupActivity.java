@@ -22,6 +22,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.colornote.R;
 import com.example.colornote.adapter.ViewListAdapter;
@@ -33,6 +34,7 @@ import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.BackupInfo;
 import com.example.colornote.model.CheckList;
 import com.example.colornote.model.Task;
+import com.example.colornote.model.Text;
 import com.example.colornote.util.Constant;
 import com.example.colornote.util.DateConvert;
 
@@ -152,26 +154,49 @@ public class DetailItemBackupActivity extends AppCompatActivity {
                 });
             }
         });
-        spTaskBackup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spStatusBackup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int type = position;
-                int status = spStatusBackup.getSelectedItemPosition();
-                filterData(type, status);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                tasks.clear();
+                if(i == Constant.BACKUP_STATUS.ALL_STATUS) {
+                    tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
+                    tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
+                }else if(i == Constant.BACKUP_STATUS.NORMAL_STATUS){
+                    tasks.addAll(TextDAO.getInstance().getTextEnable());
+                    tasks.addAll(CheckListDAO.getInstance().getCheckListEnable());
+                }else {
+                    tasks.addAll(TextDAO.getInstance().getByStatus(1));
+                    tasks.addAll(CheckListDAO.getInstance().getByStatus(1));
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
-        spStatusBackup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        spTaskBackup.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int type = spTaskBackup.getSelectedItemPosition();
-                int status = position;
-                filterData(type, status);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                tasks.clear();
+                if(i == Constant.BACKUP_TYPE.ALL_TABLE) {
+                    tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
+                    tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
+                } else if(i == Constant.BACKUP_TYPE.NOTES_TABLE) {
+                    tasks.addAll(TextDAO.getInstance().getNoteText());
+                    tasks.addAll(CheckListDAO.getInstance().getNoteCheckList());
+                } else {
+                    tasks.addAll(TextDAO.getInstance().getCalendarText());
+                    tasks.addAll(CheckListDAO.getInstance().getCalendarCheckList());
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
-    }
-
-    public void filterData(int type, int status){
-        tasks.clear();
-
     }
 }

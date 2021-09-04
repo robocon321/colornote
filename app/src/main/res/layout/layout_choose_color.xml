@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="350dp"
+    android:layout_height="350dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <GridLayout
+        android:id="@+id/glColor"
+        android:columnCount="3"
+        android:rowCount="3"
+        android:useDefaultMargins="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </GridLayout>
+</LinearLayout>

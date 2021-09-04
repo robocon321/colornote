@@ -110,7 +110,7 @@ public class ReminderTypeNoneFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Calendar cal = ((ReminderActivity) getActivity()).cal;
-                cal.setTimeInMillis(cal.getTimeInMillis()+ 15 * Constant.MINUTE);
+                cal.setTimeInMillis(cal.getTimeInMillis()+ 15 * Constant.TIME_TO_MILL.MINUTE);
                 ((ReminderActivity) getActivity()).switchFragment(2);
             }
         });
@@ -119,7 +119,7 @@ public class ReminderTypeNoneFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Calendar cal = ((ReminderActivity) getActivity()).cal;
-                cal.setTimeInMillis(cal.getTimeInMillis()+ 30 * Constant.MINUTE);
+                cal.setTimeInMillis(cal.getTimeInMillis()+ 30 * Constant.TIME_TO_MILL.MINUTE);
                 ((ReminderActivity) getActivity()).switchFragment(2);
             }
         });
