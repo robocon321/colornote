@@ -48,7 +48,7 @@ public abstract class AbstractDAO {
         return cursor.getInt(0);
     }
 
-    public <T> List<T> getWithKey(RowMapper<T> mapper, String s) {
+    public <T> List<T> getWithKey(RowMapper<T> mapper, char s) {
         List<T> list = new ArrayList<>();
         Cursor cursor = database.getSqLiteDatabase().rawQuery(queryWithKey(), new String[]{"%" + s + "%", "%" + s + "%", "%" + s + "%"});
         while (cursor.moveToNext()) {

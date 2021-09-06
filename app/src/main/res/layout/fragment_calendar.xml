@@ -5,41 +5,45 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#F3F3F3"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        android:weightSum="7">
+        android:visibility="visible">
 
-        <TextView
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:text="Calendar"
-            android:textColor="#454343"
-            android:textSize="30sp"
-            android:textStyle="bold" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
 
-        <ImageButton
-            android:id="@+id/btnShowDate"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/ic_calendar" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/txtCalendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/ic_calendar_36"
+                android:paddingRight="12dp"
+                android:text="@string/app_calendar"
+                android:textSize="30sp" />
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
 
     <com.applandeo.materialcalendarview.CalendarView
         android:id="@+id/calCustom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
+        app:abbreviationsBarColor="#f4f4f4"
+        app:abbreviationsLabelsColor="@color/teal_700"
+        app:anotherMonthsDaysLabelsColor="#d3d3d3"
+        app:datePicker="true"
         app:daysLabelsColor="@color/black"
-        app:forwardButtonSrc="@drawable/next"
-        app:headerColor="#D6D2D2"
-        app:headerLabelColor="@color/black"
-        app:previousButtonSrc="@drawable/previous"
-        app:selectionColor="@android:color/holo_orange_dark"
-        app:todayLabelColor="@color/teal_700"></com.applandeo.materialcalendarview.CalendarView>
+        app:disabledDaysLabelsColor="@color/black"
+        app:eventsEnabled="true"
+        app:forwardButtonSrc="@drawable/ic_next"
+        app:headerColor="#d3d3d3"
+        app:headerLabelColor="#717171"
+        app:previousButtonSrc="@drawable/ic_previous"
+        app:selectionColor="@color/teal_700"
+        app:swipeEnabled="true"
+        app:todayLabelColor="@android:color/holo_orange_dark" />
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,25 +10,24 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F3F3F3"
+        android:background="#f3f3f3"
         android:orientation="horizontal"
-        android:padding="5dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp">
+        android:padding="8dp">
 
-        <EditText
-            android:id="@+id/edtSearch"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/svSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/boder_textview_search"
-            android:hint="Search"
-            android:padding="5dp"
-            android:textSize="20sp" />
+            android:background="@drawable/bg_search"
+            app:iconifiedByDefault="false"
+            app:queryBackground="@drawable/background_transparent"
+            app:queryHint="Search here..."/>
 
 
     </LinearLayout>
 
     <GridView
+        android:layout_marginTop="8dp"
         android:id="@+id/gvTaskSearch"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

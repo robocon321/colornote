@@ -1,15 +1,13 @@
 package com.example.colornote.fragment;
 
-import android.graphics.LinearGradient;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.GridView;
+
+import androidx.appcompat.widget.SearchView;
+
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,16 +20,13 @@ import com.example.colornote.adapter.ViewListAdapter;
 import com.example.colornote.dao.CheckListDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.mapper.CheckListMapper;
-import com.example.colornote.mapper.RowMapper;
 import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.Task;
-import com.example.colornote.model.Text;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SearchFragment extends Fragment {
-    EditText edtSearch;
+    SearchView svSearch;
 
     GridView gvTaskSearch;
     ArrayList<Task> lsTask;
@@ -50,10 +45,10 @@ public class SearchFragment extends Fragment {
     }
 
     private void addControls(View view) {
-        edtSearch = (EditText) view.findViewById(R.id.edtSearch);
+        svSearch = view.findViewById(R.id.svSearch);
 
-        gvTaskSearch = (GridView) view.findViewById(R.id.gvTaskSearch);
-        lsTask = new ArrayList<Task>();
+        gvTaskSearch = view.findViewById(R.id.gvTaskSearch);
+        lsTask = new ArrayList<>();
 
 
         adapterTask = new ViewListAdapter(lsTask, getActivity());
@@ -65,25 +60,29 @@ public class SearchFragment extends Fragment {
     }
 
     private void addEvents() {
-        edtSearch.addTextChangedListener(new TextWatcher() {
+        svSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public boolean onQueryTextSubmit(String s) {
+                char[] arrChar = s.toCharArray();
+                for (char c : arrChar) {
+                    showWithChar(c);
+                }
+
+                if (lsTask.isEmpty()) {
+                    Toast.makeText(getActivity(), "Not found: " + s, Toast.LENGTH_SHORT).show();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
                 lsTask.clear();
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                showWithChar(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+                return false;
             }
         });
     }
 
-    private void showWithChar(String s) {
-//        FIXME: duplicate by id and parentId
+    private void showWithChar(char s) {
         lsTask.clear();
         lsTask.addAll(checkListDAO.getWithKey(new CheckListMapper(), s));
         lsTask.addAll(textDAO.getWithKey(new TextMapper(), s));

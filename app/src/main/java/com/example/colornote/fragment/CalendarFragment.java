@@ -3,12 +3,11 @@ package com.example.colornote.fragment;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,7 +19,6 @@ import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.colornote.R;
 import com.example.colornote.activity.CheckList_Activity;
-import com.example.colornote.activity.MainActivity;
 import com.example.colornote.activity.Text_Activity;
 
 import java.text.SimpleDateFormat;
@@ -29,8 +27,10 @@ import java.util.Calendar;
 import java.util.List;
 
 public class CalendarFragment extends Fragment {
-    private ImageButton btnShowDate;
+    private TextView txtCalendar;
 
+    private Button button_text, button_checklist;
+    private Dialog dialog;
     //  add an icon in calendar when add a note success
     private CalendarView calendarView;
     private List<EventDay> lsEvent;
@@ -46,14 +46,14 @@ public class CalendarFragment extends Fragment {
     }
 
     private void addControls(View view) {
-        btnShowDate = (ImageButton) view.findViewById(R.id.btnShowDate);
+        txtCalendar = (TextView) view.findViewById(R.id.txtCalendar);
 
         calendarView = (CalendarView) view.findViewById(R.id.calCustom);
-        lsEvent = new ArrayList<EventDay>();
+        lsEvent = new ArrayList<>();
     }
 
     private void addEvents() {
-        btnShowDate.setOnClickListener(new View.OnClickListener() {
+        txtCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDate();
@@ -70,13 +70,13 @@ public class CalendarFragment extends Fragment {
 
     private void addTask(EventDay eventDay) {
 //        add icon
-//        lsEvent.add(new EventDay(eventDay.getCalendar(),R.drawable.ic_calendar));
-//        calendarView.setEvents(lsEvent);
+        lsEvent.add(new EventDay(eventDay.getCalendar(),R.drawable.ic_text));
+        calendarView.setEvents(lsEvent);
 
 //        add task
-        Dialog dialog = new Dialog(getActivity());
+        dialog = new Dialog(getActivity());
         dialog.setContentView(R.layout.dialog_create_task);
-        Button button_text, button_checklist;
+
         button_text = (Button) dialog.findViewById(R.id.btn_textDialog);
         button_checklist = (Button) dialog.findViewById(R.id.btn_checklistDialog);
 
@@ -87,6 +87,7 @@ public class CalendarFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
         button_checklist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,9 +95,8 @@ public class CalendarFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        String getDate = new SimpleDateFormat("yyyy-MM-dd").format(eventDay.getCalendar().getTime());
-        Toast.makeText(getActivity(), "Toast: " + getDate, Toast.LENGTH_SHORT).show();
-//        dialog.show();
+
+        dialog.show();
     }
 
     private void showDate() {
