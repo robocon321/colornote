@@ -10,13 +10,17 @@ import com.example.colornote.model.ItemCheckList;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemCheckListDAO extends AbstractDAO{
+public class ItemCheckListDAO extends AbstractDAO {
     private static ItemCheckListDAO instance = new ItemCheckListDAO();
-    public static ItemCheckListDAO getInstance(){
+
+    public static ItemCheckListDAO getInstance() {
         return instance;
     }
-    private ItemCheckListDAO(){}
-    public long insert(ItemCheckList itemCheckList){
+
+    private ItemCheckListDAO() {
+    }
+
+    public long insert(ItemCheckList itemCheckList) {
         ContentValues values = new ContentValues();
         values.put("content", itemCheckList.getContent());
         values.put("parentId", itemCheckList.getParentId());
@@ -25,27 +29,27 @@ public class ItemCheckListDAO extends AbstractDAO{
         return database.getSqLiteDatabase().insert("ItemCheckList", null, values);
     }
 
-    public int update(ItemCheckList itemCheckList){
+    public int update(ItemCheckList itemCheckList) {
         ContentValues values = new ContentValues();
         values.put("content", itemCheckList.getContent());
         values.put("parentId", itemCheckList.getParentId());
         values.put("modifiedDate", itemCheckList.getModifiedDate().getTime());
         values.put("status", itemCheckList.getStatus());
-        return database.getSqLiteDatabase().update("ItemCheckList", values, "id = ?", new String[]{itemCheckList.getId()+""});
+        return database.getSqLiteDatabase().update("ItemCheckList", values, "id = ?", new String[]{itemCheckList.getId() + ""});
     }
 
-    public int changeStatus(long id, int status){
+    public int changeStatus(long id, int status) {
         ContentValues values = new ContentValues();
         values.put("status", status);
-        return database.getSqLiteDatabase().update("ItemCheckList", values, "id = ?", new String[]{id+""});
+        return database.getSqLiteDatabase().update("ItemCheckList", values, "id = ?", new String[]{id + ""});
     }
 
-    public List<ItemCheckList> getByStatus(int status){
+    public List<ItemCheckList> getByStatus(int status) {
         List<ItemCheckList> list = new ArrayList<>();
-        String query = queryAll() + "WHERE status = "+status;
+        String query = queryAll() + "WHERE status = " + status;
         Cursor cursor = database.getSqLiteDatabase().rawQuery(query, null);
         RowMapper<ItemCheckList> mapper = new ItemCheckListMapper();
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             list.add(mapper.mappRow(cursor));
         }
         return list;
@@ -70,5 +74,10 @@ public class ItemCheckListDAO extends AbstractDAO{
     @Override
     public String queryAll() {
         return "SELECT * FROM ItemCheckList";
+    }
+
+    @Override
+    public String queryWithKey() {
+        return "Select * from ItemCheckList Where title LIKE ? OR content LIKE ? or modifiedDate like ?";
     }
 }

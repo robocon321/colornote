@@ -41,4 +41,9 @@ public class ColorDAO extends AbstractDAO{
     public String queryAll() {
         return "SELECT * FROM Color";
     }
+
+    @Override
+    public String queryWithKey() {
+        return "Select * from Color Where title LIKE ? OR content LIKE ? or modifiedDate like ?";
+    }
 }
