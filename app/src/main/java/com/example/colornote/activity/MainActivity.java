@@ -13,6 +13,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
@@ -21,6 +22,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +32,7 @@ import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,7 +45,9 @@ import com.example.colornote.dao.TextDAO;
 import com.example.colornote.database.Database;
 import com.example.colornote.fragment.HomeFragment;
 import com.example.colornote.mapper.ColorMapper;
+import com.example.colornote.mapper.ItemCheckListMapper;
 import com.example.colornote.model.CheckList;
+import com.example.colornote.model.ItemCheckList;
 import com.example.colornote.model.Task;
 import com.example.colornote.model.Text;
 import com.example.colornote.receiver.ReminderReceiver;
@@ -65,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
     FloatingActionButton fabAddTask;
     LinearLayout tabLayoutOption, tabArchive, tabDelete, tabColor, tabReminder, tabMore;
     TextView txtTitle;
+    AlertDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -215,26 +223,144 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         tabMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                Intent intent = new Intent(MainActivity.this, ReminderReceiver.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000, pendingIntent);
+                PopupMenu popup = new PopupMenu(MainActivity.this, view);
+                MenuInflater inflater = popup.getMenuInflater();
+                inflater.inflate(R.menu.home_more_option, popup.getMenu());
+
+                boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+                for(int i = 0; i < isSelected.length ; i ++) {
+                    if(isSelected[i]) {
+                        Task task = HomeFragment.tasks.get(i);
+                        String check = task.completeAll() ? "Uncheck" : "Check";
+                        popup.getMenu().findItem(R.id.mnCheck).setTitle(check);
+                        break;
+                    }
+                }
+
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.mnCheck:
+                                checkTask();
+                                break;
+                            case R.id.mnSend:
+                                sendTask();
+                                break;
+                            case R.id.mnLock:
+                                Toast.makeText(MainActivity.this, "Lock", Toast.LENGTH_SHORT).show();
+                                break;
+                            default:
+                                Toast.makeText(MainActivity.this, item.getTitle(), Toast.LENGTH_SHORT).show();
+                                break;
+                        }
+                        return true;                    }
+                });
+
+                popup.show();
             }
         });
     }
 
-    public void archiveTask() {
+    public void checkTask () {
         boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
         for(int i = 0; i < isSelected.length ; i ++) {
             if(isSelected[i]) {
                 Task task = HomeFragment.tasks.get(i);
+                boolean isCompleted = !task.completeAll();
+                if(task.getClass().equals(Text.class)) {
+                    TextDAO.getInstance().changeCompleted(task.getId(), isCompleted);
+                    HomeFragment.tasks.get(i).setCompleted(isCompleted);
+                    HomeFragment.adapter.notifyDataSetChanged();
+                }
+                else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    if(!task.completeAll()) {
+                        builder.setTitle("Check all items");
+                        builder.setMessage("Are you sure you want to check all items?");
+                        int finalI1 = i;
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int index) {
+                                List<ItemCheckList> items = ItemCheckListDAO.getInstance().getByParentId(task.getId());
+                                CheckListDAO.getInstance().changeCompleted(task.getId(), isCompleted);
+                                for (ItemCheckList item : items) {
+                                    ItemCheckListDAO.getInstance().changeCompleted(item.getId(), isCompleted);
+                                }
+                                HomeFragment.tasks.get(finalI1).setCompleted(isCompleted);
+                                Log.e("AAA", HomeFragment.tasks.get(finalI1).toString());
+                                Log.e("AAA",ItemCheckListDAO.getInstance().getByParentId(task.getId()).toString());
+                                HomeFragment.adapter.notifyDataSetChanged();
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int index) {
+                                dialog.dismiss();
+                            }
+                        });
+                    } else {
+                        builder.setTitle("Uncheck all items");
+                        builder.setMessage("Are you sure you want to uncheck all items?");
+                        int finalI = i;
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int index) {
+                                List<ItemCheckList> items = ItemCheckListDAO.getInstance().getByParentId(task.getId());
+                                CheckListDAO.getInstance().changeCompleted(task.getId(), isCompleted);
+                                for (ItemCheckList item : items) {
+                                    ItemCheckListDAO.getInstance().changeCompleted(item.getId(), isCompleted);
+                                }
+                                HomeFragment.tasks.get(finalI).setCompleted(isCompleted);
+                                HomeFragment.adapter.notifyDataSetChanged();
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int index) {
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                    dialog = builder.create();
+                    dialog.show();
+                };
+                break;
+            }
+        }
+    }
+
+    public void sendTask() {
+        boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+        for(int i = 0; i < isSelected.length ; i ++) {
+            if(isSelected[i]) {
+                Task task = HomeFragment.tasks.get(i);
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_SUBJECT, task.getTitle());
+                this.startActivity(Intent.createChooser(intent, "Share tasks"));
+                break;
+            }
+        }
+    }
+
+    public void archiveTask() {
+        boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+        ArrayList<Task> taskRemoves = new ArrayList<>();
+        for(int i = 0; i < isSelected.length ; i ++) {
+            if(isSelected[i]) {
+                Task task = HomeFragment.tasks.get(i);
+                taskRemoves.add(task);
                 if(task.getClass().equals(Text.class)) TextDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.ARCHIVE);
                 else {
                     CheckListDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.ARCHIVE);
                 }
             }
         }
-        HomeFragment.loadTask();
+        for (Task t : taskRemoves) {
+            HomeFragment.tasks.remove(t);
+        }
+        HomeFragment.adapter.notifyDataSetChanged();
     }
 
     public void changeColorTask() {
@@ -277,9 +403,11 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
 
     public void deleteTask() {
         boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+        ArrayList<Task> taskRemoves = new ArrayList<>();
         for(int i = 0; i < isSelected.length ; i ++) {
             if(isSelected[i]) {
                 Task task = HomeFragment.tasks.get(i);
+                taskRemoves.add(task);
                 if(task.getClass().equals(Text.class)) TextDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.RECYCLE_BIN);
                 else {
                     ItemCheckListDAO.getInstance().changeStatus(task.getId(), Constant.STATUS.RECYCLE_BIN);
@@ -287,7 +415,10 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                 }
             }
         }
-        HomeFragment.loadTask();
+        for (Task t : taskRemoves) {
+            HomeFragment.tasks.remove(t);
+        }
+        HomeFragment.adapter.notifyDataSetChanged();
     }
 
     public void changeReminderActivitiy(){
@@ -348,7 +479,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         SelectedObserverService.getInstance().removeObserver(this);
     }
 
-//    @Override
+    //    @Override
 //    protected void onResume() {
 //        super.onResume();
 //        SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(this);

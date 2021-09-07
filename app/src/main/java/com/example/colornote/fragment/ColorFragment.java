@@ -45,8 +45,7 @@ public class ColorFragment extends Fragment {
         ArrayList<Task> tasks = HomeFragment.tasks;
 
         List<Color> colors = new ArrayList<Color>();
-        ColorDAO dao = ColorDAO.getInstance();
-        colors = dao.getAll(new ColorMapper());
+        colors = ColorDAO.getInstance().getAll(new ColorMapper());
 
         for(Color color : colors){
             LayoutInflater inflater = LayoutInflater.from(context);
@@ -89,15 +88,9 @@ public class ColorFragment extends Fragment {
                 @RequiresApi(api = Build.VERSION_CODES.N)
                 @Override
                 public void onClick(View v) {
-                    tasks.clear();
-                    tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
-                    tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
-                    if(color.getId() != 1){
-                        tasks.removeIf(task -> task.getColorId() != color.getId());
-                    }
-                    HomeFragment.adapter.notifyDataSetChanged();
+                    HomeFragment.colorType = color.getId();
+                    HomeFragment.filter();
                     HomeFragment.dialogSortFragment.dismiss();
-                    HomeFragment.btnSort.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? "#F6F6F6" : color.getColorMain()));
                 }
             });
 

@@ -34,7 +34,8 @@
         android:backgroundTint="@color/teal_700"
         app:layout_anchor="@id/bottomAppBar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:contentDescription="TODO" />
     <LinearLayout
         android:id="@+id/tabLayoutOption"
         android:visibility="invisible"

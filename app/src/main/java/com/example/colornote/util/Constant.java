@@ -8,15 +8,14 @@ public class Constant {
     public static class STATUS {
         public final static int RECYCLE_BIN = 0;
         public final static int ARCHIVE = 1;
-        public final static int NON_COMPLETE = 2;
-        public final static int COMPLETE = 3;
+        public final static int NORMAL = 2;
     }
 
     // task type
     public static class TASK_TYPE {
         public final static int ALL_TASK = 0;
-        public final static int TEXT_TASK = 0;
-        public final static int CHECKLIST_TASK = 0;
+        public final static int TEXT_TASK = 1;
+        public final static int CHECKLIST_TASK = 2;
     }
 
     // backup table type
@@ -54,5 +53,13 @@ public class Constant {
         public final static long HOUR = 3600000L;
         public final static long MINUTE = 60000L;
         public final static long SECOND = 1000L;
+    }
+
+    public static class SORT_BY {
+        public final static int NO_SORT = 0;
+        public final static int MODIFIED_TIME = 1;
+        public final static int ALPHABECALLY = 2;
+        public final static int COLOR = 3;
+        public final static int REMINDER = 4;
     }
 }

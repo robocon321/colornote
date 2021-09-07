@@ -15,10 +15,11 @@ public class CheckListMapper implements RowMapper<CheckList>{
         CheckList checkList = new CheckList();
         checkList.setId(cursor.getInt(0));
         checkList.setTitle(cursor.getString(1));
-        checkList.setColorId(cursor.getInt(2));
-        checkList.setReminderId(cursor.getInt(3));
-        checkList.setModifiedDate(new Date(cursor.getLong(4)));
-        checkList.setStatus(cursor.getInt(5));
+        checkList.setCompleted(cursor.getInt(2) == 1);
+        checkList.setColorId(cursor.getInt(3));
+        checkList.setReminderId(cursor.getInt(4));
+        checkList.setModifiedDate(new Date(cursor.getLong(5)));
+        checkList.setStatus(cursor.getInt(6));
         return checkList;
     }
 }

@@ -66,11 +66,13 @@ public class ViewLargeGridAdapter extends ViewAdapter {
 
         holder.txtTitle.setText(task.getTitle());
         holder.txtContent.setText(task.showContent());
-        if(task.isComplete()) {
+        if(task.completeAll()) {
             holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#737373"));
             holder.imgCheck.setImageResource(R.drawable.ic_check);
         }else{
+            holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#000000"));
             holder.imgCheck.setImageResource(0);
         }
         Color color = colorDAO.get(new ColorMapper(), task.getColorId());

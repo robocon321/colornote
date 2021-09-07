@@ -93,11 +93,14 @@ public class ViewListAdapter extends ViewAdapter {
 
         holder.txtTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);
 //
-        if(task.isComplete()){
+        if(task.completeAll()){
             holder.imgCheck.setImageResource(R.drawable.ic_check);
             holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#737373"));
         }else
+            holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#000000"));
+
             if(task.getStatus()==1){
                 holder.imgCheck.setImageResource(R.drawable.ic_trash_can);
             }else{

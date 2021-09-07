@@ -5,6 +5,7 @@ import java.util.Date;
 public class ItemCheckList {
     private int id;
     private String content;
+    private boolean completed;
     private int parentId;
     private Date modifiedDate;
     private int status;
@@ -47,5 +48,25 @@ public class ItemCheckList {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
+    @Override
+    public String toString() {
+        return "ItemCheckList{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                ", completed=" + completed +
+                ", parentId=" + parentId +
+                ", modifiedDate=" + modifiedDate +
+                ", status=" + status +
+                '}';
     }
 }

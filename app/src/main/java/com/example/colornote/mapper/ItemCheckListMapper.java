@@ -12,9 +12,10 @@ public class ItemCheckListMapper implements RowMapper<ItemCheckList> {
         ItemCheckList item = new ItemCheckList();
         item.setId(cursor.getInt(0));
         item.setContent(cursor.getString(1));
-        item.setParentId(cursor.getInt(2));
-        item.setModifiedDate(new Date(cursor.getLong(3)));
-        item.setStatus(cursor.getInt(4));
+        item.setCompleted(cursor.getInt(2) == 1);
+        item.setParentId(cursor.getInt(3));
+        item.setModifiedDate(new Date(cursor.getLong(4)));
+        item.setStatus(cursor.getInt(5));
         return item;
     }
 }
