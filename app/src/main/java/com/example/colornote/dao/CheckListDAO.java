@@ -87,7 +87,7 @@ public class CheckListDAO extends AbstractDAO{
         }
         return list;
     }
-    
+
     @Override
     public String queryAll() {
         return "SELECT * FROM CheckList";
@@ -96,6 +96,11 @@ public class CheckListDAO extends AbstractDAO{
     public void delete(int id){
         String sql = "DELETE FROM CheckList WHERE id = "+id;
         database.getSqLiteDatabase().execSQL(sql);
+    }
+
+    @Override
+    public String queryWithKey() {
+        return "SELECT * FROM CHECKLIST WHERE title LIKE ? or modifiedDate like ? OR id IN (SELECT parentId FROM ItemChecklist WHERE content like ?)";
     }
 
 }

@@ -96,8 +96,14 @@ public class TextDAO extends AbstractDAO{
         return "SELECT * FROM Text";
     }
 
+
+    @Override
+    public String queryWithKey() {
+        return "Select * from Text Where title LIKE ? OR content LIKE ? or modifiedDate like ?";}
+
     public void delete(int id){
         String sql = "DELETE FROM Text WHERE id = "+id;
         database.getSqLiteDatabase().execSQL(sql);
+
     }
 }

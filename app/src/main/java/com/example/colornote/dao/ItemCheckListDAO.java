@@ -79,4 +79,9 @@ public class ItemCheckListDAO extends AbstractDAO{
     public String queryAll() {
         return "SELECT * FROM ItemCheckList";
     }
+
+    @Override
+    public String queryWithKey() {
+        return "Select * from ItemCheckList Where title LIKE ? OR content LIKE ? or modifiedDate like ?";
+    }
 }
