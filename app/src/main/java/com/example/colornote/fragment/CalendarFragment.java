@@ -24,6 +24,7 @@ import com.example.colornote.activity.Text_Activity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class CalendarFragment extends Fragment {
@@ -31,10 +32,13 @@ public class CalendarFragment extends Fragment {
 
     private Button button_text, button_checklist;
     private Dialog dialog;
+
+    private String setDate;
+    private Bundle bundle;
+
     //  add an icon in calendar when add a note success
     private CalendarView calendarView;
     private List<EventDay> lsEvent;
-
 
     @Nullable
     @Override
@@ -69,9 +73,11 @@ public class CalendarFragment extends Fragment {
     }
 
     private void addTask(EventDay eventDay) {
+        setDate = new SimpleDateFormat("dd-MM-yyyy").format(eventDay.getCalendar().getTime());
+
 //        add icon
-        lsEvent.add(new EventDay(eventDay.getCalendar(),R.drawable.ic_text));
-        calendarView.setEvents(lsEvent);
+//        lsEvent.add(new EventDay(eventDay.getCalendar(),R.drawable.ic_text));
+//        calendarView.setEvents(lsEvent);
 
 //        add task
         dialog = new Dialog(getActivity());
@@ -80,10 +86,14 @@ public class CalendarFragment extends Fragment {
         button_text = (Button) dialog.findViewById(R.id.btn_textDialog);
         button_checklist = (Button) dialog.findViewById(R.id.btn_checklistDialog);
 
+        bundle = new Bundle();
+
         button_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), Text_Activity.class);
+                bundle.putString("date", setDate);
+                intent.putExtra("bundle", bundle);
                 startActivity(intent);
             }
         });
@@ -92,6 +102,8 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), CheckList_Activity.class);
+                bundle.putString("date", setDate);
+                intent.putExtra("bundle", bundle);
                 startActivity(intent);
             }
         });

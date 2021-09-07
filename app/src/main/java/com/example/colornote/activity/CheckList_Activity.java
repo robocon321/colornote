@@ -2,6 +2,7 @@ package com.example.colornote.activity;
 
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -34,6 +35,8 @@ import com.example.colornote.model.CheckList;
 import com.example.colornote.model.ItemCheckList;
 import com.example.colornote.model.Text;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,6 +49,8 @@ public class CheckList_Activity extends AppCompatActivity {
     Button button_additem;
     RecyclerView recyclerView;
     ArrayList<String> list = new ArrayList<>();
+
+    private Date date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +124,16 @@ public class CheckList_Activity extends AppCompatActivity {
                 dialog.show();
             }
         });
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("bundle");
+        String data = bundle.getString("date");
+        try {
+            date = new SimpleDateFormat("dd-MM-yyyy").parse(data);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(this, "" + date, Toast.LENGTH_SHORT).show();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -194,12 +209,15 @@ public class CheckList_Activity extends AppCompatActivity {
         });
     }
     public boolean addCheckList(int color){
+        if(date == null){
+            date = Calendar.getInstance().getTime();
+        }
+        
         CheckList checkList = new CheckList();
         CheckListDAO checkListDAO = CheckListDAO.getInstance();
         checkList.setTitle(title_checklist.getText().toString());
         checkList.setReminderId(1);
         checkList.setColorId(color);
-        Date date = Calendar.getInstance().getTime();
         checkList.setModifiedDate(date);
         checkList.setStatus(3);
 
