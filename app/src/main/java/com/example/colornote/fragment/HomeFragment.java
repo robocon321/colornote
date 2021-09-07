@@ -76,8 +76,8 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static void filter() {
         tasks.clear();
-        tasks.addAll(TextDAO.getInstance().getTextEnable());
-        tasks.addAll(CheckListDAO.getInstance().getCheckListEnable());
+        tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.NORMAL));
+        tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.NORMAL));
 
         if(colorType != 1) {
             tasks.removeIf(task -> task.getColorId() != colorType);
@@ -437,8 +437,8 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
 
     public static void loadTask(){
         tasks.clear();
-        tasks.addAll(TextDAO.getInstance().getTextEnable());
-        tasks.addAll(CheckListDAO.getInstance().getCheckListEnable());
+        tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.NORMAL));
+        tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.NORMAL));
         adapter.notifyDataSetChanged();
     }
 

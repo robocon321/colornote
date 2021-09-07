@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                 for(int i = 0; i < isSelected.length ; i ++) {
                     if(isSelected[i]) {
                         Task task = HomeFragment.tasks.get(i);
-                        String check = task.getStatus() == Constant.STATUS.COMPLETE ? "Uncheck" : "Check";
+                        String check = task.completeAll() ? "Uncheck" : "Check";
                         popup.getMenu().findItem(R.id.mnCheck).setTitle(check);
                         break;
                     }
@@ -267,15 +267,15 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         for(int i = 0; i < isSelected.length ; i ++) {
             if(isSelected[i]) {
                 Task task = HomeFragment.tasks.get(i);
-                int status = task.getStatus() == Constant.STATUS.COMPLETE ? Constant.STATUS.NON_COMPLETE : Constant.STATUS.COMPLETE;
+                boolean isCompleted = !task.completeAll();
                 if(task.getClass().equals(Text.class)) {
-                    TextDAO.getInstance().changeStatus(task.getId(), status);
-                    HomeFragment.tasks.get(i).setStatus(status);
+                    TextDAO.getInstance().changeCompleted(task.getId(), isCompleted);
+                    HomeFragment.tasks.get(i).setCompleted(isCompleted);
                     HomeFragment.adapter.notifyDataSetChanged();
                 }
                 else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                    if(task.getStatus() == Constant.STATUS.NON_COMPLETE) {
+                    if(!task.completeAll()) {
                         builder.setTitle("Check all items");
                         builder.setMessage("Are you sure you want to check all items?");
                         int finalI1 = i;
@@ -283,11 +283,13 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                             @Override
                             public void onClick(DialogInterface dialogInterface, int index) {
                                 List<ItemCheckList> items = ItemCheckListDAO.getInstance().getByParentId(task.getId());
-                                CheckListDAO.getInstance().changeStatus(task.getId(), status);
+                                CheckListDAO.getInstance().changeCompleted(task.getId(), isCompleted);
                                 for (ItemCheckList item : items) {
-                                    ItemCheckListDAO.getInstance().changeStatus(item.getId(), status);
+                                    ItemCheckListDAO.getInstance().changeCompleted(item.getId(), isCompleted);
                                 }
-                                HomeFragment.tasks.get(finalI1).setStatus(status);
+                                HomeFragment.tasks.get(finalI1).setCompleted(isCompleted);
+                                Log.e("AAA", HomeFragment.tasks.get(finalI1).toString());
+                                Log.e("AAA",ItemCheckListDAO.getInstance().getByParentId(task.getId()).toString());
                                 HomeFragment.adapter.notifyDataSetChanged();
                             }
                         });
@@ -305,11 +307,11 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                             @Override
                             public void onClick(DialogInterface dialogInterface, int index) {
                                 List<ItemCheckList> items = ItemCheckListDAO.getInstance().getByParentId(task.getId());
-                                CheckListDAO.getInstance().changeStatus(task.getId(), status);
+                                CheckListDAO.getInstance().changeCompleted(task.getId(), isCompleted);
                                 for (ItemCheckList item : items) {
-                                    ItemCheckListDAO.getInstance().changeStatus(item.getId(), status);
+                                    ItemCheckListDAO.getInstance().changeCompleted(item.getId(), isCompleted);
                                 }
-                                HomeFragment.tasks.get(finalI).setStatus(status);
+                                HomeFragment.tasks.get(finalI).setCompleted(isCompleted);
                                 HomeFragment.adapter.notifyDataSetChanged();
                             }
                         });

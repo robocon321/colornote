@@ -7,13 +7,14 @@ import java.util.Comparator;
 public abstract class Task implements Serializable {
     protected int id;
     protected String title;
+    protected boolean completed;
     protected int colorId;
     protected int reminderId;
     protected Date modifiedDate;
     protected int status;
 
     public abstract String showContent();
-    public abstract boolean isComplete();
+    public abstract boolean completeAll();
 
     public int getColorId() {
         return colorId;
@@ -91,11 +92,20 @@ public abstract class Task implements Serializable {
         }
     };
 
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", completed=" + completed +
                 ", colorId=" + colorId +
                 ", reminderId=" + reminderId +
                 ", modifiedDate=" + modifiedDate +

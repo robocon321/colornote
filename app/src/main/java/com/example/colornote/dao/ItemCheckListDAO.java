@@ -19,6 +19,7 @@ public class ItemCheckListDAO extends AbstractDAO{
     public long insert(ItemCheckList itemCheckList){
         ContentValues values = new ContentValues();
         values.put("content", itemCheckList.getContent());
+        values.put("isComplete", itemCheckList.isCompleted());
         values.put("parentId", itemCheckList.getParentId());
         values.put("modifiedDate", itemCheckList.getModifiedDate().getTime());
         values.put("status", itemCheckList.getStatus());
@@ -28,6 +29,7 @@ public class ItemCheckListDAO extends AbstractDAO{
     public int update(ItemCheckList itemCheckList){
         ContentValues values = new ContentValues();
         values.put("content", itemCheckList.getContent());
+        values.put("isComplete", itemCheckList.isCompleted());
         values.put("parentId", itemCheckList.getParentId());
         values.put("modifiedDate", itemCheckList.getModifiedDate().getTime());
         values.put("status", itemCheckList.getStatus());
@@ -37,6 +39,12 @@ public class ItemCheckListDAO extends AbstractDAO{
     public int changeStatus(long id, int status){
         ContentValues values = new ContentValues();
         values.put("status", status);
+        return database.getSqLiteDatabase().update("ItemCheckList", values, "id = ?", new String[]{id+""});
+    }
+
+    public int changeCompleted(long id, boolean isComplete){
+        ContentValues values = new ContentValues();
+        values.put("isComplete", isComplete ? 1 : 0);
         return database.getSqLiteDatabase().update("ItemCheckList", values, "id = ?", new String[]{id+""});
     }
 

@@ -354,8 +354,8 @@ public class DetailItemBackupActivity extends AppCompatActivity implements ISele
                 tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
                 tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
             } else if (statusBackup == Constant.BACKUP_STATUS.NORMAL_STATUS) {
-                tasks.addAll(TextDAO.getInstance().getTextEnable());
-                tasks.addAll(CheckListDAO.getInstance().getCheckListEnable());
+                tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.NORMAL));
+                tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.NORMAL));
             } else {
                 tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.ARCHIVE));
                 tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.ARCHIVE));

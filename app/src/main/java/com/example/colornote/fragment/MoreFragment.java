@@ -32,7 +32,7 @@ public class MoreFragment extends Fragment {
     @Nullable
     Button btnMoreTrashCan,btnMoreArchive,btnMoreSettings,btnMoreTheme,btnThemeDark,btnThemeDefault;
     Dialog dialogTheme;
-  //  RelativeLayout relativeLayout_signIn;
+    RelativeLayout relativeLayout_signIn;
     String themeName;
     SharedPreferences sharedPreferences;
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
