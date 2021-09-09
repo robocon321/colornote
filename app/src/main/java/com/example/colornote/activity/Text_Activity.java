@@ -161,7 +161,7 @@ public class Text_Activity extends AppCompatActivity {
         Date date = Calendar.getInstance().getTime();
         text.setModifiedDate(date);
         text.setReminderId(-1);
-        text.setStatus(3);
+        text.setStatus(Constant.STATUS.NORMAL);
         numEdit = textDAO.insert(text);
         Toast.makeText(Text_Activity.this,this.numEdit+"",Toast.LENGTH_LONG).show();
         closekeyboard();
@@ -176,7 +176,7 @@ public class Text_Activity extends AppCompatActivity {
         Date date = Calendar.getInstance().getTime();
         text.setModifiedDate(date);
         text.setReminderId(-1);
-        text.setStatus(2);
+        text.setStatus(Constant.STATUS.NORMAL);
         textDAO.update(text);
         closekeyboard();
         return true;
