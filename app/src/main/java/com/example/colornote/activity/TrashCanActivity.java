@@ -24,10 +24,13 @@ import com.example.colornote.R;
 import com.example.colornote.adapter.ViewAdapter;
 import com.example.colornote.adapter.ViewListAdapter;
 import com.example.colornote.dao.CheckListDAO;
+import com.example.colornote.dao.ItemCheckListDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.fragment.HomeFragment;
 import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.Task;
+import com.example.colornote.model.Text;
+import com.example.colornote.util.Constant;
 import com.example.colornote.util.ISeletectedObserver;
 import com.example.colornote.util.SelectedObserverService;
 
@@ -76,7 +79,7 @@ TextView txtCountTrashCanHidden;
                 builder.setTitle("Delete").setMessage("Are you sure you want to delete all notes in the trash can?").setCancelable(false)
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                tasks.clear();
+                deleteAllTask();
                 adapter.notifyDataSetChanged();
                             }
                         })
@@ -154,8 +157,18 @@ TextView txtCountTrashCanHidden;
             }
         });
 
-
-
+        btnDeletePermanently.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteTask();
+            }
+        });
+        btnRestore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                restoreTask();
+            }
+        });
 
     }
 
@@ -179,17 +192,66 @@ TextView txtCountTrashCanHidden;
 //       imgItemTask=findViewById(R.id.imgCheck);
 
         tasks = new ArrayList<>();
-        tasks.addAll(textDAO.getAll(new TextMapper()));
-        tasks.addAll(checkListDAO.getByStatus(1));
+        loadTask();
         adapter = new ViewListAdapter(tasks, TrashCanActivity.this);
         Collections.sort(tasks, Task.compareByTitle);
         adapter.notifyDataSetChanged();
         gvListRemove.setAdapter(adapter);
-
+        adapter.notifyDataSetChanged();
         SelectedObserverService.getInstance().addObserver(this);
 
     }
+    public void deleteAllTask() {
 
+        for(int i = 0; i < tasks.size() ; i ++) {
+
+                Task task = tasks.get(i);
+                if(task.getClass().equals(Text.class)) TextDAO.getInstance().delete(task.getId());
+                else {
+                    ItemCheckListDAO.getInstance().deleteByIdCheckList(task.getId());
+                    CheckListDAO.getInstance().delete(task.getId());
+                }
+
+        }
+        loadTask();
+        adapter.notifyDataSetChanged();
+    }
+    public void deleteTask() {
+        boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+        for(int i = 0; i < isSelected.length ; i ++) {
+            if(isSelected[i]) {
+                Task task = tasks.get(i);
+                if(task.getClass().equals(Text.class)) TextDAO.getInstance().delete(task.getId());
+                else {
+                    ItemCheckListDAO.getInstance().deleteByIdCheckList(task.getId());
+                    CheckListDAO.getInstance().delete(task.getId());
+                }
+            }
+        }
+        loadTask();
+        adapter.notifyDataSetChanged();
+    }
+    public void restoreTask(){
+        boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+        for(int i = 0; i < isSelected.length ; i ++) {
+            if(isSelected[i]) {
+                Task task = TrashCanActivity.tasks.get(i);
+                if(task.getClass().equals(Text.class)) TextDAO.getInstance().changeStatus(task.getId(),Constant.STATUS.NORMAL);
+                else {
+                    ItemCheckListDAO.getInstance().changeStatus(task.getId(),Constant.STATUS.NORMAL);
+                    CheckListDAO.getInstance().changeStatus(task.getId(),Constant.STATUS.NORMAL);
+                }
+            }
+        }
+        loadTask();
+        adapter.notifyDataSetChanged();
+    }
+    public static void loadTask(){
+        tasks.clear();
+        tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.RECYCLE_BIN));
+        tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.RECYCLE_BIN));
+
+    }
     @Override
     public void update(SelectedObserverService s) {
         if(barTopTrashCanHidden.getVisibility() == View.VISIBLE && !s.hasSelected()){
