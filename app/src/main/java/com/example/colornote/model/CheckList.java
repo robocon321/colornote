@@ -13,7 +13,7 @@ public class CheckList extends Task{
     @Override
     public String showContent() {
         List<ItemCheckList> list = new ArrayList<>();
-        list.addAll(CheckListDAO.getInstance().getItemCheckList(id));
+        list.addAll(ItemCheckListDAO.getInstance().getByParentId(id));
         String result = "";
         for(ItemCheckList item : list){
             result += "- "+item.getContent();
@@ -23,11 +23,11 @@ public class CheckList extends Task{
     }
 
     @Override
-    public boolean isComplete() {
+    public boolean completeAll() {
         List<ItemCheckList> list = new ArrayList<>();
-        list.addAll(CheckListDAO.getInstance().getItemCheckList(id));
+        list.addAll(ItemCheckListDAO.getInstance().getByParentId(id));
         for(ItemCheckList item : list){
-            if(item.getStatus() == Constant.STATUS.NON_COMPLETE)
+            if(!item.isCompleted())
                 return false;
         }
         return true;

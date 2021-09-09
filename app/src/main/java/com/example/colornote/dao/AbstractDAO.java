@@ -19,29 +19,41 @@ public abstract class AbstractDAO {
     protected Database database = Database.getInstance();
 
     public abstract String queryAll();
-    public <T> List<T> getAll(RowMapper<T> mapper){
+
+    public abstract String queryWithKey();
+
+    public <T> List<T> getAll(RowMapper<T> mapper) {
         List<T> list = new ArrayList<>();
         Cursor cursor = database.getSqLiteDatabase().rawQuery(queryAll(), null);
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             list.add(mapper.mappRow(cursor));
         }
         return list;
     }
 
-    public <T> T get(RowMapper<T> mapper, int id){
+    public <T> T get(RowMapper<T> mapper, int id) {
         List<T> list = new ArrayList<>();
         String query = queryAll() + " WHERE id =" + id;
         Cursor cursor = database.getSqLiteDatabase().rawQuery(query, null);
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             list.add(mapper.mappRow(cursor));
         }
         return list.isEmpty() ? null : list.get(0);
     }
 
-    public int count(){
-        String query = "SELECT COUNT(*) C FROM ("+ queryAll() +")";
+    public int count() {
+        String query = "SELECT COUNT(*) C FROM (" + queryAll() + ")";
         Cursor cursor = database.getSqLiteDatabase().rawQuery(query, null);
         cursor.moveToNext();
         return cursor.getInt(0);
+    }
+
+    public <T> List<T> getWithKey(RowMapper<T> mapper, char s) {
+        List<T> list = new ArrayList<>();
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(queryWithKey(), new String[]{"%" + s + "%", "%" + s + "%", "%" + s + "%"});
+        while (cursor.moveToNext()) {
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
     }
 }

@@ -10,6 +10,7 @@ import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.CheckList;
 import com.example.colornote.model.ItemCheckList;
 import com.example.colornote.model.Text;
+import com.example.colornote.util.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class CheckListDAO extends AbstractDAO{
     public long insert(CheckList checkList){
         ContentValues values = new ContentValues();
         values.put("title", checkList.getTitle());
+        values.put("isComplete", checkList.isCompleted());
         values.put("color", checkList.getColorId());
         values.put("reminderId", checkList.getReminderId());
         values.put("modifiedDate", checkList.getModifiedDate().getTime());
@@ -33,6 +35,7 @@ public class CheckListDAO extends AbstractDAO{
     public int update(CheckList checkList){
         ContentValues values = new ContentValues();
         values.put("title", checkList.getTitle());
+        values.put("isComplete", checkList.isCompleted());
         values.put("color", checkList.getColorId());
         values.put("reminderId", checkList.getReminderId());
         values.put("modifiedDate", checkList.getModifiedDate().getTime());
@@ -43,6 +46,12 @@ public class CheckListDAO extends AbstractDAO{
     public int changeStatus(long id, int status){
         ContentValues values = new ContentValues();
         values.put("status", status);
+        return database.getSqLiteDatabase().update("CheckList", values, "id = ?", new String[]{id+""});
+    }
+
+    public int changeCompleted(long id, boolean isComplete){
+        ContentValues values = new ContentValues();
+        values.put("isComplete", isComplete ? 1 : 0);
         return database.getSqLiteDatabase().update("CheckList", values, "id = ?", new String[]{id+""});
     }
 
@@ -57,16 +66,6 @@ public class CheckListDAO extends AbstractDAO{
         return list;
     }
 
-    public List<ItemCheckList> getItemCheckList(int parentId){
-        List<ItemCheckList> list = new ArrayList<>();
-        String query = ItemCheckListDAO.getInstance().queryAll() + " WHERE parentId = "+parentId;
-        Cursor cursor = database.getSqLiteDatabase().rawQuery(query, null);
-        RowMapper<ItemCheckList> mapper = new ItemCheckListMapper();
-        while(cursor.moveToNext()){
-            list.add(mapper.mappRow(cursor));
-        }
-        return list;
-    }
     public List<CheckList> getNoteCheckList() {
         List<CheckList> list = new ArrayList<>();
         String sql = queryAll() + " WHERE reminderId == 0" ;
@@ -89,17 +88,6 @@ public class CheckListDAO extends AbstractDAO{
         return list;
     }
 
-    public List<CheckList> getCheckListEnable(){
-        List<CheckList> list = new ArrayList<>();
-        String sql = queryAll() + " WHERE status = 2 OR status = 3";
-        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
-        RowMapper<CheckList> mapper= new CheckListMapper();
-        while(cursor.moveToNext()){
-            list.add(mapper.mappRow(cursor));
-        }
-        return list;
-    }
-
     @Override
     public String queryAll() {
         return "SELECT * FROM CheckList";
@@ -108,6 +96,11 @@ public class CheckListDAO extends AbstractDAO{
     public void delete(int id){
         String sql = "DELETE FROM CheckList WHERE id = "+id;
         database.getSqLiteDatabase().execSQL(sql);
+    }
+
+    @Override
+    public String queryWithKey() {
+        return "SELECT * FROM CHECKLIST WHERE title LIKE ? or modifiedDate like ? OR id IN (SELECT parentId FROM ItemChecklist WHERE content like ?)";
     }
 
 }

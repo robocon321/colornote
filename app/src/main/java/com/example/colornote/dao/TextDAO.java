@@ -26,6 +26,7 @@ public class TextDAO extends AbstractDAO{
         ContentValues values = new ContentValues();
         values.put("title", text.getTitle());
         values.put("content", text.getContent());
+        values.put("isComplete", text.isCompleted());
         values.put("color", text.getColorId());
         values.put("reminderId", text.getReminderId());
         values.put("modifiedDate", text.getModifiedDate().getTime());
@@ -37,22 +38,12 @@ public class TextDAO extends AbstractDAO{
         ContentValues values = new ContentValues();
         values.put("title", text.getTitle());
         values.put("content", text.getContent());
+        values.put("isComplete", text.isCompleted());
         values.put("color", text.getColorId());
         values.put("reminderId", text.getReminderId());
         values.put("modifiedDate", text.getModifiedDate().getTime());
         values.put("status",text.getStatus());
         return database.getSqLiteDatabase().update("Text", values, "id = ?", new String[]{text.getId()+""});
-    }
-
-    public List<Text> getTextEnable(){
-        List<Text> list = new ArrayList<>();
-        String sql = queryAll() + " WHERE status = "+ Constant.STATUS.COMPLETE +" OR status = " + Constant.STATUS.NON_COMPLETE;
-        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
-        RowMapper<Text> mapper= new TextMapper();
-        while(cursor.moveToNext()){
-            list.add(mapper.mappRow(cursor));
-        }
-        return list;
     }
 
     public List<Text> getNoteText() {
@@ -94,13 +85,25 @@ public class TextDAO extends AbstractDAO{
         return database.getSqLiteDatabase().update("Text", values, "id = ?", new String[]{id+""});
     }
 
+    public int changeCompleted(long id, boolean isComplete){
+        ContentValues values = new ContentValues();
+        values.put("isComplete", isComplete ? 1 : 0);
+        return database.getSqLiteDatabase().update("Text", values, "id = ?", new String[]{id+""});
+    }
+
     @Override
     public String queryAll() {
         return "SELECT * FROM Text";
     }
 
+
+    @Override
+    public String queryWithKey() {
+        return "Select * from Text Where title LIKE ? OR content LIKE ? or modifiedDate like ?";}
+
     public void delete(int id){
         String sql = "DELETE FROM Text WHERE id = "+id;
         database.getSqLiteDatabase().execSQL(sql);
+
     }
 }

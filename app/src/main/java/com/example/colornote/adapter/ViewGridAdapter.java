@@ -67,7 +67,7 @@ public class ViewGridAdapter extends ViewAdapter {
 
         holder.txtTitle.setText(task.getTitle());
         holder.txtContent.setText(task.showContent());
-        if(task.isComplete()) {
+        if(task.completeAll()) {
             holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#737373"));
             holder.imgCheck.setImageResource(R.drawable.ic_check);

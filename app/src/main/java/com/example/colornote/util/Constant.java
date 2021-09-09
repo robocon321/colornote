@@ -8,8 +8,7 @@ public class Constant {
     public static class STATUS {
         public final static int RECYCLE_BIN = 0;
         public final static int ARCHIVE = 1;
-        public final static int NON_COMPLETE = 2;
-        public final static int COMPLETE = 3;
+        public final static int NORMAL = 2;
     }
 
     // task type
