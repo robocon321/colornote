@@ -53,7 +53,8 @@
         android1:layout_height="100dp"
         android1:layout_margin="10dp"
         android1:background="#e4a8ff"
-        android1:backgroundTint="#e4a8ff"/>
+        android1:backgroundTint="#e4a8ff"
+        app:backgroundTint="#e4a8ff" />
 
     <Button
         android1:id="@+id/btn_blue_1"
