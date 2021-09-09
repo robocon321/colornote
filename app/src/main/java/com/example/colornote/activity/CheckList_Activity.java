@@ -215,7 +215,7 @@ public class CheckList_Activity extends AppCompatActivity {
         checkList.setColorId(color);
         Date date = Calendar.getInstance().getTime();
         checkList.setModifiedDate(date);
-        checkList.setStatus(2);
+        checkList.setStatus(Constant.STATUS.NORMAL);
         numEdit = checkListDAO.insert(checkList);
 //        Log.d("a",checkListDAO.insert(checkList)+"");
 
@@ -232,7 +232,7 @@ public class CheckList_Activity extends AppCompatActivity {
             Date date = Calendar.getInstance().getTime();
             itemCheckList.setModifiedDate(date);
             itemCheckList.setParentId(checkListDAO.count()+1);
-            itemCheckList.setStatus(3);
+            itemCheckList.setStatus(Constant.STATUS.NORMAL);
             itemCheckListDAO.insert(itemCheckList);
         }
         listItemSize = list.size();
@@ -245,7 +245,7 @@ public class CheckList_Activity extends AppCompatActivity {
         checkList.setColorId(color);
         Date date = Calendar.getInstance().getTime();
         checkList.setModifiedDate(date);
-        checkList.setStatus(3);
+        checkList.setStatus(Constant.STATUS.NORMAL);
         checkListDAO.update(checkList);
         return true;
     }
@@ -259,7 +259,7 @@ public class CheckList_Activity extends AppCompatActivity {
                 Date date = Calendar.getInstance().getTime();
                 itemCheckList.setModifiedDate(date);
 //            itemCheckList.setParentId(checkListDAO.count()+1);
-                itemCheckList.setStatus(3);
+                itemCheckList.setStatus(Constant.STATUS.NORMAL);
                 itemCheckListDAO.update(itemCheckList);
             }
             else{
@@ -269,7 +269,7 @@ public class CheckList_Activity extends AppCompatActivity {
                 Date date = Calendar.getInstance().getTime();
                 itemCheckList.setModifiedDate(date);
                 itemCheckList.setParentId(parentId);
-                itemCheckList.setStatus(3);
+                itemCheckList.setStatus(Constant.STATUS.NORMAL);
                 itemCheckListDAO.insert(itemCheckList);
             }
         }
