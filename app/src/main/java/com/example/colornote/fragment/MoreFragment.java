@@ -48,7 +48,7 @@ public class MoreFragment extends Fragment {
         btnMoreArchive = (Button) view.findViewById(R.id.btnMoreArchive);
         btnMoreSettings = (Button) view.findViewById(R.id.btnMoreSettings);
         btnMoreTheme = (Button) view.findViewById(R.id.btnMoreTheme);
-       // relativeLayout_signIn = (RelativeLayout) view.findViewById(R.id.relative_signIn);
+        relativeLayout_signIn = (RelativeLayout) view.findViewById(R.id.relative_signIn);
 
     }
 
