@@ -32,7 +32,6 @@
         android:orientation="horizontal">
 
         <ImageView
-
             android:id="@+id/imgUser"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,11 +51,12 @@
             android:textSize="20dp" />
 
         <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:backgroundTint="@android:color/transparent"
             android:src="@drawable/ic_more_horiz"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            />
 </RelativeLayout>
 
     <TableRow

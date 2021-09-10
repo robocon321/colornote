@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,7 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import androidx.preference.PreferenceManager;
+//import androidx.preference.PreferenceManager;
 
 
 import com.example.colornote.R;
@@ -33,6 +34,7 @@ import com.example.colornote.dao.ItemCheckListDAO;
 import com.example.colornote.model.CheckList;
 import com.example.colornote.model.ItemCheckList;
 import com.example.colornote.model.Text;
+import com.example.colornote.util.Constant;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -46,11 +48,16 @@ public class CheckList_Activity extends AppCompatActivity {
     Button button_additem;
     RecyclerView recyclerView;
     ArrayList<String> list = new ArrayList<>();
+    private long numEdit = 0;
+    CheckList checkList = new CheckList();
+    ItemCheckList itemCheckList = new ItemCheckList();
+    int listItemSize,parentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_list);
+        this.colorid = 2;
         toolbar = findViewById(R.id.toolbar_checklist);
         title_checklist = findViewById(R.id.title_checklist);
         button_additem = findViewById(R.id.btn_additem);
@@ -85,7 +92,7 @@ public class CheckList_Activity extends AppCompatActivity {
         button_additem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                getSupportActionBar().setTitle(title_checklist.getText().toString());
                 Dialog dialog = new Dialog(CheckList_Activity.this);
                 dialog.setContentView(R.layout.dialog_additem_checklist);
                 EditText editTextitem;
@@ -135,16 +142,23 @@ public class CheckList_Activity extends AppCompatActivity {
                     onBackPressed();
                 else{
                     getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
-                    addItemCheckList();
-                    addCheckList(colorid);
+                    if(numEdit==0) {
+                        addItemCheckList();
+                        addCheckList(colorid);
+                    }else{
+                        editItemChecklist();
+                        editCheckList(colorid);
+                    }
                     Toast.makeText(CheckList_Activity.this,"Saved",Toast.LENGTH_LONG).show();
                     checkIcon =false;
+                    getSupportActionBar().setTitle(title_checklist.getText().toString());
                 }
                 return true;
             case R.id.edit:
                 getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24);
                 title_checklist.setSelection(0);
                 checkIcon = true;
+                getSupportActionBar().setTitle(title_checklist.getText().toString());
                 return  true;
             case R.id.color:
                 Dialog dialog = new Dialog(CheckList_Activity.this);
@@ -194,16 +208,17 @@ public class CheckList_Activity extends AppCompatActivity {
         });
     }
     public boolean addCheckList(int color){
-        CheckList checkList = new CheckList();
+//        CheckList checkList = new CheckList();
         CheckListDAO checkListDAO = CheckListDAO.getInstance();
+        checkList.setId(checkListDAO.count()+1);
         checkList.setTitle(title_checklist.getText().toString());
         checkList.setReminderId(1);
         checkList.setColorId(color);
         Date date = Calendar.getInstance().getTime();
         checkList.setModifiedDate(date);
-        checkList.setStatus(3);
-
-        Log.d("a",checkListDAO.insert(checkList)+"");
+        checkList.setStatus(Constant.STATUS.NORMAL);
+        numEdit = checkListDAO.insert(checkList);
+//        Log.d("a",checkListDAO.insert(checkList)+"");
 
         return false;
     }
@@ -211,14 +226,53 @@ public class CheckList_Activity extends AppCompatActivity {
         CheckListDAO checkListDAO = CheckListDAO.getInstance();
 
         for (int i = 0; i < list.size(); i++) {
-            ItemCheckList itemCheckList = new ItemCheckList();
+//            ItemCheckList itemCheckList = new ItemCheckList();
             ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
+            itemCheckList.setId(itemCheckListDAO.count()+1);
             itemCheckList.setContent(list.get(i));
             Date date = Calendar.getInstance().getTime();
             itemCheckList.setModifiedDate(date);
             itemCheckList.setParentId(checkListDAO.count()+1);
-            itemCheckList.setStatus(3);
+            itemCheckList.setStatus(Constant.STATUS.NORMAL);
             itemCheckListDAO.insert(itemCheckList);
+        }
+        listItemSize = list.size();
+        parentId = checkListDAO.count()+1;
+    }
+    public boolean editCheckList(int color){
+        CheckListDAO checkListDAO = CheckListDAO.getInstance();
+        checkList.setTitle(title_checklist.getText().toString());
+        checkList.setReminderId(1);
+        checkList.setColorId(color);
+        Date date = Calendar.getInstance().getTime();
+        checkList.setModifiedDate(date);
+        checkList.setStatus(Constant.STATUS.NORMAL);
+        checkListDAO.update(checkList);
+        return true;
+    }
+    public void editItemChecklist(){
+        for (int i = 0; i < list.size(); i++) {
+//            ItemCheckList itemCheckList = new ItemCheckList();
+            if(i<listItemSize) {
+                ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
+//            itemCheckList.setId(itemCheckListDAO.count()+1);
+                itemCheckList.setContent(list.get(i));
+                Date date = Calendar.getInstance().getTime();
+                itemCheckList.setModifiedDate(date);
+//            itemCheckList.setParentId(checkListDAO.count()+1);
+                itemCheckList.setStatus(Constant.STATUS.NORMAL);
+                itemCheckListDAO.update(itemCheckList);
+            }
+            else{
+                ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
+                itemCheckList.setId(itemCheckListDAO.count()+1);
+                itemCheckList.setContent(list.get(i));
+                Date date = Calendar.getInstance().getTime();
+                itemCheckList.setModifiedDate(date);
+                itemCheckList.setParentId(parentId);
+                itemCheckList.setStatus(Constant.STATUS.NORMAL);
+                itemCheckListDAO.insert(itemCheckList);
+            }
         }
     }
     protected void onResume() {

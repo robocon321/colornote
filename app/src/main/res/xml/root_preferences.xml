@@ -17,7 +17,7 @@
             android:dialogTitle="@string/default_screen"
             android:entries="@array/default_screen_entries"
             android:entryValues="@array/default_screen_entries"
-            android:key="xfsdg"
+            android:key="default_activity"
             app:useSimpleSummaryProvider="true"
             android:title="@string/default_screen"
             app:iconSpaceReserved="false"/>
