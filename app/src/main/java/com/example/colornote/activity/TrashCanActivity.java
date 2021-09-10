@@ -61,8 +61,13 @@ TextView txtCountTrashCanHidden;
         setContentView(R.layout.activity_trash_can);
         addControls();
         addEvents(this);
+        checkIconTrashCan();
     }
-
+public void checkIconTrashCan(){
+    if(tasks.size()==0){
+        btnTrashCanTrashCan.setVisibility(View.INVISIBLE);
+    }
+}
     private void addEvents(Activity activity) {
 
         btnBackTrashCan.setOnClickListener(new View.OnClickListener() {
@@ -215,8 +220,10 @@ TextView txtCountTrashCanHidden;
         }
         loadTask();
         adapter.notifyDataSetChanged();
+        checkIconTrashCan();
     }
     public void deleteTask() {
+
         boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
         for(int i = 0; i < isSelected.length ; i ++) {
             if(isSelected[i]) {
@@ -230,6 +237,7 @@ TextView txtCountTrashCanHidden;
         }
         loadTask();
         adapter.notifyDataSetChanged();
+        checkIconTrashCan();
     }
     public void restoreTask(){
         boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
@@ -245,6 +253,7 @@ TextView txtCountTrashCanHidden;
         }
         loadTask();
         adapter.notifyDataSetChanged();
+        checkIconTrashCan();
     }
     public static void loadTask(){
         tasks.clear();
@@ -273,5 +282,6 @@ barBottomTrashCanHidden.setVisibility(View.INVISIBLE);
         }
         txtCountTrashCanHidden.setText(s.getRatio());
     }
+
 
 }

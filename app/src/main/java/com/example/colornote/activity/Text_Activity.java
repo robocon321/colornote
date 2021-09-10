@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.example.colornote.R;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.model.Text;
+import com.example.colornote.util.Constant;
 
 import java.util.Calendar;
 import java.util.Date;
