@@ -101,7 +101,7 @@ public class ViewListAdapter extends ViewAdapter {
             holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
             holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#000000"));
 
-            if(task.getStatus()==1){
+            if(task.getStatus()==Constant.STATUS.RECYCLE_BIN){
                 holder.imgCheck.setImageResource(R.drawable.ic_trash_can);
             }else{
                 holder.imgCheck.setImageResource(0);
@@ -116,13 +116,11 @@ public class ViewListAdapter extends ViewAdapter {
         sharedPreferences = context.getSharedPreferences("Theme", Context.MODE_PRIVATE);
         themeName = sharedPreferences.getString("ThemeName", "Default");
         if(themeName.equalsIgnoreCase("Dark")){
-            holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor( "#00000"));
-
+            holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor( "#000000"));
         }else{
-
             holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.MAIN_COLOR : color.getColorMain()));
         }
-
+        holder.colorSub.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.SUB_COLOR : color.getColorSub()));
 
         ViewHolder finalHolder = holder;
 

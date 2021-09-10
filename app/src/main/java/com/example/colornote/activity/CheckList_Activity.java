@@ -34,6 +34,7 @@ import com.example.colornote.dao.ItemCheckListDAO;
 import com.example.colornote.model.CheckList;
 import com.example.colornote.model.ItemCheckList;
 import com.example.colornote.model.Text;
+import com.example.colornote.util.Constant;
 
 import java.util.ArrayList;
 import java.util.Calendar;
