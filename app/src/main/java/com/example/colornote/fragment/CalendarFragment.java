@@ -48,7 +48,7 @@ public class CalendarFragment extends Fragment {
     //  add an icon in calendar when add a note success
     private CalendarView calendarView;
     private List<EventDay> lsEvent;
-    private List<Calendar> lsDate;
+    private List<Calendar> lsCalendar;
 
     //  get all task in day
     private GridView gvCalendar;
@@ -87,23 +87,20 @@ public class CalendarFragment extends Fragment {
         calendarView = (CalendarView) view.findViewById(R.id.calCustom);
         lsEvent = new ArrayList<>();
         lsAllTask = new ArrayList<>();
-        lsDate = new ArrayList<>();
+        lsCalendar = new ArrayList<>();
 
         txtDate = (TextView) dialogAddCalendar.findViewById(R.id.txtDate);
 
         adapterTask = new ViewListAdapter(lsTask, getActivity());
         gvCalendar = dialogAddCalendar.findViewById(R.id.gvTask);
         gvCalendar.setAdapter(adapterTask);
-        setIconEventDay();
-        Toast.makeText(getActivity(), "" + lsTask.size(), Toast.LENGTH_SHORT).show();
     }
 
     private void addEvents() {
         txtCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                showDate();
-                setIconEventDay();
+                showDate();
             }
         });
 
@@ -121,7 +118,7 @@ public class CalendarFragment extends Fragment {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getTaskInDay();
+//                getTaskInDay();
                 openDialogAddTask();
             }
         });
@@ -162,11 +159,12 @@ public class CalendarFragment extends Fragment {
     }
 
     //    add icon to note
-    private void setIconEventDay() {
+    public void setIconEventDay() throws ParseException {
         lsAllTask.addAll(textDAO.getAll(new TextMapper()));
         lsAllTask.addAll(checkListDAO.getAll(new CheckListMapper()));
-        Toast.makeText(getActivity(), "" + lsAllTask.get(14).getTitle()+ lsAllTask.get(14).getModifiedDate(), Toast.LENGTH_SHORT).show();
-//        lsEvent.add(new EventDay(parseDateToCalendar(lsAllTask.get(i).getModifiedDate()), R.drawable.ic_note));
+        for (int i = 0; i < lsAllTask.size(); i++) {
+            lsEvent.add(new EventDay(parseDateToCalendar(lsAllTask.get(i).getModifiedDate()), R.drawable.ic_note));
+        }
         calendarView.setEvents(lsEvent);
     }
 
@@ -179,5 +177,15 @@ public class CalendarFragment extends Fragment {
     private void showDate() {
         String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
         Toast.makeText(getActivity(), "Now is: " + timeStamp, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        try {
+            setIconEventDay();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

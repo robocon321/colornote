@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.example.colornote.R;
 import com.example.colornote.dao.TextDAO;
+import com.example.colornote.fragment.CalendarFragment;
 import com.example.colornote.model.Text;
 import com.example.colornote.util.Constant;
 
@@ -79,7 +80,7 @@ public class Text_Activity extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra("bundle");
         String data = bundle.getString("date");
         try {
-            date = new SimpleDateFormat("dd-MM-yyyy").parse(data);
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(data);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -193,6 +194,12 @@ public class Text_Activity extends AppCompatActivity {
 
         Toast.makeText(Text_Activity.this,this.numEdit+"",Toast.LENGTH_LONG).show();
         closekeyboard();
+        CalendarFragment calendarFragment = new CalendarFragment();
+        try {
+            calendarFragment.setIconEventDay();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return true;
     }
     public boolean editText(int color){
