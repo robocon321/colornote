@@ -3,6 +3,7 @@ package com.example.colornote.activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
@@ -13,6 +14,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -72,13 +74,22 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
     LinearLayout tabLayoutOption, tabArchive, tabDelete, tabColor, tabReminder, tabMore;
     TextView txtTitle;
     AlertDialog dialog;
-
+    SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        sharedPreferences = getSharedPreferences("Theme", Context.MODE_PRIVATE);
+//        String themeName = sharedPreferences.getString("ThemeName", "Default");
+//        if(themeName.equalsIgnoreCase("Dark")){
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//        }else{
+//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//        }
         init();
         setEvents();
+
+        getDefauleActivity();
     }
 
     public void init(){
@@ -479,7 +490,14 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         SelectedObserverService.getInstance().removeObserver(this);
     }
 
-    //    @Override
+  public void getDefauleActivity(){
+      sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+      String defaultActivity =sharedPreferences.getString("default_activity","Notes");
+if(!defaultActivity.equals("Notes")){
+    viewPager.setCurrentItem(1);
+}
+  }
+//    @Override
 //    protected void onResume() {
 //        super.onResume();
 //        SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(this);

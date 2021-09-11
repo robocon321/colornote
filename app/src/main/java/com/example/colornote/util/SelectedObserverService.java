@@ -23,6 +23,7 @@ public class SelectedObserverService {
     private SelectedObserverService(){}
 
     public void reset(){
+        if(isSelected == null) return;
         after = -1;
         before = -1;
         unselected(0, isSelected.length);

@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.example.colornote.R;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.model.Text;
+import com.example.colornote.util.Constant;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -42,8 +43,12 @@ public class Text_Activity extends AppCompatActivity {
     EditText title_text, edit_text;
     TextView text_date;
     boolean checkIcon = true;
-    private long numEdit;
+
     private Date date;
+
+    private long numEdit = 0;
+    Text text = new Text();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +74,7 @@ public class Text_Activity extends AppCompatActivity {
             }
         });
 
+        this.colorid = 2;
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("bundle");
         String data = bundle.getString("date");
@@ -79,7 +85,6 @@ public class Text_Activity extends AppCompatActivity {
         }
         Toast.makeText(this, "" + date, Toast.LENGTH_SHORT).show();
     }
-
 
     //
     @Override
@@ -98,17 +103,27 @@ public class Text_Activity extends AppCompatActivity {
                     onBackPressed();
                 else {
                     getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
+                    if(this.numEdit == 0)
                     addText(colorid);
-                    Toast.makeText(Text_Activity.this, "Saved", Toast.LENGTH_LONG).show();
-                    checkIcon = false;
+
+                    else{
+                        editText(colorid);
+                    }
+                    Toast.makeText(Text_Activity.this,"Saved",Toast.LENGTH_LONG).show();
+                    checkIcon =false;
+                    getSupportActionBar().setTitle(title_text.getText().toString());
                 }
                 return true;
             case R.id.edit:
                 getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24);
                 title_text.setSelection(0);
                 checkIcon = true;
-                return true;
+
+                getSupportActionBar().setTitle(title_text.getText().toString());
+                return  true;
+
             case R.id.color:
+                getSupportActionBar().setTitle(title_text.getText().toString());
                 Dialog dialog = new Dialog(Text_Activity.this);
                 dialog.setContentView(R.layout.dialog_color);
                 Button button_red, button_orange, button_yellow, button_green, button_blue,
@@ -158,21 +173,39 @@ public class Text_Activity extends AppCompatActivity {
         });
     }
 
+
     public boolean addText(int color) {
         if(date == null){
             date = Calendar.getInstance().getTime();
         }
         Text text = new Text();
+
         TextDAO textDAO = TextDAO.getInstance();
+        text.setId(textDAO.count()+1);
         text.setTitle(title_text.getText().toString());
         text.setContent(edit_text.getText().toString());
         text.setColorId(color);
 
         text.setModifiedDate(date);
         text.setReminderId(-1);
-        text.setStatus(3);
+        text.setStatus(Constant.STATUS.NORMAL);
         numEdit = textDAO.insert(text);
-        Log.d("AA", textDAO.insert(text) + "");
+
+        Toast.makeText(Text_Activity.this,this.numEdit+"",Toast.LENGTH_LONG).show();
+        closekeyboard();
+        return true;
+    }
+    public boolean editText(int color){
+//        Text text = new Text();
+        TextDAO textDAO = TextDAO.getInstance();
+        text.setTitle(title_text.getText().toString());
+        text.setContent(edit_text.getText().toString());
+        text.setColorId(color);
+        Date date = Calendar.getInstance().getTime();
+        text.setModifiedDate(date);
+        text.setReminderId(-1);
+        text.setStatus(Constant.STATUS.NORMAL);
+        textDAO.update(text);
         closekeyboard();
         return true;
     }
