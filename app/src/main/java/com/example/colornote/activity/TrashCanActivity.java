@@ -243,7 +243,7 @@ public void checkIconTrashCan(){
         boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
         for(int i = 0; i < isSelected.length ; i ++) {
             if(isSelected[i]) {
-                Task task = TrashCanActivity.tasks.get(i);
+                Task task = tasks.get(i);
                 if(task.getClass().equals(Text.class)) TextDAO.getInstance().changeStatus(task.getId(),Constant.STATUS.NORMAL);
                 else {
                     ItemCheckListDAO.getInstance().changeStatus(task.getId(),Constant.STATUS.NORMAL);
@@ -259,7 +259,6 @@ public void checkIconTrashCan(){
         tasks.clear();
         tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.RECYCLE_BIN));
         tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.RECYCLE_BIN));
-
     }
     @Override
     public void update(SelectedObserverService s) {
