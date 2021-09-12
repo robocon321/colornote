@@ -63,6 +63,11 @@ public class ItemCheckListDAO extends AbstractDAO{
         String sql = "DELETE FROM ItemCheckList WHERE parentId = " + id;
         database.getSqLiteDatabase().execSQL(sql);
     }
+    public void deleteByIdItemChecklist(int id){
+        String sql = "DELETE FROM ItemCheckList WHERE id = " + id;
+        database.getSqLiteDatabase().execSQL(sql);
+    }
+
 
     public List<ItemCheckList> getByParentId(int parentId) {
         List<ItemCheckList> list = new ArrayList<>();

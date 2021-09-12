@@ -106,13 +106,13 @@ public class MoreFragment extends Fragment {
             }
         });
 //        cho nay bao loi nen tao comment lai
-//        relativeLayout_signIn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getActivity(),SignInActivity.class);
-//                getActivity().startActivity(intent);
-//            }
-//        });
+        relativeLayout_signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),SignInActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
     }
 
     @Override
