@@ -7,13 +7,15 @@
     android:orientation="vertical">
 
     <Button
+        android:alpha="0.85"
         android:id="@+id/btnSortModified_Archive"
         android:fontFamily="@font/arial"
         android:textSize="20dp"
         android:text="by modified time"
-        android:textColor="@color/black"
+        android:textColor="?attr/itemTextColor"
         android:gravity="left|center"
         android:textAllCaps="false"
+
         style="?android:attr/buttonBarButtonStyle"
         android:insetTop="0dp"
         android:insetBottom="0dp"
@@ -24,11 +26,12 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
     <Button
+        android:alpha="0.85"
         android:id="@+id/btnSortCreated_Archive"
         android:fontFamily="@font/arial"
         android:textSize="20dp"
         android:text="by created time"
-        android:textColor="@color/black"
+        android:textColor="?attr/itemTextColor"
         android:gravity="left|center"
         android:textAllCaps="false"
         style="?android:attr/buttonBarButtonStyle"
@@ -41,11 +44,12 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
     <Button
+        android:alpha="0.85"
         android:id="@+id/btnSortAlphabeta_Archive"
         android:fontFamily="@font/arial"
         android:textSize="20dp"
         android:text="alphabetically"
-        android:textColor="@color/black"
+        android:textColor="?attr/itemTextColor"
         android:gravity="left|center"
         android:textAllCaps="false"
         style="?android:attr/buttonBarButtonStyle"
@@ -59,11 +63,12 @@
         android:layout_width="match_parent" />
 
     <Button
+        android:alpha="0.85"
         android:id="@+id/btnSortColor_Archive"
         android:fontFamily="@font/arial"
         android:textSize="20dp"
         android:text="by color"
-        android:textColor="@color/black"
+        android:textColor="?attr/itemTextColor"
         android:gravity="left|center"
         android:textAllCaps="false"
         style="?android:attr/buttonBarButtonStyle"
@@ -76,11 +81,12 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent" />
     <Button
+        android:alpha="0.85"
         android:id="@+id/btnSortCalendar_Archive"
         android:fontFamily="@font/arial"
         android:textSize="20dp"
         android:text="by calendar date"
-        android:textColor="@color/black"
+        android:textColor="?attr/itemTextColor"
         android:gravity="left|center"
         android:textAllCaps="false"
         style="?android:attr/buttonBarButtonStyle"

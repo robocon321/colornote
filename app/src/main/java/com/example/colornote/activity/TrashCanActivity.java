@@ -16,6 +16,7 @@ import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,10 +39,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class TrashCanActivity extends AppCompatActivity implements ISeletectedObserver {
-    ImageButton btnBackTrashCan, btnTrashCanTrashCan,btnDeletePermanently,btnRestore;
+    ImageButton btnBackTrashCan, btnTrashCanTrashCan;
     Button btnSort_TrashCan, btnSortModified_TrashCan, btnSortCreated_TrashCan, btnSortAlphabeta_TrasCan, btnSortColor_TrashCan;
     AlertDialog.Builder builder;
     AlertDialog dialog;
+    LinearLayout btnRestore,btnDeletePermanently;
 GridLayout barBottomTrashCanHidden;
 RelativeLayout barTopTrashCanHidden;
 Toolbar toolbar_TrashCan;

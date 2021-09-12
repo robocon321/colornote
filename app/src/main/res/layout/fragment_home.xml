@@ -11,7 +11,7 @@
         android:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F3F3F3">
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -72,14 +72,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:backgroundTint="#F6F6F6"
+        android:backgroundTint="?attr/android:windowBackground"
         android:drawableRight="@drawable/ic_icon_down"
         android:fontFamily="@font/arial"
         android:paddingLeft="70dp"
         android:paddingRight="70dp"
+        style="?android:attr/buttonBarButtonStyle"
         android:text="Sort by modified time"
         android:textAllCaps="false"
-        android:textColor="@color/black" />
+        android:textColor="?attr/itemTextColor" />
 
     <GridView
         android:id="@+id/gvTask"

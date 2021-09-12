@@ -34,7 +34,7 @@
                 <TextView
                     android:id="@+id/txtTitle"
                     android:text="This is Title"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorControlNormal"
                     android:gravity="center_vertical"
                     android:textSize="@dimen/font_size"
                     android:paddingLeft="5dp"

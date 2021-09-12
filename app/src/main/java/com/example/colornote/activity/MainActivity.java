@@ -3,11 +3,13 @@ package com.example.colornote.activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -75,15 +77,16 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
     SharedPreferences sharedPreferences;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        sharedPreferences = getSharedPreferences("Theme", Context.MODE_PRIVATE);
+        String themeName = sharedPreferences.getString("ThemeName", "Default");
+        if(themeName.equalsIgnoreCase("Dark")){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        sharedPreferences = getSharedPreferences("Theme", Context.MODE_PRIVATE);
-//        String themeName = sharedPreferences.getString("ThemeName", "Default");
-//        if(themeName.equalsIgnoreCase("Dark")){
-//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-//        }else{
-//            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-//        }
+
         init();
         setEvents();
 
@@ -469,12 +472,12 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
             ((TextView) tabMore.getChildAt(1)).setTextColor(Color.parseColor("#757575"));
         }else{
             tabReminder.setEnabled(true);
-            ((TextView) tabReminder.getChildAt(1)).setTextColor(Color.parseColor("#000000"));
+         //   ((TextView) tabReminder.getChildAt(1)).setTextColor(Color.parseColor("#000000"));
             ((ImageView) tabReminder.getChildAt(0)).setImageResource(R.drawable.ic_reminder_active);
 
             tabMore.setEnabled(true);
             ((ImageView) tabMore.getChildAt(0)).setImageResource(R.drawable.ic_option_active);
-            ((TextView) tabMore.getChildAt(1)).setTextColor(Color.parseColor("#000000"));
+           // ((TextView) tabMore.getChildAt(1)).setTextColor(Color.parseColor("#000000"));
         }
     }
 
