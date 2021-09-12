@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -32,8 +33,9 @@ public class MoreFragment extends Fragment {
     @Nullable
     Button btnMoreTrashCan,btnMoreArchive,btnMoreSettings,btnMoreTheme,btnThemeDark,btnThemeDefault;
     Dialog dialogTheme;
-    RelativeLayout relativeLayout_signIn;
+    LinearLayout relativeLayout_signIn;
     String themeName;
+    ImageButton btn_signedIn;
     SharedPreferences sharedPreferences;
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_more, container, false);
@@ -44,12 +46,12 @@ public class MoreFragment extends Fragment {
     }
 
     private void addControls(View view) {
-        btnMoreTrashCan = (Button) view.findViewById(R.id.btnMoreTrashCan);
-        btnMoreArchive = (Button) view.findViewById(R.id.btnMoreArchive);
-        btnMoreSettings = (Button) view.findViewById(R.id.btnMoreSettings);
-        btnMoreTheme = (Button) view.findViewById(R.id.btnMoreTheme);
-        relativeLayout_signIn = (RelativeLayout) view.findViewById(R.id.relative_signIn);
-
+        btnMoreTrashCan =  view.findViewById(R.id.btnMoreTrashCan);
+        btnMoreArchive =  view.findViewById(R.id.btnMoreArchive);
+        btnMoreSettings =  view.findViewById(R.id.btnMoreSettings);
+        btnMoreTheme =  view.findViewById(R.id.btnMoreTheme);
+        relativeLayout_signIn =  view.findViewById(R.id.relative_signIn);
+        btn_signedIn = view.findViewById(R.id.btn_signedIn);
     }
 
     private void addEvent() {
@@ -102,6 +104,12 @@ public class MoreFragment extends Fragment {
 
                     }
                 });
+
+            }
+        });
+        btn_signedIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
             }
         });

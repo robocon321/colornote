@@ -25,6 +25,8 @@
             android:layout_height="match_parent"
             android:background="@color/gray"
             android:layout_marginRight="16dp"
+            app:itemIconTint="?attr/itemTextColor"
+            app:itemTextColor="?attr/itemTextColor"
             app:menu="@menu/bottom_menu"/>
     </com.google.android.material.bottomappbar.BottomAppBar>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -39,7 +41,7 @@
     <LinearLayout
         android:id="@+id/tabLayoutOption"
         android:visibility="invisible"
-        android:background="#D3D3D3"
+        android:background="?attr/android:windowBackground"
         android:weightSum="5"
         android:layout_width="match_parent"
         android:layout_height="70dp"
@@ -62,7 +64,7 @@
             <TextView
                 android:text="Archive"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="?attr/itemTextColor"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"/>
@@ -84,7 +86,7 @@
             <TextView
                 android:text="Delete"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="?attr/itemTextColor"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"/>
@@ -105,7 +107,7 @@
             <TextView
                 android:text="Color"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="?attr/itemTextColor"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"/>
@@ -127,7 +129,7 @@
             <TextView
                 android:text="Reminder"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="?attr/itemTextColor"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"/>
@@ -149,7 +151,7 @@
             <TextView
                 android:text="More"
                 android:gravity="center"
-                android:textColor="@color/black"
+                android:textColor="?attr/itemTextColor"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"/>
