@@ -29,7 +29,7 @@
             <TextView
                 android:paddingLeft="10dp"
                 android:id="@+id/txtTitle"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorControlNormal"
                 android:textStyle="bold"
                 android:text="KKK"
                 android:textSize="15dp"
@@ -48,7 +48,7 @@
                 android:paddingLeft="10dp"
                 android:text="lsakdjjf oiwer klasjdflsakdjjf oiwer klasjdflsakdjjf oiwer klasjdflsakdjjf oiwer klasjdflsakdjjf oiwer ..."
                 android:textSize="15dp"
-                android:textColor="@color/task_gray"
+                android:textColor="?attr/colorControlNormal"
                 android:layout_below="@id/txtTitle"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"

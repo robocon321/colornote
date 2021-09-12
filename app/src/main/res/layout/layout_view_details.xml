@@ -27,7 +27,7 @@
                 android:layout_height="match_parent">
                 <TextView
                     android:id="@+id/txtTitle"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorControlNormal"
                     android:textStyle="bold"
                     android:text="KKK"
                     android:textSize="15dp"
@@ -44,7 +44,7 @@
                     android:text="lsakdjjf oiwer klasjdflsakdjjf oiwer klasjdflsakdjjf oiwer klasjdflsakdjjf oiwer klasjdflsakdjjf oiwer ..."
                     android:textSize="15dp"
                     android:maxLines="2"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/colorControlNormal"
                     android:layout_below="@id/txtTitle"
                     android:layout_marginTop="2dp"
                     android:layout_marginBottom="2dp"

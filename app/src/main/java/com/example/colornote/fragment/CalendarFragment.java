@@ -23,11 +23,14 @@ import com.example.colornote.activity.CheckList_Activity;
 import com.example.colornote.activity.Text_Activity;
 import com.example.colornote.adapter.ViewListAdapter;
 import com.example.colornote.dao.CheckListDAO;
+import com.example.colornote.dao.ReminderDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.mapper.CheckListMapper;
 import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.Task;
+import com.example.colornote.util.DateConvert;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,8 +54,8 @@ public class CalendarFragment extends Fragment {
     private List<Calendar> lsCalendar;
 
     //  get all task in day
-    private GridView gvCalendar;
-    private ArrayList<Task> lsTask, lsAllTask;
+    private GridView gvTask;
+    private ArrayList<Task> lsTask, lsTaskRemider;
     private ViewListAdapter adapterTask;
 
     private CheckListDAO checkListDAO;
@@ -74,7 +77,10 @@ public class CalendarFragment extends Fragment {
         dialogAddCalendar.setContentView(R.layout.dialog_calendar);
         btnAdd = dialogAddCalendar.findViewById(R.id.btnAdd);
 
+        gvTask = dialogAddCalendar.findViewById(R.id.gvTask);
         lsTask = new ArrayList<>();
+        adapterTask = new ViewListAdapter(lsTask,getActivity());
+
         checkListDAO = CheckListDAO.getInstance();
         textDAO = TextDAO.getInstance();
 
@@ -86,14 +92,12 @@ public class CalendarFragment extends Fragment {
 
         calendarView = (CalendarView) view.findViewById(R.id.calCustom);
         lsEvent = new ArrayList<>();
-        lsAllTask = new ArrayList<>();
+        lsTaskRemider = new ArrayList<>();
         lsCalendar = new ArrayList<>();
 
         txtDate = (TextView) dialogAddCalendar.findViewById(R.id.txtDate);
 
-        adapterTask = new ViewListAdapter(lsTask, getActivity());
-        gvCalendar = dialogAddCalendar.findViewById(R.id.gvTask);
-        gvCalendar.setAdapter(adapterTask);
+
     }
 
     private void addEvents() {
@@ -118,18 +122,11 @@ public class CalendarFragment extends Fragment {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                getTaskInDay();
                 openDialogAddTask();
             }
         });
         // open dialog calendar
         dialogAddCalendar.show();
-    }
-
-    private void getTaskInDay() {
-        lsTask.addAll(checkListDAO.getWithModifiedDate(new CheckListMapper(), "1969-12-31"));
-        lsTask.addAll(textDAO.getWithModifiedDate(new TextMapper(), "1969-12-31"));
-        gvCalendar.deferNotifyDataSetChanged();
     }
 
     //   add new task (text or checklist)
@@ -158,22 +155,6 @@ public class CalendarFragment extends Fragment {
         dialogAddTask.show();
     }
 
-    //    add icon to note
-    public void setIconEventDay() throws ParseException {
-        lsAllTask.addAll(textDAO.getAll(new TextMapper()));
-        lsAllTask.addAll(checkListDAO.getAll(new CheckListMapper()));
-        for (int i = 0; i < lsAllTask.size(); i++) {
-            lsEvent.add(new EventDay(parseDateToCalendar(lsAllTask.get(i).getModifiedDate()), R.drawable.ic_note));
-        }
-        calendarView.setEvents(lsEvent);
-    }
-
-    public Calendar parseDateToCalendar(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        return calendar;
-    }
-
     private void showDate() {
         String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
         Toast.makeText(getActivity(), "Now is: " + timeStamp, Toast.LENGTH_LONG).show();
@@ -182,10 +163,23 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        try {
-            setIconEventDay();
-        } catch (ParseException e) {
-            e.printStackTrace();
+//        add icon to note
+        lsTaskRemider.addAll(textDAO.getCalendarText());
+        lsTaskRemider.addAll(checkListDAO.getCalendarCheckList());
+        for (int i = 0; i < lsTaskRemider.size(); i++) {
+            lsEvent.add(new EventDay(parseDateToCalendar(lsTaskRemider.get(i).getModifiedDate()), R.drawable.ic_note));
         }
+        calendarView.setEvents(lsEvent);
+
+//        gvTask.setAdapter(adapterTask);
+//        lsTask.clear();
+//        lsTask.addAll(textDAO.getCalendarTextByDate(""));
+//        adapterTask.notifyDataSetChanged();
+    }
+
+    public Calendar parseDateToCalendar(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
     }
 }
