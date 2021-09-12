@@ -132,11 +132,11 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String n =(String)parent.getItemAtPosition(position);
                 if(n.equals("All")){
-loadAllTask();
+                    loadAllTask();
                 }else if(n.equals("Notes")){
-loadNotes();
+                    loadNotes();
                 }else{
-loadChecklistTask();
+                    loadCalendar();
                 }
             }
 

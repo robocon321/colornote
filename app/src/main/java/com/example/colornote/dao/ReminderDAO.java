@@ -28,7 +28,7 @@ public class ReminderDAO extends AbstractDAO {
     }
 
     public Reminder getReminderById(int id) {
-        String sql = queryAll() + "WHERE id = " + id;
+        String sql = queryAll() + " WHERE id = " + id;
         Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
 
         cursor.moveToNext();
