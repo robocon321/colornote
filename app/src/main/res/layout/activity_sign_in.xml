@@ -28,13 +28,13 @@
             android:layout_height="wrap_content"
             android:text="sign in with facebook"
             app:backgroundTint="#676666" />
-
-        <Button
-            android:id="@+id/btn_more"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="more"
-            app:backgroundTint="#676666" />
+<!--        <com.facebook.login.widget.LoginButton-->
+<!--            android:id="@+id/login_button"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginTop="30dp"-->
+<!--            android:layout_marginBottom="30dp" />-->
 
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent"
@@ -42,63 +42,24 @@
         android:orientation="vertical"
         android:gravity="center"
         android:id="@+id/layout_tk">
-
-        <Button
-            android:id="@+id/signIn_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="sign in with email"
-            app:backgroundTint="#676666" />
-        <RelativeLayout
+        <ImageView
+            android:id="@+id/imgLogo"
+            android:layout_gravity="left"
+            android:layout_width="40dp"
+            android:layout_height="40dp"/>
+        <TextView
+            android:id="@+id/username"
+            android:textColor="@color/white"
+            android:textSize="35dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="E_mail"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#FFFFFF" />
-
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/email"
-                android:hint="Password"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#FFFDFD" />
-
-            <Button
-                android:id="@+id/btn_signIn"
-                android:layout_width="wrap_content"
-                android:layout_height="90dp"
-                android:layout_alignParentRight="true"
-                android:text="sign in"
-                app:backgroundTint="#676666" />
-        </RelativeLayout>
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/gmail"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="or"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp" />
 
-
-    <TextView
-        android:id="@+id/textView_html"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp" />
 
     <Button
         android:id="@+id/button_singUp"
@@ -109,12 +70,6 @@
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:backgroundTint="#676666" />
-
-    <TextView
-        android:id="@+id/textgmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
 
 
 </LinearLayout>

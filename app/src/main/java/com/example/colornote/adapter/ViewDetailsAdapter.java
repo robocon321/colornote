@@ -1,6 +1,7 @@
 package com.example.colornote.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.view.LayoutInflater;
@@ -9,14 +10,19 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 
 import com.example.colornote.R;
+import com.example.colornote.activity.CheckList_Activity;
+import com.example.colornote.activity.Text_Activity;
 import com.example.colornote.customview.CustomCardView;
 import com.example.colornote.mapper.ColorMapper;
+import com.example.colornote.model.CheckList;
 import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
+import com.example.colornote.model.Text;
 import com.example.colornote.util.Constant;
 import com.example.colornote.util.DateConvert;
 import com.example.colornote.util.SelectedObserverService;
@@ -119,6 +125,16 @@ public class ViewDetailsAdapter extends ViewAdapter {
                         SelectedObserverService.getInstance().unselected(position, position+1);
                     }
                     updateBorderView();
+                }else{
+                    if(task.getClass().equals(Text.class)) {
+                        int num = task.getId();
+                        Intent intent = new Intent(context, Text_Activity.class);
+                        context.startActivity(intent);
+                    }
+                    if(task.getClass().equals(CheckList.class)){
+                        Intent intent = new Intent(context, CheckList_Activity.class);
+                        context.startActivity(intent);
+                    }
                 }
             }
         });

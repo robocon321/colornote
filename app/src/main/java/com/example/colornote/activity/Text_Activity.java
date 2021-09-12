@@ -113,7 +113,18 @@ public class Text_Activity extends AppCompatActivity {
         });
 
         this.colorid = 2;
+//        Intent intent = getIntent();
+//        Bundle bundle = intent.getBundleExtra("bundle");
+//        String data = bundle.getString("date");
+//        try {
+//            date = new SimpleDateFormat("yyyy-MM-dd").parse(data);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        Toast.makeText(this, "" + date, Toast.LENGTH_SHORT).show();
+
         getDateFromCalendarFragment();
+
     }
 
 
