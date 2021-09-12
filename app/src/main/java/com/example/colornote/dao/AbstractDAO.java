@@ -57,14 +57,4 @@ public abstract class AbstractDAO {
         }
         return list;
     }
-
-    public <T> List<T> getWithModifiedDate(RowMapper<T> mapper, String date) {
-        List<T> list = new ArrayList<>();
-        String sql = queryAll() +" where modifiedDate = '" + date + "'";
-        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql,null);
-        while (cursor.moveToNext()) {
-            list.add(mapper.mappRow(cursor));
-        }
-        return list;
-    }
 }

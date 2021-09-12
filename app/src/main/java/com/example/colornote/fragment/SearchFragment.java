@@ -1,5 +1,7 @@
 package com.example.colornote.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +37,10 @@ public class SearchFragment extends Fragment {
 
     CheckListDAO checkListDAO;
     TextDAO textDAO;
+
+    SharedPreferences sharedPreferences;
+    String themeName;
+    Context context;
 
     @Nullable
     @Override
@@ -84,6 +90,6 @@ public class SearchFragment extends Fragment {
         lsTask.clear();
         lsTask.addAll(checkListDAO.getWithKey(new CheckListMapper(), s));
         lsTask.addAll(textDAO.getWithKey(new TextMapper(), s));
-        gvTaskSearch.deferNotifyDataSetChanged();
+        adapterTask.notifyDataSetChanged();
     }
 }
