@@ -3,35 +3,24 @@ package com.example.colornote.activity;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -48,23 +37,32 @@ import com.example.colornote.database.Database;
 import com.example.colornote.fragment.HomeFragment;
 import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.mapper.ItemCheckListMapper;
+import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.CheckList;
 import com.example.colornote.model.ItemCheckList;
 import com.example.colornote.model.Task;
 import com.example.colornote.model.Text;
-import com.example.colornote.receiver.ReminderReceiver;
-import com.example.colornote.util.ColorTransparentUtils;
 import com.example.colornote.util.Constant;
 import com.example.colornote.util.ISeletectedObserver;
 import com.example.colornote.util.SelectedObserverService;
 import com.example.colornote.util.Settings;
+import com.example.colornote.util.SyncFirebase;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements ISeletectedObserver {
     BottomNavigationView bottomNavigationView;
@@ -200,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                     case R.id.mnNav:
                         break;
                 }
+
             }
         });
 

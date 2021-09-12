@@ -26,5 +26,18 @@ public class Text extends Task{
         return completed;
     }
 
-
+    @Override
+    public String toString() {
+        return "Text{" +
+                "content='" + content + '\'' +
+                ", id=" + id +
+                ", title='" + title + '\'' +
+                ", completed=" + completed +
+                ", colorId=" + colorId +
+                ", reminderId=" + reminderId +
+                ", modifiedDate=" + modifiedDate +
+                ", status=" + status +
+                ", accountId='" + accountId + '\'' +
+                '}';
+    }
 }

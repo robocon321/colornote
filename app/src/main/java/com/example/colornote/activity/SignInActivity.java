@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.colornote.R;
+import com.example.colornote.util.SyncFirebase;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -97,17 +99,22 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         if(requestCode == RC_SIGN_IN){
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
-//
         }
     }
     private void handleSignInResult(GoogleSignInResult result){
         Log.d(TAG,"handleSignInResult:"+result.isSuccess());
         if(result.isSuccess()){
             GoogleSignInAccount acct = result.getSignInAccount();
-            textgmail.setText("Hello "+ acct.getDisplayName());
-            Toast.makeText(SignInActivity.this,"" +acct.getDisplayName(),Toast.LENGTH_LONG).show();
+            textgmail.setText("Hello "+ acct.getId());
+            SharedPreferences sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("account_id", acct.getId());
+            editor.putString("account_name", acct.getDisplayName());
+            editor.apply();
+            SyncFirebase.getInstance().login(acct.getId());
+            Toast.makeText(SignInActivity.this,"Đăng nhập thành công",Toast.LENGTH_LONG).show();
         }else{
-
+            Toast.makeText(this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
         }
     }
     private void signOut(){

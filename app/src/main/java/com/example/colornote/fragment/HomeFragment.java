@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,6 +53,7 @@ import com.example.colornote.model.Task;
 import com.example.colornote.util.Constant;
 import com.example.colornote.util.ISeletectedObserver;
 import com.example.colornote.util.SelectedObserverService;
+import com.example.colornote.util.SyncFirebase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -68,6 +70,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     TextView txtCount;
     ImageView imgEdit, imgNumber, imgRange, imgClose;
     View toolbarHidden;
+    String accountId = "";
 
     public static int colorType = 1;
     public static int sortType = Constant.SORT_BY.NO_SORT;
@@ -156,6 +159,8 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
         gvTask.setAdapter(adapter);
 
         SelectedObserverService.getInstance().addObserver(this);
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
+        accountId = sharedPreferences.getString("account_id", "");
     }
 
     public void setEvents(){
@@ -188,6 +193,13 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.top_home_menu, menu);
+        if(accountId.length() > 0) {
+            menu.findItem(R.id.mnBackup).setTitle("Sync");
+            menu.findItem(R.id.mnBackup).setIcon(R.drawable.black_sync);
+        } else {
+            menu.findItem(R.id.mnBackup).setTitle("Backup");
+            menu.findItem(R.id.mnBackup).setIcon(R.drawable.ic_backup);
+        }
     }
 
     @Override
@@ -248,8 +260,12 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
                 });
                 break;
             case R.id.mnBackup:
-                Intent intent = new Intent(getActivity(), BackupActivity.class);
-                getActivity().startActivity(intent);
+                if(accountId.length() > 0) {
+                    SyncFirebase.getInstance().sync(accountId);
+                } else {
+                    Intent intent = new Intent(getActivity(), BackupActivity.class);
+                    getActivity().startActivity(intent);
+                }
                 break;
             case R.id.mnColorOption:
                 showDialogEditColor();
@@ -446,5 +462,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
     public void onResume() {
         super.onResume();
         loadTask();
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
+        accountId = sharedPreferences.getString("account_id", "");
     }
 }

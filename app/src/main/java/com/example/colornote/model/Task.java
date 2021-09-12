@@ -12,6 +12,15 @@ public abstract class Task implements Serializable {
     protected int reminderId;
     protected Date modifiedDate;
     protected int status;
+    protected String accountId;
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
 
     public abstract String showContent();
     public abstract boolean completeAll();

@@ -9,6 +9,15 @@ public class Reminder{
     private Date endDate;
     private int repetition;
     private int status;
+    private String accountId;
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
 
     public int getId() {
         return id;
@@ -56,5 +65,18 @@ public class Reminder{
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Reminder{" +
+                "id=" + id +
+                ", type=" + type +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", repetition=" + repetition +
+                ", status=" + status +
+                ", accountId='" + accountId + '\'' +
+                '}';
     }
 }
