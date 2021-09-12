@@ -14,7 +14,7 @@
         android:id="@+id/toolbar_TrashCan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ECE8E8"
+
         app:titleTextColor="@color/black">
 
         <ImageButton
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Trash Can"
-            android:textColor="@color/black"
+            android:textColor="?attr/itemTextColor"
             android:textSize="24dp" />
 
 
@@ -91,14 +91,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:backgroundTint="#F6F6F6"
+        android:backgroundTint="?attr/android:windowBackground"
         android:drawableRight="@drawable/ic_icon_down"
         android:fontFamily="@font/arial"
         android:paddingLeft="100dp"
         android:paddingRight="100dp"
         android:text="Sort by deleted time"
         android:textAllCaps="false"
-        android:textColor="@color/black" />
+        android:textColor="?attr/itemTextColor" />
 <FrameLayout
     android:layout_marginBottom="0dp"
     android:layout_width="match_parent"
@@ -116,12 +116,14 @@
         android:id="@+id/barBottomTrashCanHidden"
         android:columnCount="2"
         android:rowCount="1"
-        android:background="@color/gray"
+        android:background="?attr/android:windowBackground"
         android:layout_gravity="bottom"
        android:clickable="false"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
+            android:id="@+id/btnRestore"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:orientation="vertical"
             android:gravity="center"
@@ -131,8 +133,8 @@
             android:layout_columnWeight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <ImageButton
-                android:id="@+id/btnRestore"
+            <ImageView
+android:clickable="false"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_baseline_restore_from_trash"
                 android:layout_width="wrap_content"
@@ -145,6 +147,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/btnDeletePermanently"
             android:clickable="true"
             android:orientation="vertical"
             android:gravity="center"
@@ -154,8 +158,8 @@
             android:layout_columnWeight="1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-            <ImageButton
-                android:id="@+id/btnDeletePermanently"
+            <ImageView
+
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_baseline_delete_forever_24"
                 android:layout_width="wrap_content"
