@@ -106,4 +106,20 @@ public class TextDAO extends AbstractDAO{
         database.getSqLiteDatabase().execSQL(sql);
 
     }
+    public Text getText(int id){
+        Text text = new Text();
+        String sql = "SELECT * FROM Text WHERE id=?";
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql,new String []{id+""});
+        while(cursor.moveToNext()){
+            text.setId(cursor.getInt(0));
+            text.setTitle(cursor.getString(1));
+            text.setContent(cursor.getString(2));
+            text.setCompleted(cursor.getInt(3)>0);
+            text.setColorId(cursor.getInt(4));
+            text.setReminderId(cursor.getInt(5));
+            text.setModifiedDate(new Date(cursor.getString(6)));
+            text.setStatus(cursor.getInt(7));
+        }
+        return text;
+    }
 }

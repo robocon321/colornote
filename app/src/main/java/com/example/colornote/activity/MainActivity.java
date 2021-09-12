@@ -46,6 +46,7 @@ import com.example.colornote.dao.ItemCheckListDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.database.Database;
 import com.example.colornote.fragment.HomeFragment;
+import com.example.colornote.fragment.MoreFragment;
 import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.mapper.ItemCheckListMapper;
 import com.example.colornote.model.CheckList;
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
     TextView txtTitle;
     AlertDialog dialog;
     SharedPreferences sharedPreferences;
+    String textSignIn = Constant.textSignin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         setEvents();
 
         getDefauleActivity();
+
     }
 
     public void init(){

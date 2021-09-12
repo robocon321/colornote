@@ -163,15 +163,15 @@ public class CheckList_Activity extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("bundle");
-        String data = bundle.getString("date");
-        try {
-            date = new SimpleDateFormat("dd-MM-yyyy").parse(data);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Toast.makeText(this, "" + date, Toast.LENGTH_SHORT).show();
+//        Intent intent = getIntent();
+//        Bundle bundle = intent.getBundleExtra("bundle");
+//        String data = bundle.getString("date");
+//        try {
+//            date = new SimpleDateFormat("dd-MM-yyyy").parse(data);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        Toast.makeText(this, "" + date, Toast.LENGTH_SHORT).show();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
