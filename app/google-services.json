@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "252802007168",
+    "project_id": "colornotesignin-d901a",
+    "storage_bucket": "colornotesignin-d901a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:252802007168:android:0d6be42433ddc3a7286665",
+        "android_client_info": {
+          "package_name": "com.example.colornote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "252802007168-grksipeb1i0bkfuhev63g1irl640hqoe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyACzMHVImLpKPJS_8IfKYPXsrABhadMpyg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "252802007168-grksipeb1i0bkfuhev63g1irl640hqoe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

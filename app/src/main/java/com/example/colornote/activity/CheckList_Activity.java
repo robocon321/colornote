@@ -2,7 +2,10 @@ package com.example.colornote.activity;
 
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -12,8 +15,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +39,9 @@ import com.example.colornote.dao.ItemCheckListDAO;
 import com.example.colornote.model.CheckList;
 import com.example.colornote.model.ItemCheckList;
 import com.example.colornote.model.Text;
+import com.example.colornote.util.Constant;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,6 +49,7 @@ import java.util.Date;
 public class CheckList_Activity extends AppCompatActivity {
     private int colorid;
     EditText title_checklist;
+    TextView date_checklist;
     Toolbar toolbar;
     boolean checkIcon = true;
     Button button_additem;
@@ -51,6 +59,8 @@ public class CheckList_Activity extends AppCompatActivity {
     CheckList checkList = new CheckList();
     ItemCheckList itemCheckList = new ItemCheckList();
     int listItemSize,parentId;
+    LinearLayout linearLayout;
+    int color_black =1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,14 +69,21 @@ public class CheckList_Activity extends AppCompatActivity {
         this.colorid = 2;
         toolbar = findViewById(R.id.toolbar_checklist);
         title_checklist = findViewById(R.id.title_checklist);
+        date_checklist = findViewById(R.id.date_checklist);
         button_additem = findViewById(R.id.btn_additem);
-
+        linearLayout = findViewById(R.id.layout_checkList);
+        linearLayout.setBackgroundColor(Color.parseColor("#ffe77a"));
+        button_additem.setBackgroundColor(Color.parseColor("#ffe77a"));
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
+        String s = simpleDateFormat.format(date);
+        date_checklist.setText(s);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_list) ;
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CheckList_Activity.this,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        CheckListAdapter checkListAdapter = new CheckListAdapter(list,getApplicationContext());
+        CheckListAdapter checkListAdapter = new CheckListAdapter(list,CheckList_Activity.this);
         recyclerView.setAdapter(checkListAdapter);
 
 
@@ -82,16 +99,27 @@ public class CheckList_Activity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if(!hasFocus &&!title_checklist.getText().toString().equals("")){
                     getSupportActionBar().setTitle(title_checklist.getText().toString());
-                    Toast.makeText(CheckList_Activity.this,"1",Toast.LENGTH_LONG).show();
                 }else{
-                    Toast.makeText(CheckList_Activity.this,"tonch",Toast.LENGTH_LONG).show();
+                    checkIcon = true;
+                    if(color_black==0){
+                        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24_w);
+                    }else{
+                        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24);
+                    }
                 }
             }
         });
         button_additem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(color_black==0){
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24_w);
+                }else{
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24);
+                }
+
                 getSupportActionBar().setTitle(title_checklist.getText().toString());
+                title_checklist.clearFocus();
                 Dialog dialog = new Dialog(CheckList_Activity.this);
                 dialog.setContentView(R.layout.dialog_additem_checklist);
                 EditText editTextitem;
@@ -107,8 +135,8 @@ public class CheckList_Activity extends AppCompatActivity {
                         String text = editTextitem.getText().toString();
                         if(!text.equals("")){
                             list.add(text);
-                            Toast.makeText(CheckList_Activity.this,""+list.size(),Toast.LENGTH_LONG).show();
-                            CheckListAdapter checkListAdapter = new CheckListAdapter(list,getApplicationContext());
+//                            Toast.makeText(CheckList_Activity.this,""+list.size(),Toast.LENGTH_LONG).show();
+                            CheckListAdapter checkListAdapter = new CheckListAdapter(list,CheckList_Activity.this);
                             recyclerView.setAdapter(checkListAdapter);
                             dialog.dismiss();
                         }else{
@@ -123,6 +151,7 @@ public class CheckList_Activity extends AppCompatActivity {
                     }
                 });
                 dialog.show();
+                checkIcon=true;
             }
         });
     }
@@ -140,22 +169,34 @@ public class CheckList_Activity extends AppCompatActivity {
                 if(checkIcon==false)
                     onBackPressed();
                 else{
-                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
+                    if(color_black==0){
+                        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24_w);
+                    }else{
+                        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
+                    }
                     if(numEdit==0) {
                         addItemCheckList();
                         addCheckList(colorid);
                     }else{
+                        removeAllItemListDAO();
                         editItemChecklist();
                         editCheckList(colorid);
                     }
                     Toast.makeText(CheckList_Activity.this,"Saved",Toast.LENGTH_LONG).show();
-                    checkIcon =false;
                     getSupportActionBar().setTitle(title_checklist.getText().toString());
+                    title_checklist.clearFocus();
+                    closekeyboard();
+                    checkIcon =false;
+
                 }
                 return true;
             case R.id.edit:
-                getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24);
-                title_checklist.setSelection(0);
+                if(color_black==0){
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24_w);
+                }else{
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24);
+                }
+                title_checklist.requestFocus();
                 checkIcon = true;
                 getSupportActionBar().setTitle(title_checklist.getText().toString());
                 return  true;
@@ -174,15 +215,15 @@ public class CheckList_Activity extends AppCompatActivity {
                 button_gray = dialog.findViewById(R.id.btn_gray);
                 button_white_gray = dialog.findViewById(R.id.btn_white);
 
-                changeColorActionbar(button_red,dialog,4);
-                changeColorActionbar(button_black,dialog,8);
-                changeColorActionbar(button_orange,dialog,3);
-                changeColorActionbar(button_yellow,dialog,2);
-                changeColorActionbar(button_green,dialog,5);
-                changeColorActionbar(button_purple,dialog,7);
-                changeColorActionbar(button_gray,dialog,9);
-                changeColorActionbar(button_blue,dialog,6);
-                changeColorActionbar(button_white_gray,dialog,10);
+                changeColorActionbar(button_red,dialog,4,1,"#fc6f6f");
+                changeColorActionbar(button_black,dialog,8,0,"#b5b5b5");
+                changeColorActionbar(button_orange,dialog,3,1,"#ffaf75");
+                changeColorActionbar(button_yellow,dialog,2,1,"#ffe77a");
+                changeColorActionbar(button_green,dialog,5,1,"#94f08d");
+                changeColorActionbar(button_purple,dialog,7,1,"#e4a8ff");
+                changeColorActionbar(button_gray,dialog,9,1,"#e6e6e6");
+                changeColorActionbar(button_blue,dialog,6,1,"#97c2f7");
+                changeColorActionbar(button_white_gray,dialog,10,1,"#ffffff");
 
                 dialog.show();
                 return true;
@@ -192,7 +233,7 @@ public class CheckList_Activity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void changeColorActionbar(Button button,Dialog dialog,int color){
+    public void changeColorActionbar(Button button,Dialog dialog,int color,int colorWB, String colorBackground){
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -200,6 +241,11 @@ public class CheckList_Activity extends AppCompatActivity {
                 Drawable drawable = button.getBackground();
                 ActionBar actionBar = getSupportActionBar();
                 actionBar.setBackgroundDrawable(drawable);
+                color_black=colorWB;
+                changeIconToolBar(color_black);
+                linearLayout.setBackgroundColor(Color.parseColor(colorBackground));
+                recyclerView.setBackgroundColor(Color.parseColor(colorBackground));
+                button_additem.setBackgroundColor(Color.parseColor(colorBackground));
                 colorid = color;
                 dialog.cancel();
 
@@ -215,7 +261,7 @@ public class CheckList_Activity extends AppCompatActivity {
         checkList.setColorId(color);
         Date date = Calendar.getInstance().getTime();
         checkList.setModifiedDate(date);
-        checkList.setStatus(2);
+        checkList.setStatus(Constant.STATUS.NORMAL);
         numEdit = checkListDAO.insert(checkList);
 //        Log.d("a",checkListDAO.insert(checkList)+"");
 
@@ -232,7 +278,7 @@ public class CheckList_Activity extends AppCompatActivity {
             Date date = Calendar.getInstance().getTime();
             itemCheckList.setModifiedDate(date);
             itemCheckList.setParentId(checkListDAO.count()+1);
-            itemCheckList.setStatus(3);
+            itemCheckList.setStatus(Constant.STATUS.NORMAL);
             itemCheckListDAO.insert(itemCheckList);
         }
         listItemSize = list.size();
@@ -245,32 +291,54 @@ public class CheckList_Activity extends AppCompatActivity {
         checkList.setColorId(color);
         Date date = Calendar.getInstance().getTime();
         checkList.setModifiedDate(date);
-        checkList.setStatus(3);
+        checkList.setStatus(Constant.STATUS.NORMAL);
         checkListDAO.update(checkList);
         return true;
+    }
+    public void removeAllItemListDAO(){
+//            list.removeAll(list);
+            ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
+            itemCheckListDAO.deleteByIdCheckList(parentId);
     }
     public void editItemChecklist(){
         for (int i = 0; i < list.size(); i++) {
 //            ItemCheckList itemCheckList = new ItemCheckList();
-            if(i<listItemSize) {
-                ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
-//            itemCheckList.setId(itemCheckListDAO.count()+1);
-                itemCheckList.setContent(list.get(i));
-                Date date = Calendar.getInstance().getTime();
-                itemCheckList.setModifiedDate(date);
-//            itemCheckList.setParentId(checkListDAO.count()+1);
-                itemCheckList.setStatus(3);
-                itemCheckListDAO.update(itemCheckList);
-            }
-            else{
                 ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
                 itemCheckList.setId(itemCheckListDAO.count()+1);
                 itemCheckList.setContent(list.get(i));
                 Date date = Calendar.getInstance().getTime();
                 itemCheckList.setModifiedDate(date);
                 itemCheckList.setParentId(parentId);
-                itemCheckList.setStatus(3);
+                itemCheckList.setStatus(Constant.STATUS.NORMAL);
                 itemCheckListDAO.insert(itemCheckList);
+
+        }
+    }
+    public void closekeyboard() {
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+    public void changeIconToolBar(int color){
+        if(color==0){
+            toolbar.getOverflowIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+            toolbar.setTitleTextColor(Color.WHITE);
+            toolbar.getMenu().getItem(0).setIcon(R.drawable.ic_baseline_edit_24);
+            if(checkIcon==false)
+                getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24_w);
+            else{
+                getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24_w);
+            }
+        }else{
+            toolbar.setTitleTextColor(Color.BLACK);
+            toolbar.getOverflowIcon().setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
+            toolbar.getMenu().getItem(0).setIcon(R.drawable.ic_baseline_edit_24_black);
+            if(checkIcon==false)
+                getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
+            else{
+                getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24);
             }
         }
     }

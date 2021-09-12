@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
 
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/layout_checkList"
+    >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_checklist"
@@ -16,6 +18,7 @@
         android:theme="?attr/actionBarTheme" />
 
     <TextView
+        android:id="@+id/date_checklist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="05/10/2021" />

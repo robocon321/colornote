@@ -122,9 +122,7 @@ public class ViewDetailsAdapter extends ViewAdapter {
                 }
             }
         });
-
         updateBorderView();
-
         return view;
     }
 
