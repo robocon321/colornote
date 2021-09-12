@@ -76,15 +76,7 @@ public class Text_Activity extends AppCompatActivity {
         });
 
         this.colorid = 2;
-        Intent intent = getIntent();
-        Bundle bundle = intent.getBundleExtra("bundle");
-        String data = bundle.getString("date");
-        try {
-            date = new SimpleDateFormat("yyyy-MM-dd").parse(data);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        Toast.makeText(this, "" + date, Toast.LENGTH_SHORT).show();
+        getDateFromCalendarFragment();
     }
 
     //
@@ -194,14 +186,9 @@ public class Text_Activity extends AppCompatActivity {
 
         Toast.makeText(Text_Activity.this,this.numEdit+"",Toast.LENGTH_LONG).show();
         closekeyboard();
-        CalendarFragment calendarFragment = new CalendarFragment();
-        try {
-            calendarFragment.setIconEventDay();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
         return true;
     }
+
     public boolean editText(int color){
 //        Text text = new Text();
         TextDAO textDAO = TextDAO.getInstance();
@@ -232,5 +219,16 @@ public class Text_Activity extends AppCompatActivity {
         int color = pre.getInt("default_color", 0xFFF7D539);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setBackgroundDrawable(new ColorDrawable(color));
+    }
+
+    private void getDateFromCalendarFragment() {
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("bundle");
+        String data = bundle.getString("date");
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(data);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

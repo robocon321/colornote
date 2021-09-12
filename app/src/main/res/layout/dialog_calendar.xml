@@ -12,15 +12,18 @@
         android:fontFamily="sans-serif"
         android:gravity="center_horizontal"
         android:text="9/9/2021"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
         android:textAlignment="center"
         android:textSize="24sp" />
 
     <GridView
         android:id="@+id/gvTask"
         android:layout_width="match_parent"
-        android:layout_height="166dp"
+        android:layout_height="match_parent"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
+        android:verticalSpacing="4dp"
         />
 
     <Button
