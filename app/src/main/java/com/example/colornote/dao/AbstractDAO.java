@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.colornote.database.Database;
 import com.example.colornote.mapper.RowMapper;
@@ -48,9 +49,19 @@ public abstract class AbstractDAO {
         return cursor.getInt(0);
     }
 
-    public <T> List<T> getWithKey(RowMapper<T> mapper, char s) {
+    public <T> List<T> getWithKey(RowMapper<T> mapper, String s) {
         List<T> list = new ArrayList<>();
         Cursor cursor = database.getSqLiteDatabase().rawQuery(queryWithKey(), new String[]{"%" + s + "%", "%" + s + "%", "%" + s + "%"});
+        while (cursor.moveToNext()) {
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
+    }
+
+    public <T> List<T> getWithModifiedDate(RowMapper<T> mapper, String date) {
+        List<T> list = new ArrayList<>();
+        String sql = queryAll() +" where modifiedDate = '" + date + "'";
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql,null);
         while (cursor.moveToNext()) {
             list.add(mapper.mappRow(cursor));
         }

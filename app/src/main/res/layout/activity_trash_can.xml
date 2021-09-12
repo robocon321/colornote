@@ -112,6 +112,7 @@
         android:numColumns="1" />
 
     <GridLayout
+        android:visibility="invisible"
         android:id="@+id/barBottomTrashCanHidden"
         android:columnCount="2"
         android:rowCount="1"

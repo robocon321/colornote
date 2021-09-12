@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import com.example.colornote.R;
 import com.example.colornote.adapter.ViewAdapter;
 import com.example.colornote.adapter.ViewListAdapter;
+import com.example.colornote.adapter.ViewSearchAdapter;
 import com.example.colornote.dao.CheckListDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.mapper.CheckListMapper;
@@ -30,7 +31,7 @@ public class SearchFragment extends Fragment {
 
     GridView gvTaskSearch;
     ArrayList<Task> lsTask;
-    ViewAdapter adapterTask;
+    ViewSearchAdapter adapterTask;
 
     CheckListDAO checkListDAO;
     TextDAO textDAO;
@@ -51,7 +52,7 @@ public class SearchFragment extends Fragment {
         lsTask = new ArrayList<>();
 
 
-        adapterTask = new ViewListAdapter(lsTask, getActivity());
+        adapterTask = new ViewSearchAdapter(lsTask, getActivity());
         gvTaskSearch.setAdapter(adapterTask);
 
         checkListDAO = CheckListDAO.getInstance();
@@ -63,10 +64,7 @@ public class SearchFragment extends Fragment {
         svSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                char[] arrChar = s.toCharArray();
-                for (char c : arrChar) {
-                    showWithChar(c);
-                }
+                    showWithString(s);
 
                 if (lsTask.isEmpty()) {
                     Toast.makeText(getActivity(), "Not found: " + s, Toast.LENGTH_SHORT).show();
@@ -82,7 +80,7 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    private void showWithChar(char s) {
+    private void showWithString(String s) {
         lsTask.clear();
         lsTask.addAll(checkListDAO.getWithKey(new CheckListMapper(), s));
         lsTask.addAll(textDAO.getWithKey(new TextMapper(), s));

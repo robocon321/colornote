@@ -2,7 +2,11 @@ package com.example.colornote.activity;
 
 
 import android.app.Dialog;
+
 import android.content.Context;
+
+import android.content.Intent;
+
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -41,6 +45,8 @@ import com.example.colornote.model.ItemCheckList;
 import com.example.colornote.model.Text;
 import com.example.colornote.util.Constant;
 
+import java.text.ParseException;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -61,6 +67,8 @@ public class CheckList_Activity extends AppCompatActivity {
     int listItemSize,parentId;
     LinearLayout linearLayout;
     int color_black =1;
+
+    private Date date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +162,16 @@ public class CheckList_Activity extends AppCompatActivity {
                 checkIcon=true;
             }
         });
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getBundleExtra("bundle");
+        String data = bundle.getString("date");
+        try {
+            date = new SimpleDateFormat("dd-MM-yyyy").parse(data);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Toast.makeText(this, "" + date, Toast.LENGTH_SHORT).show();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -253,13 +271,15 @@ public class CheckList_Activity extends AppCompatActivity {
         });
     }
     public boolean addCheckList(int color){
-//        CheckList checkList = new CheckList();
+        if(date == null){
+            date = Calendar.getInstance().getTime();
+        }
+        CheckList checkList = new CheckList();
         CheckListDAO checkListDAO = CheckListDAO.getInstance();
         checkList.setId(checkListDAO.count()+1);
         checkList.setTitle(title_checklist.getText().toString());
         checkList.setReminderId(1);
         checkList.setColorId(color);
-        Date date = Calendar.getInstance().getTime();
         checkList.setModifiedDate(date);
         checkList.setStatus(Constant.STATUS.NORMAL);
         numEdit = checkListDAO.insert(checkList);
