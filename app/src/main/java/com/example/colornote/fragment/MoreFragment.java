@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.LinearLayout;
 
@@ -28,6 +31,10 @@ import com.example.colornote.activity.ArchiveActivity;
 import com.example.colornote.activity.SettingsActivity;
 import com.example.colornote.activity.SignInActivity;
 import com.example.colornote.activity.TrashCanActivity;
+import com.example.colornote.util.Constant;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MoreFragment extends Fragment {
     @Nullable
@@ -37,12 +44,17 @@ public class MoreFragment extends Fragment {
     String themeName;
     ImageButton btn_signedIn;
     SharedPreferences sharedPreferences;
+    TextView username;
+//    CountDownTimer countDownTimer;
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_more, container, false);
         addControls(view);
         addEvent();
-        return view;
+        username = (TextView) view.findViewById(R.id.text_nameuser);
+        content();
+        username.setText(Constant.textSignin);
 
+        return view;
     }
 
     private void addControls(View view) {
@@ -119,8 +131,12 @@ public class MoreFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),SignInActivity.class);
                 getActivity().startActivity(intent);
+
             }
         });
+
+//
+//        username.setText(getArguments().getString("key1"));
     }
 
     @Override
@@ -143,5 +159,20 @@ public class MoreFragment extends Fragment {
         editor.apply();
         getActivity().recreate();
     }
+    public void content(){
+        username.setText(Constant.textSignin);
+        refresh(1000);
+    }
+    public void refresh(int mili){
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+           content();
+            }
+        };
+        handler.postDelayed(runnable,mili);
+    }
+
 }
 
