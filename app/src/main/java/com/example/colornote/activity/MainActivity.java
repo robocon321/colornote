@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                         String accountId = getSharedPreferences("account", MODE_PRIVATE).getString("account_id", "");
                         if(accountId.length() > 0) {
                             if(checkAvailableInternet()){
-                                SyncFirebase.getInstance().sync(accountId);
+                                SyncFirebase.getInstance().sync(accountId, MainActivity.this);
                                 getSharedPreferences("account", Context.MODE_PRIVATE).edit().putLong("last_sync", Calendar.getInstance().getTimeInMillis()).commit();
                             }
                             else Toast.makeText(MainActivity.this, "Internet không có sẵn", Toast.LENGTH_SHORT).show();

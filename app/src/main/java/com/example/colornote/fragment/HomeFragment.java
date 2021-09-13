@@ -265,7 +265,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
             case R.id.mnBackup:
                 if(accountId.length() > 0) {
                     if(checkAvailableInternet()){
-                        SyncFirebase.getInstance().sync(accountId);
+                        SyncFirebase.getInstance().sync(accountId, getActivity());
                         getActivity().getSharedPreferences("account", Context.MODE_PRIVATE).edit().putLong("last_sync", Calendar.getInstance().getTimeInMillis()).commit();
                     }
                     else Toast.makeText(getActivity(), "Internet không có sẵn", Toast.LENGTH_SHORT).show();
