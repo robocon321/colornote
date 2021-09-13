@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -56,6 +58,7 @@ import com.example.colornote.util.SelectedObserverService;
 import com.example.colornote.util.SyncFirebase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -261,7 +264,11 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
                 break;
             case R.id.mnBackup:
                 if(accountId.length() > 0) {
-                    SyncFirebase.getInstance().sync(accountId);
+                    if(checkAvailableInternet()){
+                        SyncFirebase.getInstance().sync(accountId);
+                        getActivity().getSharedPreferences("account", Context.MODE_PRIVATE).edit().putLong("last_sync", Calendar.getInstance().getTimeInMillis()).commit();
+                    }
+                    else Toast.makeText(getActivity(), "Internet không có sẵn", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(getActivity(), BackupActivity.class);
                     getActivity().startActivity(intent);
@@ -465,4 +472,15 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
         accountId = sharedPreferences.getString("account_id", "");
     }
+
+    public boolean checkAvailableInternet() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            return true;
+        }
+        else
+            return false;
+    }
+
 }

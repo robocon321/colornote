@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -173,8 +176,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 //        });
     }
     private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        if(checkAvailableInternet()) {
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        } else {
+            Toast.makeText(this, "Internet không có sẵn", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -207,17 +214,21 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         }
     }
     private void signOut(){
-        Auth.GoogleSignInApi.signOut(mGoogleSignInClient).setResultCallback(new ResultCallback<Status>() {
-            @Override
-            public void onResult(@NonNull Status status) {
-                SharedPreferences sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.clear();
-                editor.commit();
-                content();
-                Toast.makeText(SignInActivity.this,"Sign out",Toast.LENGTH_LONG).show();
-            }
-        });
+        if(checkAvailableInternet()) {
+            Auth.GoogleSignInApi.signOut(mGoogleSignInClient).setResultCallback(new ResultCallback<Status>() {
+                @Override
+                public void onResult(@NonNull Status status) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear();
+                    editor.commit();
+                    content();
+                    Toast.makeText(SignInActivity.this,"Sign out",Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(this, "Internet không có sẵn", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -251,4 +262,15 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             txtContentLastSync.setText("Lúc: " + new DateConvert(cal.getTime()).showTime());
         }
     }
+
+    public boolean checkAvailableInternet() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            return true;
+        }
+        else
+            return false;
+    }
+
 }
