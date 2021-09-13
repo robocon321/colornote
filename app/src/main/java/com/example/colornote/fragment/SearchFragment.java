@@ -70,8 +70,11 @@ public class SearchFragment extends Fragment {
         svSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
-                    showWithString(s);
-
+                if(s == null || s == ""){
+                    lsTask.clear();
+                    adapterTask.notifyDataSetChanged();
+                }
+                showWithString(s);
                 if (lsTask.isEmpty()) {
                     Toast.makeText(getActivity(), "Not found: " + s, Toast.LENGTH_SHORT).show();
                 }
@@ -80,7 +83,12 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                lsTask.clear();
+                if(s == null || s.isEmpty() || s == ""){
+                    lsTask.clear();
+                    adapterTask.notifyDataSetChanged();
+                    return true;
+                }
+                showWithString(s);
                 return false;
             }
         });
