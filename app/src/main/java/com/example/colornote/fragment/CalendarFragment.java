@@ -24,18 +24,11 @@ import com.example.colornote.activity.CheckList_Activity;
 import com.example.colornote.activity.Text_Activity;
 import com.example.colornote.adapter.ViewListAdapter;
 import com.example.colornote.dao.CheckListDAO;
-import com.example.colornote.dao.ReminderDAO;
 import com.example.colornote.dao.TextDAO;
-import com.example.colornote.mapper.CheckListMapper;
-import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.Task;
-import com.example.colornote.util.DateConvert;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -54,7 +47,6 @@ public class CalendarFragment extends Fragment {
     //  add an icon in calendar when add a note success
     private CalendarView calendarView;
     private List<EventDay> lsEvent;
-    private List<Calendar> lsCalendar;
 
     //  get all task in day
     private GridView gvTask;
@@ -97,7 +89,6 @@ setDate = "";
         calendarView = (CalendarView) view.findViewById(R.id.calCustom);
         lsEvent = new ArrayList<>();
         lsTaskRemider = new ArrayList<>();
-        lsCalendar = new ArrayList<>();
 
         txtDate = (TextView) dialogAddCalendar.findViewById(R.id.txtDate);
     }
@@ -106,8 +97,7 @@ setDate = "";
         txtCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                showDate();
-                Toast.makeText(getActivity(), "time" + convertTimestamp("2021-09-15") + "000", Toast.LENGTH_SHORT).show();
+                showDate();
             }
         });
 
