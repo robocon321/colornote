@@ -87,8 +87,8 @@ public class Database {
 //        sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, 'oakszdieow iwe lkd lkske ik ', 0, 3, '2011-11-10', 2);");
 
         sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,null ,null, null);");
-        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#ffe77a' ,'#f7d539', 'yellow'); ");
-        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#ffaf75' ,'#ff7f24', 'orange'); ");
+        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#ffff6b' ,'#FFF7D539', 'yellow'); ");
+        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#FFEAD7' ,'#ff7f24', 'orange'); ");
         sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#fc6f6f' ,'#ff2b2b','red'); ");
         sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#94f08d' ,'#48fc3a', 'green'); ");
         sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#97c2f7' ,'#286fc7', 'blue'); ");
