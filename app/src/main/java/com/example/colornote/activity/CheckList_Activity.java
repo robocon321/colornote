@@ -1,10 +1,12 @@
 package com.example.colornote.activity;
 
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 
 import android.content.Context;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
@@ -40,6 +42,8 @@ import com.example.colornote.R;
 import com.example.colornote.adapter.CheckListAdapter;
 import com.example.colornote.dao.CheckListDAO;
 import com.example.colornote.dao.ItemCheckListDAO;
+import com.example.colornote.dao.TextDAO;
+import com.example.colornote.fragment.HomeFragment;
 import com.example.colornote.model.CheckList;
 import com.example.colornote.model.ItemCheckList;
 import com.example.colornote.model.Text;
@@ -69,6 +73,7 @@ public class CheckList_Activity extends AppCompatActivity {
     LinearLayout linearLayout;
     int color_black =1;
     int num_click = 0;
+    AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -202,6 +207,10 @@ public class CheckList_Activity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.text_checklist_menu,menu);
+
+        menu.findItem(R.id.mnCheck).setTitle(checkList.completeAll() ? "Uncheck" : "Check");
+        menu.findItem(R.id.mnCheck).setIcon(checkList.completeAll() ? R.drawable.ic_square : R.drawable.ic_check);
+
         return true;
     }
     @Override
@@ -270,11 +279,106 @@ public class CheckList_Activity extends AppCompatActivity {
 
                 dialog.show();
                 return true;
+            case R.id.mnCheck:
+                checkCheckList(item);
+                return true;
+            case R.id.mnSend:
+                sendTask();
+                return true;
+            case R.id.mnReminder:
+                changeReminderActivitiy();
+                return true;
+            case R.id.mnArchive:
+                archiveTask();
+                return true;
+            case R.id.mnDelete:
+                deleteTask();
+                return true;
             default:break;
-
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void deleteTask() {
+        ItemCheckListDAO.getInstance().changeStatus(checkList.getId(), Constant.STATUS.RECYCLE_BIN);
+        CheckListDAO.getInstance().changeStatus(checkList.getId(), Constant.STATUS.RECYCLE_BIN);
+        onBackPressed();
+    }
+
+    public void archiveTask() {
+        CheckListDAO.getInstance().changeStatus(checkList.getId(), Constant.STATUS.ARCHIVE);
+        onBackPressed();
+    }
+
+    public void changeReminderActivitiy(){
+        Intent intent = new Intent(this, ReminderActivity.class);
+        intent.putExtra("task", checkList);
+        startActivity(intent);
+    }
+
+    public void sendTask() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, checkList.getTitle() + "\n" + checkList.showContent());
+        this.startActivity(Intent.createChooser(intent, "Share tasks"));
+    }
+
+    public void checkCheckList(MenuItem item) {
+        boolean isCompleted = !checkList.completeAll();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if(!checkList.completeAll()) {
+            builder.setTitle("Check all items");
+            builder.setMessage("Are you sure you want to check all items?");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int index) {
+                    List<ItemCheckList> items = ItemCheckListDAO.getInstance().getByParentId(checkList.getId());
+                    CheckListDAO.getInstance().changeCompleted(checkList.getId(), isCompleted);
+                    for (ItemCheckList item : items) {
+                        ItemCheckListDAO.getInstance().changeCompleted(item.getId(), isCompleted);
+                        CheckListAdapter checkListAdapter = new CheckListAdapter(list,CheckList_Activity.this);
+                        recyclerView.setAdapter(checkListAdapter);
+                    }
+                    checkList.setCompleted(isCompleted);
+                    item.setTitle(checkList.completeAll() ? "Uncheck" : "Check");
+                    item.setIcon(checkList.completeAll() ? R.drawable.ic_square : R.drawable.ic_check);
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int index) {
+                    dialog.dismiss();
+                }
+            });
+        } else {
+            builder.setTitle("Uncheck all items");
+            builder.setMessage("Are you sure you want to uncheck all items?");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int index) {
+                    List<ItemCheckList> items = ItemCheckListDAO.getInstance().getByParentId(checkList.getId());
+                    CheckListDAO.getInstance().changeCompleted(checkList.getId(), isCompleted);
+                    for (ItemCheckList item : items) {
+                        ItemCheckListDAO.getInstance().changeCompleted(item.getId(), isCompleted);
+                        CheckListAdapter checkListAdapter = new CheckListAdapter(list,CheckList_Activity.this);
+                        recyclerView.setAdapter(checkListAdapter);
+                    }
+                    checkList.setCompleted(isCompleted);
+                    item.setTitle(checkList.completeAll() ? "Uncheck" : "Check");
+                    item.setIcon(checkList.completeAll() ? R.drawable.ic_square : R.drawable.ic_check);
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int index) {
+                    dialog.dismiss();
+                }
+            });
+        }
+        dialog = builder.create();
+        dialog.show();
     }
     public void changeColorActionbar(Button button,Dialog dialog,int color,int colorWB, String colorBackground){
 
