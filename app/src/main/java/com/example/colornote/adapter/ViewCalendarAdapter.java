@@ -34,7 +34,11 @@ import com.example.colornote.util.Constant;
 import com.example.colornote.util.DateConvert;
 import com.example.colornote.util.SelectedObserverService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ViewCalendarAdapter extends BaseAdapter {
     private Context context;
@@ -84,7 +88,7 @@ public class ViewCalendarAdapter extends BaseAdapter {
         }
 
         holder.txtTitle.setText(task.getTitle());
-//
+
         SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
         String font_size =pre.getString("font_size","100dp");
 
@@ -106,14 +110,12 @@ public class ViewCalendarAdapter extends BaseAdapter {
         }
 
         holder.txtTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);
-//
+
         if(task.completeAll()){
             holder.imgCheck.setImageResource(R.drawable.ic_check);
             holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            // holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#737373"));
         }else
             holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-        //  holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#000000"));
 
         if(task.getStatus()== Constant.STATUS.RECYCLE_BIN){
             holder.imgCheck.setImageResource(R.drawable.ic_trash_can);
@@ -146,7 +148,6 @@ public class ViewCalendarAdapter extends BaseAdapter {
                 }else{
                     SelectedObserverService.getInstance().unselected(position, position+1);
                 }
-//                updateBorderView();
 
                 return true;
             }
@@ -161,7 +162,6 @@ public class ViewCalendarAdapter extends BaseAdapter {
                     }else{
                         SelectedObserverService.getInstance().unselected(position, position+1);
                     }
-//                    updateBorderView();
                 }else{
                     Log.e("EE", task.toString());
                     if(task.getClass().equals(Text.class)) {
@@ -176,6 +176,7 @@ public class ViewCalendarAdapter extends BaseAdapter {
                         bundle.putSerializable("text",text);
                         bundle.putString("colorSub",color1.getColorSub());
                         bundle.putString("colorMain",color1.getColorMain());
+                        bundle.putString("date in view", task.getModifiedDate()+"");
                         intent.putExtras(bundle);
                         context.startActivity(intent);
                         Constant.num_click = 1;
@@ -202,47 +203,9 @@ public class ViewCalendarAdapter extends BaseAdapter {
             }
         });
 
-//        updateBorderView();
-
         return view;
     }
 
-    //public void changeSize(){
-//    SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(this);
-//    String font_size =pre.getString("font_size","100dp");
-//    txtTitle.setTextSize(100);
-//    float size=0;
-////        switch (font_size){
-////            case "Tiny":     size=getResources().getDimension(R.dimen.font_size_tiny);
-////                break;
-////            case "Small":size=getResources().getDimension(R.dimen.font_size_small);
-////                break;
-////            case "Medium": size=getResources().getDimension(R.dimen.font_size_medium);
-////                break;
-////            case "Large": size=getResources().getDimension(R.dimen.font_size_large);
-////                break;
-////            case "Huge": size=getResources().getDimension(R.dimen.font_size_huge);
-////                break;
-////            default: size=getResources().getDimension(R.dimen.font_size);
-////            break;
-////
-////        }
-//    switch (font_size){
-//        case "Tiny":     size=12;
-//            break;
-//        case "Small":size=14;
-//            break;
-//        case "Medium": size=17;
-//            break;
-//        case "Large": size=19;
-//            break;
-//        case "Huge": size=21;
-//            break;
-//        default: size=40;
-//            break;
-//
-//    }
-//}
     public class ViewHolder{
         TextView txtTitle, txtTime;
         ImageView imgCheck;
@@ -250,5 +213,4 @@ public class ViewCalendarAdapter extends BaseAdapter {
         View colorSub;
         LinearLayout task_item;
     }
-
 }

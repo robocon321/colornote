@@ -75,8 +75,6 @@ public class CheckList_Activity extends AppCompatActivity {
     int num_click = 0;
     AlertDialog dialog;
 
-    private Date date;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -203,20 +201,6 @@ public class CheckList_Activity extends AppCompatActivity {
                 checkIcon=true;
             }
         });
-
-
-//        Intent intent = getIntent();
-//        Bundle bundle = intent.getBundleExtra("bundle");
-//        String data = bundle.getString("date");
-//        try {
-//            date = new SimpleDateFormat("dd-MM-yyyy").parse(data);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        Toast.makeText(this, "" + date, Toast.LENGTH_SHORT).show();
-
-//        getDateFromCalendarFragment();
-
 
     }
     @Override
@@ -416,9 +400,7 @@ public class CheckList_Activity extends AppCompatActivity {
         });
     }
     public boolean addCheckList(int color){
-        if(date == null){
-            date = Calendar.getInstance().getTime();
-        }
+        Date date = getDateFromCalendarFragment();
         CheckList checkList = new CheckList();
         CheckListDAO checkListDAO = CheckListDAO.getInstance();
         checkList.setId(checkListDAO.count()+1);
@@ -440,7 +422,7 @@ public class CheckList_Activity extends AppCompatActivity {
             ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
             itemCheckList.setId(itemCheckListDAO.count()+1);
             itemCheckList.setContent(list.get(i));
-            Date date = Calendar.getInstance().getTime();
+            Date date = getDateFromCalendarFragment();
             itemCheckList.setModifiedDate(date);
             itemCheckList.setParentId(checkListDAO.count()+1);
             itemCheckList.setStatus(Constant.STATUS.NORMAL);
@@ -516,18 +498,21 @@ public class CheckList_Activity extends AppCompatActivity {
         }
     }
 
-    private void getDateFromCalendarFragment() {
+    private Date getDateFromCalendarFragment() {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("bundle");
         if(bundle == null){
-            return;
+            return Calendar.getInstance().getTime();
         }
+        Date date = new Date();
         String data = bundle.getString("date");
         try {
             date = new SimpleDateFormat("yyyy-MM-dd").parse(data);
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        return date;
     }
 }
 
