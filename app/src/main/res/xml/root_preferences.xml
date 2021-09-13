@@ -43,19 +43,19 @@
 
             app:iconSpaceReserved="false"/>
     </PreferenceCategory>
-<PreferenceCategory android:title="@string/sort"
-    app:iconSpaceReserved="false">
-    <ListPreference
-        android:defaultValue="6"
-        android:dialogTitle="@string/default_sort_order"
-        android:entries="@array/default_sort_order_entries"
-        android:entryValues="@array/default_sort_order_entries"
-        android:key="xfsssg"
-        app:useSimpleSummaryProvider="true"
-        android:title="@string/default_sort_order"
-        app:iconSpaceReserved="false"/>
+<!--<PreferenceCategory android:title="@string/sort"-->
+<!--    app:iconSpaceReserved="false">-->
+<!--    <ListPreference-->
+<!--        android:defaultValue="6"-->
+<!--        android:dialogTitle="@string/default_sort_order"-->
+<!--        android:entries="@array/default_sort_order_entries"-->
+<!--        android:entryValues="@array/default_sort_order_entries"-->
+<!--        android:key="xfsssg"-->
+<!--        app:useSimpleSummaryProvider="true"-->
+<!--        android:title="@string/default_sort_order"-->
+<!--        app:iconSpaceReserved="false"/>-->
 
-</PreferenceCategory>
+<!--</PreferenceCategory>-->
     <PreferenceCategory app:title="@string/online_sync"
         app:iconSpaceReserved="false">
         <Preference

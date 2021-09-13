@@ -3,6 +3,7 @@ package com.example.colornote.activity;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 import android.app.Dialog;
@@ -59,18 +60,26 @@ public class Text_Activity extends AppCompatActivity {
     LinearLayout linearLayout;
     int color_black =1;
     int num_click = 0;
-
-
+    SharedPreferences sharedPreferences;
+String themeName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = getSharedPreferences("Theme", Context.MODE_PRIVATE);
+        themeName = sharedPreferences.getString("ThemeName", "Default");
+
         setContentView(R.layout.activity_text);
         title_text = findViewById(R.id.title_text);
         edit_text = findViewById(R.id.edit_text);
         toolbar = findViewById(R.id.toolbar_text);
         text_date = findViewById(R.id.text_date);
         linearLayout = findViewById(R.id.layout_text);
-        linearLayout.setBackgroundColor(Color.parseColor("#ffe77a"));
+        if(themeName.equalsIgnoreCase("Dark")){
+            linearLayout.setBackgroundColor(Color.parseColor("#000000"));
+        }else{
+            linearLayout.setBackgroundColor(Color.parseColor("#ffe77a"));
+        }
+
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
         String s = simpleDateFormat.format(date);
@@ -91,10 +100,15 @@ public class Text_Activity extends AppCompatActivity {
                 colorid = text.getColorId();
                 text_date.setText(simpleDateFormat.format(text.getModifiedDate()));
                 String colorSub = getIntent().getStringExtra("colorSub");
-                Toast.makeText(Text_Activity.this,colorSub,Toast.LENGTH_LONG).show();
+              //  Toast.makeText(Text_Activity.this,colorSub,Toast.LENGTH_LONG).show();
 //                Drawable colorDrawable = new ColorDrawable(Color.parseColor(colorSub));
                 actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(colorSub)));
-                linearLayout.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("colorMain")));
+                if(themeName.equalsIgnoreCase("Dark")){
+                    linearLayout.setBackgroundColor(Color.parseColor("#000000"));
+                }else{
+                    linearLayout.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("colorMain")));
+                }
+
                 Constant.num_click = 0;
                 numEdit = 1;
                 checkIcon = false;
@@ -138,7 +152,7 @@ public class Text_Activity extends AppCompatActivity {
             }
         });
 
-        this.colorid = 2;
+
     }
 
 
@@ -208,14 +222,14 @@ public class Text_Activity extends AppCompatActivity {
                 button_white_gray = dialog.findViewById(R.id.btn_white);
 
 
-                changeColorActionbar(button_red,dialog,4,1,"#fc6f6f");
-                changeColorActionbar(button_black,dialog,8,0,"#b5b5b5");
-                changeColorActionbar(button_orange,dialog,3,1,"#ffaf75");
-                changeColorActionbar(button_yellow,dialog,2,1,"#ffe77a");
-                changeColorActionbar(button_green,dialog,5,1,"#94f08d");
-                changeColorActionbar(button_purple,dialog,7,1,"#e4a8ff");
-                changeColorActionbar(button_gray,dialog,9,1,"#e6e6e6");
-                changeColorActionbar(button_blue,dialog,6,1,"#97c2f7");
+                changeColorActionbar(button_red,dialog,4,1,"#f7cad0");
+                changeColorActionbar(button_black,dialog,8,0,"#adb5bd");
+                changeColorActionbar(button_orange,dialog,3,1,"#FFEAD7");
+                changeColorActionbar(button_yellow,dialog,2,1,"#fff2b2");
+                changeColorActionbar(button_green,dialog,5,1,"#b7efc5");
+                changeColorActionbar(button_purple,dialog,7,1,"#dec9e9");
+                changeColorActionbar(button_gray,dialog,9,1,"#dee2e6");
+                changeColorActionbar(button_blue,dialog,6,1,"#caf0f8");
                 changeColorActionbar(button_white_gray,dialog,10,1,"#ffffff");
 
 
@@ -240,7 +254,13 @@ public class Text_Activity extends AppCompatActivity {
                 actionBar.setBackgroundDrawable(drawable);
                 color_black=colorWB;
                 changeIconToolBar(color_black);
-                linearLayout.setBackgroundColor(Color.parseColor(colorBackground));
+                if(themeName.equalsIgnoreCase("Dark")){
+
+                    linearLayout.setBackgroundColor(Color.parseColor("#000000"));
+                }else{
+                    linearLayout.setBackgroundColor(Color.parseColor(colorBackground));
+                }
+
                 colorid = color;
                 dialog.cancel();
 
@@ -322,6 +342,40 @@ public class Text_Activity extends AppCompatActivity {
             int color = pre.getInt("default_color", 0xFFF7D539);
             ActionBar actionBar = getSupportActionBar();
             actionBar.setBackgroundDrawable(new ColorDrawable(color));
+           // String hexColor = String.format("#%06X", (0xFFFFFF & color));
+
+
+          if(color==ContextCompat.getColor(this, R.color.yellow_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#fff2b2"));
+              colorid=2;
+          }else if(color==ContextCompat.getColor(this, R.color.orange_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#FFEAD7"));
+              colorid=3;
+          }else if(color==ContextCompat.getColor(this, R.color.red_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#f7cad0"));
+              colorid=4;
+          }else if(color==ContextCompat.getColor(this, R.color.green_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#b7efc5"));
+              colorid=5;
+          }else if(color==ContextCompat.getColor(this, R.color.blue_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#caf0f8"));
+              colorid=6;
+          }else if(color==ContextCompat.getColor(this, R.color.purple_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#dec9e9"));
+              colorid=7;
+          }else if(color==ContextCompat.getColor(this, R.color.black_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#adb5bd"));
+              colorid=8;
+          }else if(color==ContextCompat.getColor(this, R.color.gray_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#dee2e6"));
+              colorid=9;
+          }else if(color==ContextCompat.getColor(this, R.color.white)){
+              linearLayout.setBackgroundColor(Color.parseColor("#ffffff"));
+              colorid=10;
+          }  if(themeName.equalsIgnoreCase("Dark")){
+
+                linearLayout.setBackgroundColor(Color.parseColor("#000000"));
+            }
         }
     }
 

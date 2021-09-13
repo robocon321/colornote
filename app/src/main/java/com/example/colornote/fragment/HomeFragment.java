@@ -292,7 +292,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
             View view = inflater.inflate(R.layout.item_color, glColor,false);
             EditText edtColor = view.findViewById(R.id.edtTitle);
             EditText edtAmount = view.findViewById(R.id.edtAmount);
-            view.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? "#ffffff" : color.getColorMain()));
+            view.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? "#ffffff" : color.getColorSub()));
 
             if(isShowAmount){
                 edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));

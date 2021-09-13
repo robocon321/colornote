@@ -74,7 +74,7 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
                     textViewtitle = (TextView) dialog.findViewById(R.id.textViewTitle);
                     editTextitemDialog = (EditText) dialog.findViewById(R.id.edtext_item);
                     button_ok = (Button) dialog.findViewById(R.id.btn_ok);
-                    button_exit = (Button) dialog.findViewById(R.id.btn_exit);
+                  //  button_exit = (Button) dialog.findViewById(R.id.btn_exit);
                     textViewtitle.setText("Edit Item");
                     button_ok.setOnClickListener(new View.OnClickListener() {
                         @Override

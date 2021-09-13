@@ -12,4 +12,14 @@
     <color name="tab_non_selected">#878787</color>
     <color name="task_gray">#717171</color>
 
+    <color name="yellow_custom">#ffe14c</color>
+    <color name="orange_custom">#ff7f24</color>
+    <color name="red_custom">#fc6f6f</color>
+    <color name="green_custom">#6ede8a</color>
+    <color name="blue_custom">#48cae4</color>
+    <color name="purple_custom">#c19ee0</color>
+    <color name="black_custom">#212529</color>
+    <color name="gray_custom">#6c757d</color>
+
+
 </resources>

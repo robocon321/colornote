@@ -33,8 +33,14 @@
         android:layout_height="match_parent"
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
+
+
+
+        android:lines="20"
+        android:minLines="5"
         android:gravity="top"
         android:hint="Type note here"
+
         android:inputType="text|textMultiLine"
         android:textSize="24sp" />
 

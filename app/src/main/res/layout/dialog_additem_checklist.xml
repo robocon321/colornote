@@ -8,9 +8,10 @@
 <TextView
     android:id="@+id/textViewTitle"
     android:text="Add Item"
-    android:layout_gravity="left"
-    android:layout_marginLeft="15dp"
-    android:textColor="#267305"
+
+    android:layout_gravity="center"
+
+    android:textColor="?attr/itemTextColor"
     android:textSize="20dp"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"/>
@@ -20,23 +21,15 @@
         android:layout_marginLeft="15dp"
         android:layout_width="300dp"
         android:layout_height="wrap_content"/>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        >
+
         <Button
             android:id="@+id/btn_ok"
             android:text="OK"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <Button
-            android:id="@+id/btn_exit"
-            android:layout_marginLeft="15dp"
+            android:textColor="@color/white"
             android:layout_marginRight="15dp"
-            android:text="THOÁT"
+            android:layout_marginLeft="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
-    </LinearLayout>
+
+
 </LinearLayout>

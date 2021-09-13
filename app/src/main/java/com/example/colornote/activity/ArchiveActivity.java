@@ -504,7 +504,7 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
                 params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
             }
             btn.setLayoutParams(params);
-            btn.setBackgroundColor(android.graphics.Color.parseColor(c.getColorMain()));
+            btn.setBackgroundColor(android.graphics.Color.parseColor(c.getColorSub()));
             btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
