@@ -79,14 +79,14 @@ public class ReminderActivity extends AppCompatActivity {
                     }
                 }
 
-                backToMainActivity();
+                onBackPressed();
             }
         });
 
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                backToMainActivity();
+                onBackPressed();
             }
         });
 
@@ -110,7 +110,7 @@ public class ReminderActivity extends AppCompatActivity {
                     addAlarm(task, reminder.getId(), System.currentTimeMillis() + (reminder.getStartDate().getTime() - System.currentTimeMillis()));
                 }
 
-                backToMainActivity();
+                onBackPressed();
             }
         });
     }
@@ -130,11 +130,6 @@ public class ReminderActivity extends AppCompatActivity {
         Intent intent = new Intent(ReminderActivity.this, ReminderReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         alarmManager.cancel(pendingIntent);
-    }
-
-    public void backToMainActivity(){
-        Intent intent = new Intent(ReminderActivity.this, MainActivity.class);
-        startActivity(intent);
     }
 
     public void switchFragment(int position){

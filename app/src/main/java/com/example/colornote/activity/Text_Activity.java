@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 
@@ -36,8 +37,11 @@ import com.example.colornote.R;
 import com.example.colornote.dao.ColorDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.fragment.CalendarFragment;
+import com.example.colornote.fragment.HomeFragment;
+import com.example.colornote.model.Task;
 import com.example.colornote.model.Text;
 import com.example.colornote.util.Constant;
+import com.example.colornote.util.SelectedObserverService;
 
 import java.text.DateFormat;
 
@@ -160,6 +164,9 @@ public class Text_Activity extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.text_checklist_menu, menu);
 
+        menu.findItem(R.id.mnCheck).setTitle(text.completeAll() ? "Uncheck" : "Check");
+        menu.findItem(R.id.mnCheck).setIcon(text.completeAll() ? R.drawable.ic_square : R.drawable.ic_check);
+
         return true;
     }
 
@@ -167,7 +174,6 @@ public class Text_Activity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-
                 if(checkIcon==false) {
                     onBackPressed();
                 }
@@ -234,12 +240,54 @@ public class Text_Activity extends AppCompatActivity {
 
                 dialog.show();
                 return true;
+            case R.id.mnCheck:
+                TextDAO.getInstance().changeCompleted(text.getId(), !text.completeAll());
+                text.setCompleted(!text.completeAll());
+
+                item.setTitle(text.completeAll() ? "Uncheck" : "Check");
+                item.setIcon(text.completeAll() ? R.drawable.ic_square : R.drawable.ic_check);
+                return true;
+            case R.id.mnSend:
+                sendTask();
+                return true;
+            case R.id.mnReminder:
+                changeReminderActivitiy();
+                return true;
+            case R.id.mnArchive:
+                archiveTask();
+                return true;
+            case R.id.mnDelete:
+                deleteTask();
+                return true;
             default:
                 break;
 
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void deleteTask() {
+        TextDAO.getInstance().changeStatus(text.getId(), Constant.STATUS.RECYCLE_BIN);
+        onBackPressed();
+    }
+
+    public void archiveTask() {
+        TextDAO.getInstance().changeStatus(text.getId(), Constant.STATUS.ARCHIVE);
+        onBackPressed();
+    }
+
+    public void changeReminderActivitiy(){
+            Intent intent = new Intent(this, ReminderActivity.class);
+            intent.putExtra("task", text);
+            startActivity(intent);
+    }
+
+    public void sendTask() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, text.getTitle() + "\n" + text.showContent());
+        this.startActivity(Intent.createChooser(intent, "Share tasks"));
     }
 
     public void changeColorActionbar(Button button,Dialog dialog,int color,int colorWB, String colorBackground){

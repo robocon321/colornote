@@ -154,7 +154,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
         imgClose = view.findViewById(R.id.imgClose);
 
         tasks = new ArrayList<>();
-        adapter = new ViewDetailsAdapter(tasks, getActivity());
+        adapter = new ViewListAdapter(tasks, getActivity());
         loadTask();
 
         Collections.sort(tasks, Task.compareByTitle);

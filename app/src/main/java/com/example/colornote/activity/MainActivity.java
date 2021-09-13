@@ -366,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                 Task task = HomeFragment.tasks.get(i);
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_SUBJECT, task.getTitle());
+                intent.putExtra(Intent.EXTRA_SUBJECT, task.getTitle() + "\n" +task.showContent());
                 this.startActivity(Intent.createChooser(intent, "Share tasks"));
                 break;
             }
