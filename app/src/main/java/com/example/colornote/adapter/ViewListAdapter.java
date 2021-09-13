@@ -159,7 +159,6 @@ public class ViewListAdapter extends ViewAdapter {
                     }
                     updateBorderView();
                 }else{
-                    Log.e("EE", task.toString());
                     if(task.getClass().equals(Text.class)) {
                         int num = task.getId();
                         Color color1 = colorDAO.get(new ColorMapper(), task.getColorId());
