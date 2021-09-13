@@ -13,14 +13,14 @@
 
     <array name="color_palette">
 
-        <item>#f7d539</item>
+        <item>#ffe14c</item>
         <item>#ff7f24</item>
-        <item>#ff2b2b</item>
-        <item>#48fc3a</item>
-        <item>#286fc7</item>
-        <item>#e4a8ff</item>
-        <item>#000000</item>
-        <item>#948787</item>
-        <item>#ededed</item>
+        <item>#fc6f6f</item>
+        <item>#6ede8a</item>
+        <item>#48cae4</item>
+        <item>#c19ee0</item>
+        <item>#212529</item>
+        <item>#6c757d</item>
+        <item>#ffffff</item>
     </array>
 </resources>

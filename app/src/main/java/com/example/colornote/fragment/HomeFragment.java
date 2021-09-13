@@ -198,7 +198,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
         inflater.inflate(R.menu.top_home_menu, menu);
         if(accountId.length() > 0) {
             menu.findItem(R.id.mnBackup).setTitle("Sync");
-            menu.findItem(R.id.mnBackup).setIcon(R.drawable.black_sync);
+            menu.findItem(R.id.mnBackup).setIcon(R.drawable.ic_sync);
         } else {
             menu.findItem(R.id.mnBackup).setTitle("Backup");
             menu.findItem(R.id.mnBackup).setIcon(R.drawable.ic_backup);
@@ -292,7 +292,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
             View view = inflater.inflate(R.layout.item_color, glColor,false);
             EditText edtColor = view.findViewById(R.id.edtTitle);
             EditText edtAmount = view.findViewById(R.id.edtAmount);
-            view.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? "#ffffff" : color.getColorMain()));
+            view.setBackgroundColor(android.graphics.Color.parseColor(color.getColorMain() == null ? "#ffffff" : color.getColorSub()));
 
             if(isShowAmount){
                 edtAmount.setLayoutParams(new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f));
