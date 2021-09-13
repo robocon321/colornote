@@ -198,7 +198,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
         inflater.inflate(R.menu.top_home_menu, menu);
         if(accountId.length() > 0) {
             menu.findItem(R.id.mnBackup).setTitle("Sync");
-            menu.findItem(R.id.mnBackup).setIcon(R.drawable.black_sync);
+            menu.findItem(R.id.mnBackup).setIcon(R.drawable.ic_sync);
         } else {
             menu.findItem(R.id.mnBackup).setTitle("Backup");
             menu.findItem(R.id.mnBackup).setIcon(R.drawable.ic_backup);
