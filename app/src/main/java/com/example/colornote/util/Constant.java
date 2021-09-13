@@ -64,8 +64,8 @@ public class Constant {
     }
 
 //     public static String textSignin = "Not signed in";
-//     public static int num_acct = 0;
-//     public static String email = "";
-//     public static int num_click = 0;
+    public static int num_acct = 0;
+    public static String email = "";
+    public static int num_click = 0;
 
 }
