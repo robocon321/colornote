@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +20,22 @@ import com.example.colornote.R;
 import com.example.colornote.activity.CheckList_Activity;
 import com.example.colornote.activity.Text_Activity;
 import com.example.colornote.customview.CustomCardView;
+import com.example.colornote.dao.CheckListDAO;
+import com.example.colornote.dao.ItemCheckListDAO;
+import com.example.colornote.dao.TextDAO;
 import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.model.CheckList;
 import com.example.colornote.model.Color;
+import com.example.colornote.model.ItemCheckList;
 import com.example.colornote.model.Task;
 import com.example.colornote.model.Text;
 import com.example.colornote.util.Constant;
 import com.example.colornote.util.DateConvert;
 import com.example.colornote.util.SelectedObserverService;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ViewDetailsAdapter extends ViewAdapter {
     SharedPreferences sharedPreferences;
@@ -126,15 +134,41 @@ public class ViewDetailsAdapter extends ViewAdapter {
                     }
                     updateBorderView();
                 }else{
+                    Log.e("EE", task.toString());
                     if(task.getClass().equals(Text.class)) {
                         int num = task.getId();
+                        Color color1 = colorDAO.get(new ColorMapper(), task.getColorId());
+                        TextDAO textDAO = TextDAO.getInstance();
+                        Text text = new Text();
+                        text = textDAO.getText(num);
+                        text.setModifiedDate(task.getModifiedDate());
                         Intent intent = new Intent(context, Text_Activity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("text",text);
+                        bundle.putString("colorSub",color1.getColorSub());
+                        bundle.putString("colorMain",color1.getColorMain());
+                        intent.putExtras(bundle);
                         context.startActivity(intent);
+                        Constant.num_click = 1;
+
                     }
                     if(task.getClass().equals(CheckList.class)){
+                        Color color1 = colorDAO.get(new ColorMapper(), task.getColorId());
+                        CheckList checkList = new CheckList();
+                        CheckListDAO checkListDAO = CheckListDAO.getInstance();
+                        checkList = (CheckList) checkListDAO.getCheckList(task.getId());
+                        checkList.setModifiedDate(task.getModifiedDate());
+
                         Intent intent = new Intent(context, CheckList_Activity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("checkList",checkList);
+                        bundle.putString("colorSub",color1.getColorSub());
+                        bundle.putString("colorMain",color1.getColorMain());
+                        intent.putExtras(bundle);
                         context.startActivity(intent);
+                        Constant.num_click = 1;
                     }
+
                 }
             }
         });

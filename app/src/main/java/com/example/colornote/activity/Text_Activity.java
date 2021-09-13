@@ -33,11 +33,11 @@ import android.widget.Toast;
 
 
 import com.example.colornote.R;
+import com.example.colornote.dao.ColorDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.fragment.CalendarFragment;
 import com.example.colornote.model.Text;
 import com.example.colornote.util.Constant;
-
 
 import java.text.DateFormat;
 
@@ -54,13 +54,12 @@ public class Text_Activity extends AppCompatActivity {
     EditText title_text, edit_text;
     TextView text_date;
     boolean checkIcon = true;
-
     private Date date;
-
     private long numEdit = 0;
     Text text = new Text();
     LinearLayout linearLayout;
     int color_black =1;
+    int num_click = 0;
 
 
     @Override
@@ -82,6 +81,34 @@ public class Text_Activity extends AppCompatActivity {
         actionBar.setTitle("Title text");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24);
+        //edit item on home
+        if(Constant.num_click==1){
+            if(getIntent().getExtras()!=null) {
+                num_click=1;
+                text = (Text) getIntent().getExtras().get("text");
+                title_text.setText(text.getTitle());
+                actionBar.setTitle(text.getTitle());
+                edit_text.setText(text.getContent());
+                colorid = text.getColorId();
+                text_date.setText(simpleDateFormat.format(text.getModifiedDate()));
+                String colorSub = getIntent().getStringExtra("colorSub");
+                Toast.makeText(Text_Activity.this,colorSub,Toast.LENGTH_LONG).show();
+//                Drawable colorDrawable = new ColorDrawable(Color.parseColor(colorSub));
+                actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(colorSub)));
+                linearLayout.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("colorMain")));
+                Constant.num_click = 0;
+                numEdit = 1;
+                checkIcon = false;
+                if(color_black==0){
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24_w);
+                }else{
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
+                }
+            }else{
+                Toast.makeText(Text_Activity.this,"null",Toast.LENGTH_LONG).show();
+            }
+
+        }
         title_text.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -123,7 +150,7 @@ public class Text_Activity extends AppCompatActivity {
 //        }
 //        Toast.makeText(this, "" + date, Toast.LENGTH_SHORT).show();
 
-        getDateFromCalendarFragment();
+//        getDateFromCalendarFragment();
 
     }
 
@@ -304,10 +331,12 @@ public class Text_Activity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(this);
-        int color = pre.getInt("default_color", 0xFFF7D539);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(color));
+        if(num_click==0) {
+            SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(this);
+            int color = pre.getInt("default_color", 0xFFF7D539);
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setBackgroundDrawable(new ColorDrawable(color));
+        }
     }
 
     private void getDateFromCalendarFragment() {
