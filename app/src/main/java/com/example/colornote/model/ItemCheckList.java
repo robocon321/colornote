@@ -9,6 +9,15 @@ public class ItemCheckList {
     private int parentId;
     private Date modifiedDate;
     private int status;
+    private String accountId;
+
+    public String getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
 
     public int getId() {
         return id;
@@ -67,6 +76,7 @@ public class ItemCheckList {
                 ", parentId=" + parentId +
                 ", modifiedDate=" + modifiedDate +
                 ", status=" + status +
+                ", accountId='" + accountId + '\'' +
                 '}';
     }
 }

@@ -155,4 +155,8 @@
     </string-array>
 
     <!--    tuyen setting-->
+    <!-- Tan-->
+    <string name="facebook_app_id">556326899021162</string>
+    <string name="fb_login_protocol_scheme">fb556326899021162</string>
+
 </resources>

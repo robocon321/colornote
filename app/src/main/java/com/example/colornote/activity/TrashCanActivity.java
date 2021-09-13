@@ -16,6 +16,7 @@ import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,10 +39,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class TrashCanActivity extends AppCompatActivity implements ISeletectedObserver {
-    ImageButton btnBackTrashCan, btnTrashCanTrashCan,btnDeletePermanently,btnRestore;
+    ImageButton btnBackTrashCan, btnTrashCanTrashCan;
     Button btnSort_TrashCan, btnSortModified_TrashCan, btnSortCreated_TrashCan, btnSortAlphabeta_TrasCan, btnSortColor_TrashCan;
     AlertDialog.Builder builder;
     AlertDialog dialog;
+    LinearLayout btnRestore,btnDeletePermanently;
 GridLayout barBottomTrashCanHidden;
 RelativeLayout barTopTrashCanHidden;
 Toolbar toolbar_TrashCan;
@@ -243,7 +245,7 @@ public void checkIconTrashCan(){
         boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
         for(int i = 0; i < isSelected.length ; i ++) {
             if(isSelected[i]) {
-                Task task = TrashCanActivity.tasks.get(i);
+                Task task = tasks.get(i);
                 if(task.getClass().equals(Text.class)) TextDAO.getInstance().changeStatus(task.getId(),Constant.STATUS.NORMAL);
                 else {
                     ItemCheckListDAO.getInstance().changeStatus(task.getId(),Constant.STATUS.NORMAL);
@@ -259,7 +261,6 @@ public void checkIconTrashCan(){
         tasks.clear();
         tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.RECYCLE_BIN));
         tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.RECYCLE_BIN));
-
     }
     @Override
     public void update(SelectedObserverService s) {

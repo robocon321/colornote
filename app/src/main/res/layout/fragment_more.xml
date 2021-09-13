@@ -15,7 +15,7 @@
         <TextView
             android:text="More"
             android:textSize="24dp"
-            android:textColor="@color/black"
+            android:textColor="?attr/itemTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -25,7 +25,10 @@
         android:background="@android:color/black"
         android:layout_width="match_parent"
         android:layout_height="0.3dp" />
-    <RelativeLayout
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:background="?attr/selectableItemBackground"
         android:id="@+id/relative_signIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,25 +42,33 @@
             android:src="@drawable/ic_user" />
 
         <TextView
+            android:id="@+id/text_nameuser"
+            android:text="Not sign in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignRight="@+id/imgUser"
             android:layout_centerVertical="true"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="-122dp"
-            android:text="Not signed in"
             android:textColor="?attr/itemTextColor"
             android:textSize="20dp" />
 
+
         <ImageButton
+            android:id="@+id/btn_signedIn"
+            android:clickable="true"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:backgroundTint="@android:color/transparent"
             android:src="@drawable/ic_more_horiz"
             />
-</RelativeLayout>
+
+</LinearLayout>
 
     <TableRow
         android:layout_width="match_parent"

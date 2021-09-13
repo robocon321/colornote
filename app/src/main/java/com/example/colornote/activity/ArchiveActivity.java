@@ -1,8 +1,8 @@
 package com.example.colornote.activity;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -10,15 +10,12 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
@@ -26,23 +23,27 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.colornote.R;
 import com.example.colornote.adapter.ViewAdapter;
 import com.example.colornote.adapter.ViewListAdapter;
 import com.example.colornote.dao.CheckListDAO;
 import com.example.colornote.dao.ColorDAO;
+import com.example.colornote.dao.ItemCheckListDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.fragment.HomeFragment;
-import com.example.colornote.fragment.MoreFragment;
 import com.example.colornote.mapper.CheckListMapper;
 import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.mapper.TextMapper;
+import com.example.colornote.model.CheckList;
 import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
+import com.example.colornote.model.Text;
+import com.example.colornote.util.Constant;
 import com.example.colornote.util.ISeletectedObserver;
 import com.example.colornote.util.SelectedObserverService;
 
@@ -63,6 +64,11 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
     Dialog dialogEditColor;
     ImageView imgEdit,imgNumber;
 
+    RelativeLayout barTopArchiveHidden;
+    LinearLayout btn_change_color_archive,btn_delete_archive,btn_unarchive,bottom_bar_archive;
+    ImageView imgRangeArchiveHidden, imgCloseArchiveHidden;
+
+    TextView txtCountArchiveHidden;
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("RestrictedApi")
     @Override
@@ -74,6 +80,7 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
     }
 
     private void addEvents(Activity activity) {
+        loadAllTaskArchive();
         btnBackArchive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,9 +100,7 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
                     @Override
                     public void onClick(View v) {
                         btnNoteArchive.setImageResource(getResources().getIdentifier("@drawable/ic_square",null,getPackageName()));
-                        tasks.clear();
-                        tasks.addAll(textDAO.getAll(new TextMapper()));
-                        tasks.addAll(checkListDAO.getByStatus(1));
+                        loadAllTaskArchive();
                         adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
@@ -104,8 +109,7 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
                     @Override
                     public void onClick(View v) {
                         btnNoteArchive.setImageResource(getResources().getIdentifier("@drawable/ic_text",null,getPackageName()));
-                        tasks.clear();
-                        tasks.addAll(textDAO.getAll(new TextMapper()));
+                        loadTextTaskArchive();
                         adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
@@ -114,8 +118,7 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
                     @Override
                     public void onClick(View v) {
                         btnNoteArchive.setImageResource(getResources().getIdentifier("@drawable/ic_check_list",null,getPackageName()));
-                        tasks.clear();
-                        tasks.addAll(checkListDAO.getByStatus(1));
+                        loadChecklistTaskArchive();
                         adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
@@ -127,7 +130,17 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
         spnLeft_Archive.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String n =(String)parent.getItemAtPosition(position);
+                if(n.equals("All")){
+                    loadNotesAndCalendar();
+                    adapter.notifyDataSetChanged();
+                }else if(n.equals("Notes")){
+                    loadNotes();
+                    adapter.notifyDataSetChanged();
+                }else{
+                    loadCalendar();
+                    adapter.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -138,7 +151,17 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
         spnRight_Archive.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                String n =(String)parent.getItemAtPosition(position);
+                if(n.equals("Normal")){
+                    loadAllTaskNormal();
+                    adapter.notifyDataSetChanged();
+                }else if(n.equals("All")){
+                    loadAllTaskNormalAndArchive();
+                    adapter.notifyDataSetChanged();
+                }else{
+                    loadAllTaskArchive();
+                    adapter.notifyDataSetChanged();
+                }
             }
 
             @Override
@@ -200,19 +223,62 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
                 showDialogEditColor();
             }
         });
+        imgCloseArchiveHidden.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectedObserverService.getInstance().reset();
+                adapter.updateBorderView();
+            }
+        });
+
+        imgRangeArchiveHidden.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SelectedObserverService.getInstance().selectRange();
+                adapter.updateBorderView();
+            }
+        });
+        btn_unarchive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unarchiveTask();
+            }
+        });
+        btn_delete_archive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteTask();
+            }
+        });
+        btn_change_color_archive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                changeColorTask();
+            }
+        });
     }
 
     public void addControls() {
-        imgEdit = (ImageView) findViewById(R.id.imgEdit);
-        imgNumber = (ImageView) findViewById(R.id.imgNumber);
 
-        btnBackArchive = (ImageButton) findViewById(R.id.btnBackArchive);
-        btnNoteArchive = (ImageButton) findViewById(R.id.btnNoteArchive);
-        btnColorArchive = (ImageButton) findViewById(R.id.btnColorArchive);
-        spnLeft_Archive = (Spinner) findViewById(R.id.spnLeft_Archive);
-        spnRight_Archive = (Spinner) findViewById(R.id.spnRight_Archive);
-        btnSort_Archive = (Button) findViewById(R.id.btnSort_Archive);
+        barTopArchiveHidden = findViewById(R.id.barTopArchiveHidden);
 
+        imgRangeArchiveHidden =  findViewById(R.id.imgRangeArchiveHidden);
+        imgCloseArchiveHidden =  findViewById(R.id.imgCloseArchiveHidden);
+        txtCountArchiveHidden =  findViewById(R.id.txtCountArchiveHidden);
+
+        imgEdit =  findViewById(R.id.imgEdit);
+        imgNumber =  findViewById(R.id.imgNumber);
+
+        btnBackArchive =  findViewById(R.id.btnBackArchive);
+        btnNoteArchive =  findViewById(R.id.btnNoteArchive);
+        btnColorArchive =  findViewById(R.id.btnColorArchive);
+        spnLeft_Archive =  findViewById(R.id.spnLeft_Archive);
+        spnRight_Archive =  findViewById(R.id.spnRight_Archive);
+        btnSort_Archive =  findViewById(R.id.btnSort_Archive);
+        bottom_bar_archive = findViewById(R.id.bottom_bar_archive);
+        btn_change_color_archive = findViewById(R.id.btn_change_color_archive);
+        btn_delete_archive =  findViewById(R.id.btn_delete_archive);
+        btn_unarchive = findViewById(R.id.btn_unarchive);
         gvListArchive = (GridView) findViewById(R.id.gvListArchive);
         tasks = new ArrayList<>();
         tasks.addAll(textDAO.getAll(new TextMapper()));
@@ -256,8 +322,26 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
     }
     @Override
     public void update(SelectedObserverService s) {
+        if(barTopArchiveHidden.getVisibility() == View.VISIBLE && !s.hasSelected()){
 
+            barTopArchiveHidden.setVisibility(View.INVISIBLE);
+            bottom_bar_archive.setVisibility(View.INVISIBLE);
+        }
+        if(barTopArchiveHidden.getVisibility() == View.INVISIBLE && s.hasSelected()){
+
+            barTopArchiveHidden.setVisibility(View.VISIBLE);
+            bottom_bar_archive.setVisibility(View.VISIBLE);
+        }
+        if(s.hasRange()){
+            imgRangeArchiveHidden.setImageResource(R.drawable.ic_range_active);
+            imgRangeArchiveHidden.setEnabled(true);
+        }else{
+            imgRangeArchiveHidden.setImageResource(R.drawable.ic_range_nonactive);
+            imgRangeArchiveHidden.setEnabled(false);
+        }
+        txtCountArchiveHidden.setText(s.getRatio());
     }
+
     public void addItemColorToGridLayout(Dialog dialog, Context context, GridLayout glColor, boolean isEdit, boolean isShowAmount){
         glColor.removeAllViews();
         List<Color> colors = new ArrayList<Color>();
@@ -372,6 +456,117 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
 
         builder.show();
     }
+    public void unarchiveTask(){
+        boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+        for(int i = 0; i < isSelected.length ; i ++) {
+            if(isSelected[i]) {
+                Task task = tasks.get(i);
+                if(task.getClass().equals(Text.class)) TextDAO.getInstance().changeStatus(task.getId(),Constant.STATUS.NORMAL);
+                else {
+                    ItemCheckListDAO.getInstance().changeStatus(task.getId(),Constant.STATUS.NORMAL);
+                    CheckListDAO.getInstance().changeStatus(task.getId(),Constant.STATUS.NORMAL);
+                }
+            }
+        }
+        loadAllTaskArchive();
+        adapter.notifyDataSetChanged();
 
+    }
+    public void deleteTask() {
 
+        boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+        for(int i = 0; i < isSelected.length ; i ++) {
+            if(isSelected[i]) {
+                Task task = tasks.get(i);
+                if(task.getClass().equals(Text.class)) TextDAO.getInstance().changeStatus(task.getId(),Constant.STATUS.RECYCLE_BIN);
+                else {
+                    ItemCheckListDAO.getInstance().changeStatus(task.getId(),Constant.STATUS.RECYCLE_BIN);
+                    CheckListDAO.getInstance().changeStatus(task.getId(),Constant.STATUS.RECYCLE_BIN);
+                }
+            }
+        }
+        loadAllTaskArchive();
+        adapter.notifyDataSetChanged();
+
+    }
+    public void changeColorTask() {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.layout_choose_color);
+        dialog.show();
+        GridLayout gvColor = dialog.findViewById(R.id.glColor);
+        List<com.example.colornote.model.Color> colors = ColorDAO.getInstance().getAll(new ColorMapper());
+        colors.remove(0);
+        for(com.example.colornote.model.Color c: colors) {
+            Button btn = new Button(this);
+            GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                params.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+                params.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1f);
+            }
+            btn.setLayoutParams(params);
+            btn.setBackgroundColor(android.graphics.Color.parseColor(c.getColorMain()));
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    boolean[] isSelected = SelectedObserverService.getInstance().getIsSelected();
+                    for(int i = 0; i < isSelected.length ; i ++) {
+                        if(isSelected[i]) {
+                            Task task = tasks.get(i);
+                            task.setColorId(c.getId());
+                            if(task.getClass().equals(Text.class)) TextDAO.getInstance().update((Text) task);
+                            else {
+                                CheckListDAO.getInstance().update((CheckList) task);
+                            }
+                        }
+                    }
+                    loadAllTaskArchive();
+                    adapter.notifyDataSetChanged();
+                    dialog.cancel();
+                }
+            });
+            gvColor.addView(btn);
+        }
+    }
+    public static void loadAllTaskArchive(){
+        tasks.clear();
+        tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.ARCHIVE));
+        tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.ARCHIVE));
+    }
+    public static void loadTextTaskArchive(){
+        tasks.clear();
+        tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.ARCHIVE));
+
+    }
+    public static void loadChecklistTaskArchive(){
+        tasks.clear();
+        tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.ARCHIVE));
+    }public  void loadCalendar(){
+        tasks.clear();
+        tasks.addAll(CheckListDAO.getInstance().getCalendarCheckList());
+        tasks.addAll(TextDAO.getInstance().getCalendarText());
+    }
+    public  void loadNotes(){
+        tasks.clear();
+        tasks.addAll(CheckListDAO.getInstance().getNoteCheckList());
+        tasks.addAll(TextDAO.getInstance().getNoteText());
+    }
+    public  void loadNotesAndCalendar(){
+        tasks.clear();
+        tasks.addAll(CheckListDAO.getInstance().getNoteCheckList());
+        tasks.addAll(TextDAO.getInstance().getNoteText());
+        tasks.addAll(CheckListDAO.getInstance().getCalendarCheckList());
+        tasks.addAll(TextDAO.getInstance().getCalendarText());
+    }
+    public static void loadAllTaskNormal(){
+        tasks.clear();
+        tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.NORMAL));
+        tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.NORMAL));
+    }
+    public static void loadAllTaskNormalAndArchive(){
+        tasks.clear();
+        tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.NORMAL));
+        tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.NORMAL));
+        tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.ARCHIVE));
+        tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.ARCHIVE));
+    }
 }

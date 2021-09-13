@@ -1,8 +1,11 @@
 package com.example.colornote.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.Paint;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,9 +19,14 @@ import android.widget.Toast;
 import androidx.preference.PreferenceManager;
 
 import com.example.colornote.R;
+import com.example.colornote.activity.CheckList_Activity;
+import com.example.colornote.activity.Text_Activity;
+import com.example.colornote.dao.TextDAO;
 import com.example.colornote.mapper.ColorMapper;
+import com.example.colornote.model.CheckList;
 import com.example.colornote.model.Color;
 import com.example.colornote.model.Task;
+import com.example.colornote.model.Text;
 import com.example.colornote.util.Constant;
 import com.example.colornote.util.DateConvert;
 import com.example.colornote.util.SelectedObserverService;
@@ -96,10 +104,10 @@ public class ViewListAdapter extends ViewAdapter {
         if(task.completeAll()){
             holder.imgCheck.setImageResource(R.drawable.ic_check);
             holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#737373"));
+           // holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#737373"));
         }else
             holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-            holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#000000"));
+          //  holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#000000"));
 
             if(task.getStatus()==Constant.STATUS.RECYCLE_BIN){
                 holder.imgCheck.setImageResource(R.drawable.ic_trash_can);
@@ -148,6 +156,23 @@ public class ViewListAdapter extends ViewAdapter {
                         SelectedObserverService.getInstance().unselected(position, position+1);
                     }
                     updateBorderView();
+                }else{
+                    Log.e("EE", task.toString());
+                if(task.getClass().equals(Text.class)) {
+                    int num = task.getId();
+                    TextDAO textDAO = TextDAO.getInstance();
+                    Text text = new Text();
+                    text = textDAO.getText(num);
+                    Intent intent = new Intent(context, Text_Activity.class);
+                    context.startActivity(intent);
+
+                }
+                if(task.getClass().equals(CheckList.class)){
+                    Intent intent = new Intent(context, CheckList_Activity.class);
+                    context.startActivity(intent);
+                    Toast.makeText(context,"âsdasd",Toast.LENGTH_LONG).show();
+                }
+
                 }
             }
         });

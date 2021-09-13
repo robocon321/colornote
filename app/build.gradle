@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
 }
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
@@ -12,6 +13,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -29,6 +31,7 @@ android {
 }
 
 dependencies {
+    implementation 'com.android.support:multidex:1.0.3'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.preference:preference:1.1.1'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
@@ -46,5 +49,12 @@ dependencies {
 //  Trung use applandeo make calendar
     compile 'com.applandeo:material-calendar-view:1.0.1'
     implementation 'com.applandeo:material-calendar-view:1.7.0'
+//  Tan
+    implementation platform('com.google.firebase:firebase-bom:28.4.0')
+    implementation 'com.google.firebase:firebase-firestore'
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'com.google.android.gms:play-services-auth:19.2.0'
+//    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
 
 }

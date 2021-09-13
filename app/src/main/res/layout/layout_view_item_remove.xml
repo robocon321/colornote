@@ -16,7 +16,7 @@
             <TextView
                 android:id="@+id/txtTitleItemRemove"
                 android:text="This is Title"
-                android:textColor="@color/task_gray"
+                android:textColor="?attr/colorControlNormal"
                 android:textSize="15dp"
                 android:layout_weight="6"
                 android:layout_width="0dp"

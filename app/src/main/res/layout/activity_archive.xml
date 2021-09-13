@@ -13,24 +13,23 @@
         android:id="@+id/toolbar_Archive"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ECE8E8"
         app:titleTextColor="@color/black">
 
         <ImageButton
             android:id="@+id/btnBackArchive"
-            style="?android:attr/buttonBarButtonStyle"
+
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:src="@drawable/ic_arrow_back"
-            android:textColor="@color/black" />
+             />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Archive"
-            android:textColor="@color/black"
+            android:textColor="?attr/itemTextColor"
             android:textSize="24dp" />
 
         <ImageButton
@@ -56,6 +55,43 @@
             android:src="@drawable/ic_text"
             android:textColor="@color/black" />
     </androidx.appcompat.widget.Toolbar>
+    <RelativeLayout
+
+        android:id="@+id/barTopArchiveHidden"
+        android:visibility="invisible"
+
+        android:background="#C8C8C8"
+        android:layout_marginTop="-56dp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageView
+
+            android:id="@+id/imgCloseArchiveHidden"
+            android:src="@drawable/ic_close_dark"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+        <TextView
+            android:id="@+id/txtCountArchiveHidden"
+            android:textColor="@color/black"
+            android:text="1/6"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="15dp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/imgCloseArchiveHidden"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/imgRangeArchiveHidden"
+            android:src="@drawable/ic_range_active"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"/>
+    </RelativeLayout>
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -85,18 +121,95 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:backgroundTint="#F6F6F6"
-        android:drawableRight="@drawable/ic_icon_down"
+        android:backgroundTint="?attr/android:windowBackground"
+        android:drawableRight="@drawable/ic_baseline_arrow_drop_down_24"
         android:fontFamily="@font/arial"
         android:paddingLeft="100dp"
         android:paddingRight="100dp"
         android:text="Sort by deleted time"
         android:textAllCaps="false"
-        android:textColor="@color/black" />
+        android:textColor="?attr/itemTextColor" />
     <GridView
         android:verticalSpacing="5dp"
         android:id="@+id/gvListArchive"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:numColumns="1" />
+        android:numColumns="1"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <LinearLayout
+android:id="@+id/bottom_bar_archive"
+        android:visibility="invisible"
+        android:background="?attr/android:windowBackground"
+        android:orientation="horizontal"
+        android:layout_weight="0"
+        android:layout_width="match_parent"
+        android:layout_height="70dp">
+        <LinearLayout
+android:id="@+id/btn_unarchive"
+            android:orientation="vertical"
+            android:background="?attr/selectableItemBackground"
+            android:weightSum="2"
+            android:paddingVertical="10dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/ic_unarchive_24"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+            <TextView
+                android:text="Unarchive"
+                android:gravity="center"
+                android:textColor="?attr/itemTextColor"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+        </LinearLayout>
+        <LinearLayout
+android:id="@+id/btn_delete_archive"
+            android:orientation="vertical"
+            android:background="?attr/selectableItemBackground"
+            android:weightSum="2"
+            android:paddingVertical="10dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/ic_trash_can"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+            <TextView
+                android:text="Delete"
+                android:gravity="center"
+                android:textColor="?attr/itemTextColor"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+        </LinearLayout>
+        <LinearLayout
+android:id="@+id/btn_change_color_archive"
+            android:orientation="vertical"
+            android:background="?attr/selectableItemBackground"
+            android:weightSum="2"
+            android:paddingVertical="10dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:src="@drawable/ic_art"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+            <TextView
+                android:text="Color"
+                android:gravity="center"
+                android:textColor="?attr/itemTextColor"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>
