@@ -22,20 +22,14 @@ import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.colornote.R;
 import com.example.colornote.activity.CheckList_Activity;
 import com.example.colornote.activity.Text_Activity;
+import com.example.colornote.adapter.ViewCalendarAdapter;
 import com.example.colornote.adapter.ViewListAdapter;
 import com.example.colornote.dao.CheckListDAO;
-import com.example.colornote.dao.ReminderDAO;
 import com.example.colornote.dao.TextDAO;
-import com.example.colornote.mapper.CheckListMapper;
-import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.Task;
-import com.example.colornote.util.DateConvert;
 
-import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -54,12 +48,11 @@ public class CalendarFragment extends Fragment {
     //  add an icon in calendar when add a note success
     private CalendarView calendarView;
     private List<EventDay> lsEvent;
-    private List<Calendar> lsCalendar;
 
     //  get all task in day
     private GridView gvTask;
     private ArrayList<Task> lsTask, lsTaskRemider;
-    private ViewListAdapter adapterTask;
+    private ViewCalendarAdapter adapterTask;
 
     private CheckListDAO checkListDAO;
     private TextDAO textDAO;
@@ -75,14 +68,13 @@ public class CalendarFragment extends Fragment {
 
     private void addControls(View view) {
         txtCalendar = (TextView) view.findViewById(R.id.txtCalendar);
-setDate = "";
         dialogAddCalendar = new Dialog(getActivity());
         dialogAddCalendar.setContentView(R.layout.dialog_calendar);
         btnAdd = dialogAddCalendar.findViewById(R.id.btnAdd);
 
         gvTask = dialogAddCalendar.findViewById(R.id.gvTask);
         lsTask = new ArrayList<>();
-        adapterTask = new ViewListAdapter(lsTask, getActivity());
+        adapterTask = new ViewCalendarAdapter(lsTask, getActivity());
         gvTask.setAdapter(adapterTask);
 
         checkListDAO = CheckListDAO.getInstance();
@@ -97,7 +89,6 @@ setDate = "";
         calendarView = (CalendarView) view.findViewById(R.id.calCustom);
         lsEvent = new ArrayList<>();
         lsTaskRemider = new ArrayList<>();
-        lsCalendar = new ArrayList<>();
 
         txtDate = (TextView) dialogAddCalendar.findViewById(R.id.txtDate);
     }
@@ -106,8 +97,7 @@ setDate = "";
         txtCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                showDate();
-                Toast.makeText(getActivity(), "time" + convertTimestamp("2021-09-15") + "000", Toast.LENGTH_SHORT).show();
+                showDate();
             }
         });
 
@@ -170,11 +160,10 @@ setDate = "";
 //        add icon to note
         lsTaskRemider.addAll(textDAO.getCalendarText());
         lsTaskRemider.addAll(checkListDAO.getCalendarCheckList());
-        for (int i = 0; i < lsTaskRemider.size(); i++) {
+        for (int i = 0; i < lsTaskRemider.size(); i++){
             lsEvent.add(new EventDay(parseDateToCalendar(lsTaskRemider.get(i).getModifiedDate()), R.drawable.ic_note));
         }
         calendarView.setEvents(lsEvent);
-
         //  null set date when on resume
         getTaskInday();
     }
@@ -204,7 +193,6 @@ setDate = "";
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        Log.e("TAG", "convertTimestamp: "+ result );
         return result ;
     }
 }

@@ -58,7 +58,6 @@ public class Text_Activity extends AppCompatActivity {
     EditText title_text, edit_text;
     TextView text_date;
     boolean checkIcon = true;
-    private Date date;
     private long numEdit = 0;
     Text text = new Text();
     LinearLayout linearLayout;
@@ -144,18 +143,6 @@ public class Text_Activity extends AppCompatActivity {
         });
 
         this.colorid = 2;
-//        Intent intent = getIntent();
-//        Bundle bundle = intent.getBundleExtra("bundle");
-//        String data = bundle.getString("date");
-//        try {
-//            date = new SimpleDateFormat("yyyy-MM-dd").parse(data);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        Toast.makeText(this, "" + date, Toast.LENGTH_SHORT).show();
-
-//        getDateFromCalendarFragment();
-
     }
 
 
@@ -311,10 +298,8 @@ public class Text_Activity extends AppCompatActivity {
 
 
     public boolean addText(int color) {
-        if(date == null){
-            date = Calendar.getInstance().getTime();
-        }
         Text text = new Text();
+        Date date = getDateFromCalendarFragment();
 
         TextDAO textDAO = TextDAO.getInstance();
         text.setId(textDAO.count()+1);
@@ -335,10 +320,11 @@ public class Text_Activity extends AppCompatActivity {
     public boolean editText(int color){
 //        Text text = new Text();
         TextDAO textDAO = TextDAO.getInstance();
+        Date date = getDateFromCalendarFragment();
+
         text.setTitle(title_text.getText().toString());
         text.setContent(edit_text.getText().toString());
         text.setColorId(color);
-        Date date = Calendar.getInstance().getTime();
         text.setModifiedDate(date);
         text.setReminderId(-1);
         text.setStatus(Constant.STATUS.NORMAL);
@@ -387,17 +373,20 @@ public class Text_Activity extends AppCompatActivity {
         }
     }
 
-    private void getDateFromCalendarFragment() {
+    private Date getDateFromCalendarFragment() {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("bundle");
         if(bundle == null){
-           return;
+           return Calendar.getInstance().getTime();
         }
+        Date date = new Date();
         String data = bundle.getString("date");
         try {
             date = new SimpleDateFormat("yyyy-MM-dd").parse(data);
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        return date;
     }
 }
