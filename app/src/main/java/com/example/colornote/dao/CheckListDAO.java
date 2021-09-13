@@ -102,6 +102,21 @@ public class CheckListDAO extends AbstractDAO{
     public String queryWithKey() {
         return "SELECT * FROM CHECKLIST WHERE title LIKE ? or modifiedDate like ? OR id IN (SELECT parentId FROM ItemChecklist WHERE content like ?)";
     }
+    public CheckList getCheckList(int id){
+        CheckList checkList = new CheckList();
+        String sql = "SELECT * FROM CheckList WHERE id=?";
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql,new String []{id+""});
+        while(cursor.moveToNext()){
+            checkList.setId(cursor.getInt(0));
+            checkList.setTitle(cursor.getString(1));
+            checkList.setCompleted(cursor.getInt(2)>0);
+            checkList.setColorId(cursor.getInt(3));
+            checkList.setReminderId(cursor.getInt(4));
+//            text.setModifiedDate(new Date(cursor.getString(6)));
+            checkList.setStatus(cursor.getInt(6));
+        }
+        return checkList;
+    }
 
     public List<Text> getCalendarTextByDate(String date) {
         List<Text> list = new ArrayList<>();

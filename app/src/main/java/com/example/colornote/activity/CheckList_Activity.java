@@ -51,6 +51,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class CheckList_Activity extends AppCompatActivity {
     private int colorid;
@@ -67,6 +68,7 @@ public class CheckList_Activity extends AppCompatActivity {
     int listItemSize,parentId;
     LinearLayout linearLayout;
     int color_black =1;
+    int num_click = 0;
 
     private Date date;
 
@@ -95,12 +97,46 @@ public class CheckList_Activity extends AppCompatActivity {
         recyclerView.setAdapter(checkListAdapter);
 
 
-
         setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
         getSupportActionBar().setTitle("Title CheckList");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24);
-//
+//      edit item in home
+        if(Constant.num_click==1) {
+            if (getIntent().getExtras() != null) {
+                num_click = 1;
+                checkList = (CheckList) getIntent().getExtras().get("checkList");
+                title_checklist.setText(checkList.getTitle());
+                actionBar.setTitle(checkList.getTitle());
+                colorid = checkList.getColorId();
+                date_checklist.setText(simpleDateFormat.format(checkList.getModifiedDate()));
+                String colorSub = getIntent().getStringExtra("colorSub");
+//                Toast.makeText(CheckList_Activity.this, colorSub, Toast.LENGTH_LONG).show();
+//                Drawable colorDrawable = new ColorDrawable(Color.parseColor(colorSub));
+                button_additem.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("colorMain")));
+                actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(colorSub)));
+                linearLayout.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("colorMain")));
+               //get item checklist
+                ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
+                List<ItemCheckList> listItem = new ArrayList<>();
+                listItem = itemCheckListDAO.getByParentId(checkList.getId());
+                for(int i = 0;i<listItem.size();i++){
+                    list.add(listItem.get(i).getContent());
+                }
+                parentId = checkList.getId();
+                Constant.num_click = 0;
+                numEdit = 1;
+                checkIcon = false;
+                if (color_black == 0) {
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24_w);
+                } else {
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
+                }
+            } else {
+                Toast.makeText(CheckList_Activity.this, "null", Toast.LENGTH_LONG).show();
+            }
+        }
 
         title_checklist.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -174,7 +210,7 @@ public class CheckList_Activity extends AppCompatActivity {
 //        }
 //        Toast.makeText(this, "" + date, Toast.LENGTH_SHORT).show();
 
-        getDateFromCalendarFragment();
+//        getDateFromCalendarFragment();
 
 
     }
@@ -327,17 +363,16 @@ public class CheckList_Activity extends AppCompatActivity {
     }
     public void editItemChecklist(){
         for (int i = 0; i < list.size(); i++) {
-//            ItemCheckList itemCheckList = new ItemCheckList();
-                ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
-                itemCheckList.setId(itemCheckListDAO.count()+1);
-                itemCheckList.setContent(list.get(i));
-                Date date = Calendar.getInstance().getTime();
-                itemCheckList.setModifiedDate(date);
-                itemCheckList.setParentId(parentId);
-                itemCheckList.setStatus(Constant.STATUS.NORMAL);
-                itemCheckListDAO.insert(itemCheckList);
-
-        }
+//
+                    ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
+                    itemCheckList.setId(itemCheckListDAO.count() + 1);
+                    itemCheckList.setContent(list.get(i));
+                    Date date = Calendar.getInstance().getTime();
+                    itemCheckList.setModifiedDate(date);
+                    itemCheckList.setParentId(parentId);
+                    itemCheckList.setStatus(Constant.STATUS.NORMAL);
+                    itemCheckListDAO.insert(itemCheckList);
+                }
     }
     public void closekeyboard() {
         View view = this.getCurrentFocus();
@@ -369,10 +404,12 @@ public class CheckList_Activity extends AppCompatActivity {
     }
     protected void onResume() {
         super.onResume();
-        SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(this);
-        int color =pre.getInt("default_color",0xFFF7D539);
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setBackgroundDrawable(new ColorDrawable(color));
+        if(num_click==0) {
+            SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(this);
+            int color = pre.getInt("default_color", 0xFFF7D539);
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setBackgroundDrawable(new ColorDrawable(color));
+        }
     }
 
     private void getDateFromCalendarFragment() {

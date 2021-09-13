@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import androidx.preference.PreferenceManager;
 import com.example.colornote.R;
 import com.example.colornote.activity.CheckList_Activity;
 import com.example.colornote.activity.Text_Activity;
+import com.example.colornote.dao.CheckListDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.model.CheckList;
@@ -158,20 +160,39 @@ public class ViewListAdapter extends ViewAdapter {
                     updateBorderView();
                 }else{
                     Log.e("EE", task.toString());
-                if(task.getClass().equals(Text.class)) {
-                    int num = task.getId();
-                    TextDAO textDAO = TextDAO.getInstance();
-                    Text text = new Text();
-                    text = textDAO.getText(num);
-                    Intent intent = new Intent(context, Text_Activity.class);
-                    context.startActivity(intent);
+                    if(task.getClass().equals(Text.class)) {
+                        int num = task.getId();
+                        Color color1 = colorDAO.get(new ColorMapper(), task.getColorId());
+                        TextDAO textDAO = TextDAO.getInstance();
+                        Text text = new Text();
+                        text = textDAO.getText(num);
+                        text.setModifiedDate(task.getModifiedDate());
+                        Intent intent = new Intent(context, Text_Activity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("text",text);
+                        bundle.putString("colorSub",color1.getColorSub());
+                        bundle.putString("colorMain",color1.getColorMain());
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+                        Constant.num_click = 1;
 
-                }
-                if(task.getClass().equals(CheckList.class)){
-                    Intent intent = new Intent(context, CheckList_Activity.class);
-                    context.startActivity(intent);
-                    Toast.makeText(context,"âsdasd",Toast.LENGTH_LONG).show();
-                }
+                    }
+                    if(task.getClass().equals(CheckList.class)){
+                        Color color1 = colorDAO.get(new ColorMapper(), task.getColorId());
+                        CheckList checkList = new CheckList();
+                        CheckListDAO checkListDAO = CheckListDAO.getInstance();
+                        checkList = (CheckList) checkListDAO.getCheckList(task.getId());
+                        checkList.setModifiedDate(task.getModifiedDate());
+
+                        Intent intent = new Intent(context, CheckList_Activity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("checkList",checkList);
+                        bundle.putString("colorSub",color1.getColorSub());
+                        bundle.putString("colorMain",color1.getColorMain());
+                        intent.putExtras(bundle);
+                        context.startActivity(intent);
+                        Constant.num_click = 1;
+                    }
 
                 }
             }

@@ -127,7 +127,7 @@ public class TextDAO extends AbstractDAO{
             text.setCompleted(cursor.getInt(3)>0);
             text.setColorId(cursor.getInt(4));
             text.setReminderId(cursor.getInt(5));
-            text.setModifiedDate(new Date(cursor.getString(6)));
+//            text.setModifiedDate(new Date(cursor.getString(6)));
             text.setStatus(cursor.getInt(7));
         }
         return text;
