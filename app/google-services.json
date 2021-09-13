@@ -30,6 +30,14 @@
           }
         },
         {
+          "client_id": "252802007168-t2hamlmpdkgtu3lrdd2rkbomu7ej8hns.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.colornote",
+            "certificate_hash": "09efc80674612260d5ef661646b830e50f49d35c"
+          }
+        },
+        {
           "client_id": "252802007168-grksipeb1i0bkfuhev63g1irl640hqoe.apps.googleusercontent.com",
           "client_type": 3
         }

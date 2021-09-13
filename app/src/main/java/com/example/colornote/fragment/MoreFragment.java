@@ -5,9 +5,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,8 +45,8 @@ public class MoreFragment extends Fragment {
     Dialog dialogTheme;
     LinearLayout relativeLayout_signIn;
     String themeName;
-    ImageButton btn_signedIn;
     SharedPreferences sharedPreferences;
+    SharedPreferences preferencesAccount;
     TextView username;
 //    CountDownTimer countDownTimer;
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -51,10 +54,18 @@ public class MoreFragment extends Fragment {
         addControls(view);
         addEvent();
         username = (TextView) view.findViewById(R.id.text_nameuser);
-        content();
-        username.setText(Constant.textSignin);
-
+        checkLogin();
         return view;
+    }
+
+    public void checkLogin(){
+        preferencesAccount = getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
+        String nameAccount = preferencesAccount.getString("account_name", "");
+        if(nameAccount.length() > 0) {
+            username.setText(nameAccount);
+        } else {
+            username.setText("Not sign in");
+        }
     }
 
     private void addControls(View view) {
@@ -63,7 +74,9 @@ public class MoreFragment extends Fragment {
         btnMoreSettings =  view.findViewById(R.id.btnMoreSettings);
         btnMoreTheme =  view.findViewById(R.id.btnMoreTheme);
         relativeLayout_signIn =  view.findViewById(R.id.relative_signIn);
+
      //   btn_signedIn = view.findViewById(R.id.btn_signedIn);
+
     }
 
     private void addEvent() {
@@ -119,19 +132,20 @@ public class MoreFragment extends Fragment {
 
             }
         });
+
 //        btn_signedIn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //
 //            }
 //        });
+
 //        cho nay bao loi nen tao comment lai
         relativeLayout_signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),SignInActivity.class);
                 getActivity().startActivity(intent);
-
             }
         });
 
@@ -142,6 +156,7 @@ public class MoreFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        checkLogin();
         sharedPreferences = getActivity().getSharedPreferences("Theme", Context.MODE_PRIVATE);
         themeName = sharedPreferences.getString("ThemeName", "Default");
         if(themeName.equalsIgnoreCase("Dark")){
@@ -159,20 +174,5 @@ public class MoreFragment extends Fragment {
         editor.apply();
         getActivity().recreate();
     }
-    public void content(){
-        username.setText(Constant.textSignin);
-        refresh(1000);
-    }
-    public void refresh(int mili){
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-           content();
-            }
-        };
-        handler.postDelayed(runnable,mili);
-    }
-
 }
 

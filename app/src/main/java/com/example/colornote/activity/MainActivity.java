@@ -15,6 +15,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
     TextView txtTitle;
     AlertDialog dialog;
     SharedPreferences sharedPreferences;
-    String textSignIn = Constant.textSignin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sharedPreferences = getSharedPreferences("Theme", Context.MODE_PRIVATE);
@@ -198,10 +200,23 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
 
                         break;
                     case R.id.mnCal:
+                        Toast.makeText(MainActivity.this, "Cal", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.mnSearch:
+                        Toast.makeText(MainActivity.this, "Search", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.mnNav:
+                        String accountId = getSharedPreferences("account", MODE_PRIVATE).getString("account_id", "");
+                        if(accountId.length() > 0) {
+                            if(checkAvailableInternet()){
+                                SyncFirebase.getInstance().sync(accountId);
+                                getSharedPreferences("account", Context.MODE_PRIVATE).edit().putLong("last_sync", Calendar.getInstance().getTimeInMillis()).commit();
+                            }
+                            else Toast.makeText(MainActivity.this, "Internet không có sẵn", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                            startActivity(intent);
+                        }
                         break;
                 }
 
@@ -304,8 +319,6 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                                     ItemCheckListDAO.getInstance().changeCompleted(item.getId(), isCompleted);
                                 }
                                 HomeFragment.tasks.get(finalI1).setCompleted(isCompleted);
-                                Log.e("AAA", HomeFragment.tasks.get(finalI1).toString());
-                                Log.e("AAA",ItemCheckListDAO.getInstance().getByParentId(task.getId()).toString());
                                 HomeFragment.adapter.notifyDataSetChanged();
                             }
                         });
@@ -495,13 +508,24 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         SelectedObserverService.getInstance().removeObserver(this);
     }
 
-  public void getDefauleActivity(){
-      sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-      String defaultActivity =sharedPreferences.getString("default_activity","Notes");
-if(!defaultActivity.equals("Notes")){
-    viewPager.setCurrentItem(1);
-}
-  }
+      public void getDefauleActivity(){
+          sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+          String defaultActivity =sharedPreferences.getString("default_activity","Notes");
+          if(!defaultActivity.equals("Notes")){
+             viewPager.setCurrentItem(1);
+          }
+      }
+
+    public boolean checkAvailableInternet() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            return true;
+        }
+        else
+            return false;
+    }
+
 //    @Override
 //    protected void onResume() {
 //        super.onResume();

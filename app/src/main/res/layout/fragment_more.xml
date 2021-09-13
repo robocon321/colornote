@@ -43,6 +43,7 @@
 
         <TextView
             android:id="@+id/text_nameuser"
+            android:text="Not sign in"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignRight="@+id/imgUser"
@@ -55,6 +56,7 @@
             android:textColor="?attr/itemTextColor"
             android:textSize="20dp" />
 
+
         <ImageButton
             android:id="@+id/btn_signedIn"
             android:clickable="true"
@@ -66,6 +68,7 @@
             android:backgroundTint="@android:color/transparent"
             android:src="@drawable/ic_more_horiz"
             />
+
 </LinearLayout>
 
     <TableRow

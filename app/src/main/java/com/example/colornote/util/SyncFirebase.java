@@ -1,6 +1,7 @@
 package com.example.colornote.util;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -39,27 +40,20 @@ public class SyncFirebase {
         return instance;
     }
 
-    public boolean login(String accountId) {
-        boolean result = true;
-
-        if(!addChecklistIfNotFoundInPhone(accountId)) result = false;
-        if(!addItemChecklistIfNotFoundInPhone(accountId)) result = false;
-        if(!addReminderIfNotFoundInPhone(accountId)) result = false;
-        if(!addTextIfNotFoundInPhone(accountId)) result = false;
-
-        return result;
+    public void login(String accountId) {
+        addChecklistIfNotFoundInPhone(accountId);
+        addTextIfNotFoundInPhone(accountId);
+        addItemChecklistIfNotFoundInPhone(accountId);
+        addReminderIfNotFoundInPhone(accountId);
     }
 
-    private boolean addChecklistIfNotFoundInPhone(String accountId) {
-        final boolean[] result = {false};
-
+    private void addChecklistIfNotFoundInPhone(String accountId) {
         db.collection("checklist")
                 .whereEqualTo("accountId", accountId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        result[0] = task.isSuccessful();
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Long id = document.getLong("id");
@@ -76,18 +70,14 @@ public class SyncFirebase {
                         }
                     }
                 });
-        return result[0];
     }
-    private boolean addTextIfNotFoundInPhone(String accountId) {
-        final boolean[] result = {false};
-
+    private void addTextIfNotFoundInPhone(String accountId) {
         db.collection("text")
                 .whereEqualTo("accountId", accountId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        result[0] = task.isSuccessful();
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Long id = document.getLong("id");
@@ -104,18 +94,14 @@ public class SyncFirebase {
                         }
                     }
                 });
-        return result[0];
     }
-    private boolean addReminderIfNotFoundInPhone(String accountId) {
-        final boolean[] result = {false};
-
+    private void addReminderIfNotFoundInPhone(String accountId) {
         db.collection("reminder")
                 .whereEqualTo("accountId", accountId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        result[0] = task.isSuccessful();
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Long id = document.getLong("id");
@@ -132,19 +118,14 @@ public class SyncFirebase {
                         }
                     }
                 });
-        return result[0];
-
     }
-    private boolean addItemChecklistIfNotFoundInPhone(String accountId) {
-        final boolean[] result = {false};
-
+    private void addItemChecklistIfNotFoundInPhone(String accountId) {
         db.collection("item-checklist")
                 .whereEqualTo("accountId", accountId)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        result[0] = task.isSuccessful();
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Long id = document.getLong("id");
@@ -162,24 +143,16 @@ public class SyncFirebase {
                         }
                     }
                 });
-        return result[0];
-
     }
 
-    public boolean sync(String accountId) {
-        boolean result = true;
-
-        if(!syncChecklist(accountId)) result = false;
-        if(!syncItemChecklist(accountId)) result = false;
-        if(!syncText(accountId)) result = false;
-        if(!syncReminder(accountId)) result = false;
-
-        return result;
+    public void sync(String accountId) {
+        syncChecklist(accountId);
+        syncItemChecklist(accountId);
+        syncText(accountId);
+        syncReminder(accountId);
     }
 
-    private boolean syncChecklist(String accountId) {
-        final boolean[] result = {false};
-
+    private void syncChecklist(String accountId) {
         db.collection("checklist")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -198,13 +171,11 @@ public class SyncFirebase {
                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                             @Override
                                             public void onSuccess(DocumentReference documentReference) {
-                                                result[0] = true;
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                result[0] = false;
                                                 Log.e("TAG", "Error adding document", e);
                                             }
                                         });
@@ -214,11 +185,8 @@ public class SyncFirebase {
                         }
                     }
                 });
-        return result[0];
     }
-    private boolean syncItemChecklist(String accountId) {
-        final boolean[] result = {false};
-
+    private void syncItemChecklist(String accountId) {
         db.collection("item-checklist")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -237,13 +205,11 @@ public class SyncFirebase {
                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                             @Override
                                             public void onSuccess(DocumentReference documentReference) {
-                                                result[0] = true;
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                result[0] = false;
                                                 Log.e("TAG", "Error adding document", e);
                                             }
                                         });
@@ -253,11 +219,8 @@ public class SyncFirebase {
                         }
                     }
                 });
-        return result[0];
     }
-    private boolean syncText(String accountId) {
-        final boolean[] result = {false};
-
+    private void syncText(String accountId) {
         db.collection("text")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -276,13 +239,11 @@ public class SyncFirebase {
                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                             @Override
                                             public void onSuccess(DocumentReference documentReference) {
-                                                result[0] = true;
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                result[0] = false;
                                                 Log.e("TAG", "Error adding document", e);
                                             }
                                         });
@@ -292,11 +253,8 @@ public class SyncFirebase {
                         }
                     }
                 });
-        return result[0];
     }
-    private boolean syncReminder(String accountId) {
-        final boolean[] result = {false};
-
+    private void syncReminder(String accountId) {
         db.collection("reminder")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -315,13 +273,11 @@ public class SyncFirebase {
                                         .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                             @Override
                                             public void onSuccess(DocumentReference documentReference) {
-                                                result[0] = true;
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                result[0] = false;
                                                 Log.e("TAG", "Error adding document", e);
                                             }
                                         });
@@ -331,6 +287,5 @@ public class SyncFirebase {
                         }
                     }
                 });
-        return result[0];
     }
 }
