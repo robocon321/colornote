@@ -22,6 +22,7 @@ import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.colornote.R;
 import com.example.colornote.activity.CheckList_Activity;
 import com.example.colornote.activity.Text_Activity;
+import com.example.colornote.adapter.ViewCalendarAdapter;
 import com.example.colornote.adapter.ViewListAdapter;
 import com.example.colornote.dao.CheckListDAO;
 import com.example.colornote.dao.TextDAO;
@@ -51,7 +52,7 @@ public class CalendarFragment extends Fragment {
     //  get all task in day
     private GridView gvTask;
     private ArrayList<Task> lsTask, lsTaskRemider;
-    private ViewListAdapter adapterTask;
+    private ViewCalendarAdapter adapterTask;
 
     private CheckListDAO checkListDAO;
     private TextDAO textDAO;
@@ -67,14 +68,13 @@ public class CalendarFragment extends Fragment {
 
     private void addControls(View view) {
         txtCalendar = (TextView) view.findViewById(R.id.txtCalendar);
-setDate = "";
         dialogAddCalendar = new Dialog(getActivity());
         dialogAddCalendar.setContentView(R.layout.dialog_calendar);
         btnAdd = dialogAddCalendar.findViewById(R.id.btnAdd);
 
         gvTask = dialogAddCalendar.findViewById(R.id.gvTask);
         lsTask = new ArrayList<>();
-        adapterTask = new ViewListAdapter(lsTask, getActivity());
+        adapterTask = new ViewCalendarAdapter(lsTask, getActivity());
         gvTask.setAdapter(adapterTask);
 
         checkListDAO = CheckListDAO.getInstance();
@@ -160,11 +160,10 @@ setDate = "";
 //        add icon to note
         lsTaskRemider.addAll(textDAO.getCalendarText());
         lsTaskRemider.addAll(checkListDAO.getCalendarCheckList());
-        for (int i = 0; i < lsTaskRemider.size(); i++) {
+        for (int i = 0; i < lsTaskRemider.size(); i++){
             lsEvent.add(new EventDay(parseDateToCalendar(lsTaskRemider.get(i).getModifiedDate()), R.drawable.ic_note));
         }
         calendarView.setEvents(lsEvent);
-
         //  null set date when on resume
         getTaskInday();
     }
@@ -194,7 +193,6 @@ setDate = "";
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-        Log.e("TAG", "convertTimestamp: "+ result );
         return result ;
     }
 }
