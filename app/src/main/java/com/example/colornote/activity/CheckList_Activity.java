@@ -415,6 +415,9 @@ public class CheckList_Activity extends AppCompatActivity {
     private void getDateFromCalendarFragment() {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("bundle");
+        if(bundle == null){
+            return;
+        }
         String data = bundle.getString("date");
         try {
             date = new SimpleDateFormat("yyyy-MM-dd").parse(data);

@@ -10,5 +10,7 @@
         <item>reply_all</item>
     </string-array>
 
-
+    <attr format="color" name="sort_btn"/>
+    <attr format="color" name="another_months_day_calendar_color"/>
+    <attr format="color" name="header_color_calendar"/>
 </resources>

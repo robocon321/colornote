@@ -9,7 +9,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F3F3F3"
+
         android:visibility="visible">
 
         <RelativeLayout
@@ -31,19 +31,20 @@
         android:id="@+id/calCustom"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:abbreviationsBarColor="#f4f4f4"
+        app:abbreviationsBarColor="?attr/android:windowBackground"
         app:abbreviationsLabelsColor="@color/teal_700"
-        app:anotherMonthsDaysLabelsColor="#d3d3d3"
+        app:anotherMonthsDaysLabelsColor="?attr/another_months_day_calendar_color"
         app:datePicker="true"
-        app:daysLabelsColor="@color/black"
-        app:disabledDaysLabelsColor="@color/black"
+        app:headerColor="?attr/header_color_calendar"
+        app:daysLabelsColor="?attr/itemTextColor"
+        app:disabledDaysLabelsColor="?attr/itemTextColor"
         app:eventsEnabled="true"
         app:forwardButtonSrc="@drawable/ic_next"
-        app:headerColor="#d3d3d3"
-        app:headerLabelColor="#717171"
+app:pagesColor="?attr/android:windowBackground"
+        app:headerLabelColor="@color/white"
         app:previousButtonSrc="@drawable/ic_previous"
         app:selectionColor="@color/teal_700"
         app:swipeEnabled="true"
-        app:todayLabelColor="@android:color/holo_orange_dark" />
+        app:todayLabelColor="@color/teal_700" />
 
 </LinearLayout>

@@ -32,4 +32,18 @@ public class CheckList extends Task{
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "CheckList{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", completed=" + completed +
+                ", colorId=" + colorId +
+                ", reminderId=" + reminderId +
+                ", modifiedDate=" + modifiedDate +
+                ", status=" + status +
+                ", accountId='" + accountId + '\'' +
+                '}';
+    }
 }

@@ -54,6 +54,12 @@ public class Database {
         sqLiteDatabase.execSQL("CREATE TABLE Color(id INTEGER PRIMARY KEY AUTOINCREMENT, colorMain VARCHAR(10), colorSub VARCHAR(10), content NVARCHAR(255))");
         sqLiteDatabase.execSQL("CREATE TABLE Reminder(id INTEGER PRIMARY KEY AUTOINCREMENT, type INTEGER, startTime DATETIME, endTime DATETIME, repetition INTEGER, status INT)");
 
+        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'ZDG', 'osier iopser oise rionsdagf oiwe rlkase rf oiw eraskdnf', 1, 3, 0, '2007-01-01', 2);");
+        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'YTI', 'laksdfqwierjpsaoi dfj;askdf askdnf;sakd,f qwsf oisdnfsq erijsnef asdfkkj', 0, 3, 0, '2021-11-12', 2);");
+//        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'tuyen','asidfwqe oisđ oids02', 1, 2, 0, '2020-12-05', 2)");
+//        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'YTU','asdkj ase983w3 lksd', 0, 2, 0, '2020-03-15', 1)");
+//        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'tuyen1','2938 sdkk w23kd', 0, 7, 0, '2020-03-05', 0)");
+
         sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'ZDG', 'osier iopser oise rionsdagf oiwe rlkase rf oiw eraskdnf', 1, 3, 1, '1632502800000', 2);");
         sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'YTI', 'laksdfqwierjpsaoi dfj;askdf askdnf;sakd,f qwsf oisdnfsq erijsnef asdfkkj', 0, 3, 0, '1632243600000', 2);");
         sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'tuyen','asidfwqe oisđ oids02', 1, 2, 0, '1632934800000', 2)");
@@ -64,10 +70,10 @@ public class Database {
         sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'hecklist12', 0, 3, 0, '1635613200000', 2)");
         sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'hecklist13', 1, 7, 0, '2021-08-17', 1)");
         sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'hecklist14', 1, 5, 0, '2021-02-17', 0)");
-        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'checklist5', 0, 2, 0, '2021-03-02', 1)");
-        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'hecklist16', 0, 3, 0, '2021-01-07', 2)");
-        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'hecklist17', 1, 7, 0, '2021-08-17', 2)");
-        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'hecklist18', 0, 5, 0, '2021-02-17', 2)");
+//        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'checklist5', 0, 2, 0, '2021-03-02', 1)");
+//        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'hecklist16', 0, 3, 0, '2021-01-07', 2)");
+//        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'hecklist17', 1, 7, 0, '2021-08-17', 2)");
+//        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'hecklist18', 0, 5, 0, '2021-02-17', 2)");
 
         sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, 'lkdsk lksd oi3498 sdkoi lksdoiek oiwe kdoi', 0, 1, '2020-02-02', 2);");
         sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, '98dk sod89 klisd98 lkđ kdsoi ', 1, 1, '2020-04-02', 2);");
@@ -75,10 +81,10 @@ public class Database {
         sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, 'lksd 8328 isedlk sdlkf oiewr lksd', 0, 1, '2019-11-11', 2);");
         sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, 'LKASDFO8IWE SDLK 9832 LKDS ', 0, 2, '2020-01-02', 2);");
         sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, ' SOID LKWE okier ', 1, 2, '2020-04-02', 2);");
-        sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, 'oakszdieow iwe lkd lkske ik ', 1, 2, '2021-10-10', 2);");
-        sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, 'mdkco dkhcohan lsk oie lksd oke oi ', 0, 3, '2021-11-02', 2);");
-        sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, ' SOID LKWE okier ', 0, 3, '2021-02-01', 2);");
-        sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, 'oakszdieow iwe lkd lkske ik ', 0, 3, '2011-11-10', 2);");
+//        sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, 'oakszdieow iwe lkd lkske ik ', 1, 2, '2021-10-10', 2);");
+//        sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, 'mdkco dkhcohan lsk oie lksd oke oi ', 0, 3, '2021-11-02', 2);");
+//        sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, ' SOID LKWE okier ', 0, 3, '2021-02-01', 2);");
+//        sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, 'oakszdieow iwe lkd lkske ik ', 0, 3, '2011-11-10', 2);");
 
         sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,null ,null, null);");
         sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#ffe77a' ,'#f7d539', 'yellow'); ");

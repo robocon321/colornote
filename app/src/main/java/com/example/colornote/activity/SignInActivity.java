@@ -5,7 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -17,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.colornote.R;
+import com.example.colornote.util.DateConvert;
+import com.example.colornote.util.SyncFirebase;
 import com.example.colornote.fragment.MoreFragment;
 import com.example.colornote.model.Text;
 import com.example.colornote.util.Constant;
@@ -45,6 +51,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 public class SignInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
@@ -54,12 +62,13 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     LinearLayout layout_fa_google,layout_tk;
 //    private FirebaseAnalytics firebaseAnalytics ;
     private GoogleApiClient mGoogleSignInClient;
-    TextView text_username,text_gmail;
+    TextView text_username,text_gmail, txtTitleLastSync, txtContentLastSync;
     String name_user = "",urlImage;
 //    CallbackManager callbackManager;
 //    LoginButton loginButton;
     private static final String EMAIL = "email";
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +85,11 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         text_gmail = findViewById(R.id.gmail);
         layout_fa_google = (LinearLayout) findViewById(R.id.layout_fa_google);
         layout_tk = (LinearLayout) findViewById((R.id.layout_tk));
+        txtTitleLastSync = findViewById(R.id.txtTitleLastSync);
+        txtContentLastSync = findViewById(R.id.txtContentLastSync);
+
+        sharedPreferences = getSharedPreferences("account",MODE_PRIVATE);
+        content();
 //        if(Constant.num_acct==0) {
 //            layout_tk.setVisibility(View.GONE);
 //            layout_fa_google.setVisibility(View.VISIBLE);
@@ -84,27 +98,25 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 //            layout_tk.setVisibility(View.VISIBLE);
 //            layout_fa_google.setVisibility(View.GONE);
 //        }
-        content();
+
         btn_google.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signIn();
-                Constant.num_acct = 1;
             }
         });
         btn_facebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signOut();
-                Constant.num_acct = 0;
             }
         });
         btn_signup_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (Constant.num_acct==1){
+                String accountId = sharedPreferences.getString("account_id", "");
+                if(accountId.length() > 0) {
                     signOut();
-                    Constant.num_acct = 0;
                 }
             }
         });
@@ -164,8 +176,12 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 //        });
     }
     private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        if(checkAvailableInternet()) {
+            Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleSignInClient);
+            startActivityForResult(signInIntent, RC_SIGN_IN);
+        } else {
+            Toast.makeText(this, "Internet không có sẵn", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -175,28 +191,44 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         if(requestCode == RC_SIGN_IN){
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
-//
         }
     }
     private void handleSignInResult(GoogleSignInResult result){
         Log.d(TAG,"handleSignInResult:"+result.isSuccess());
         if(result.isSuccess()){
             GoogleSignInAccount acct = result.getSignInAccount();
-            Constant.textSignin = acct.getDisplayName();
-            Constant.email = acct.getEmail();
+            text_gmail.setText(acct.getId());
+            SharedPreferences sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("account_id", acct.getId());
+            editor.putString("account_name", acct.getDisplayName());
+            editor.putString("account_email", acct.getEmail());
+            editor.putLong("last_sync", Calendar.getInstance().getTimeInMillis());
+            SyncFirebase.getInstance().login(acct.getId());
+            editor.apply();
+            Toast.makeText(SignInActivity.this,"Đăng nhập thành công",Toast.LENGTH_LONG).show();
 //          urlImage = acct.getPhotoUrl().toString();
+            content();
         }else{
-
+            Toast.makeText(this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
         }
     }
     private void signOut(){
-        Auth.GoogleSignInApi.signOut(mGoogleSignInClient).setResultCallback(new ResultCallback<Status>() {
-            @Override
-            public void onResult(@NonNull Status status) {
-                Constant.textSignin = "Not Signed In";
-//                Toast.makeText(SignInActivity.this,"Sign out",Toast.LENGTH_LONG).show();
-            }
-        });
+        if(checkAvailableInternet()) {
+            Auth.GoogleSignInApi.signOut(mGoogleSignInClient).setResultCallback(new ResultCallback<Status>() {
+                @Override
+                public void onResult(@NonNull Status status) {
+                    SharedPreferences sharedPreferences = getSharedPreferences("account", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear();
+                    editor.commit();
+                    content();
+                    Toast.makeText(SignInActivity.this,"Sign out",Toast.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            Toast.makeText(this, "Internet không có sẵn", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -204,29 +236,41 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
 
     }
     public void content(){
-        if(Constant.num_acct==0) {
+        String accountId = sharedPreferences.getString("account_id", "");
+        String accountName = sharedPreferences.getString("account_name", "");
+        String accountEmail = sharedPreferences.getString("account_email", "");
+        long accountLastSyncMilli = sharedPreferences.getLong("last_sync", Calendar.getInstance().getTimeInMillis());
+
+        if(accountId.length() == 0) {
             layout_tk.setVisibility(View.GONE);
             layout_fa_google.setVisibility(View.VISIBLE);
             btn_signup_logout.setText("Sign up");
+            txtTitleLastSync.setVisibility(View.INVISIBLE);
+            txtContentLastSync.setVisibility(View.INVISIBLE);
         }
         else{
             layout_tk.setVisibility(View.VISIBLE);
             layout_fa_google.setVisibility(View.GONE);
-            text_username.setText(Constant.textSignin);
-            text_gmail.setText(Constant.email);
+            text_username.setText(accountName);
+            text_gmail.setText(accountEmail);
             btn_signup_logout.setText("Log out");
+            txtTitleLastSync.setVisibility(View.VISIBLE);
+            txtContentLastSync.setVisibility(View.VISIBLE);
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTimeInMillis(accountLastSyncMilli);
+            txtContentLastSync.setText("Lúc: " + new DateConvert(cal.getTime()).showTime());
         }
-        refresh(1000);
     }
-    public void refresh(int mili){
-        final Handler handler = new Handler();
-        final Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                content();
-            }
-        };
-        handler.postDelayed(runnable,mili);
+
+    public boolean checkAvailableInternet() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            return true;
+        }
+        else
+            return false;
     }
 
 }

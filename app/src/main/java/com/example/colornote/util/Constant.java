@@ -62,8 +62,10 @@ public class Constant {
         public final static int COLOR = 3;
         public final static int REMINDER = 4;
     }
-    public static String textSignin = "Not signed in";
-    public static int num_acct = 0;
-    public static String email = "";
-    public static int num_click = 0;
+
+//     public static String textSignin = "Not signed in";
+//     public static int num_acct = 0;
+//     public static String email = "";
+//     public static int num_click = 0;
+
 }

@@ -4,34 +4,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.preference.Preference;
 import androidx.preference.PreferenceManager;
 import androidx.viewpager.widget.ViewPager;
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -49,23 +42,32 @@ import com.example.colornote.fragment.HomeFragment;
 import com.example.colornote.fragment.MoreFragment;
 import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.mapper.ItemCheckListMapper;
+import com.example.colornote.mapper.TextMapper;
 import com.example.colornote.model.CheckList;
 import com.example.colornote.model.ItemCheckList;
 import com.example.colornote.model.Task;
 import com.example.colornote.model.Text;
-import com.example.colornote.receiver.ReminderReceiver;
-import com.example.colornote.util.ColorTransparentUtils;
 import com.example.colornote.util.Constant;
 import com.example.colornote.util.ISeletectedObserver;
 import com.example.colornote.util.SelectedObserverService;
 import com.example.colornote.util.Settings;
+import com.example.colornote.util.SyncFirebase;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements ISeletectedObserver {
     BottomNavigationView bottomNavigationView;
@@ -76,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
     TextView txtTitle;
     AlertDialog dialog;
     SharedPreferences sharedPreferences;
-    String textSignIn = Constant.textSignin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sharedPreferences = getSharedPreferences("Theme", Context.MODE_PRIVATE);
@@ -198,12 +200,26 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
 
                         break;
                     case R.id.mnCal:
+                        Toast.makeText(MainActivity.this, "Cal", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.mnSearch:
+                        Toast.makeText(MainActivity.this, "Search", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.mnNav:
+                        String accountId = getSharedPreferences("account", MODE_PRIVATE).getString("account_id", "");
+                        if(accountId.length() > 0) {
+                            if(checkAvailableInternet()){
+                                SyncFirebase.getInstance().sync(accountId);
+                                getSharedPreferences("account", Context.MODE_PRIVATE).edit().putLong("last_sync", Calendar.getInstance().getTimeInMillis()).commit();
+                            }
+                            else Toast.makeText(MainActivity.this, "Internet không có sẵn", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent intent = new Intent(MainActivity.this, SignInActivity.class);
+                            startActivity(intent);
+                        }
                         break;
                 }
+
             }
         });
 
@@ -303,8 +319,6 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                                     ItemCheckListDAO.getInstance().changeCompleted(item.getId(), isCompleted);
                                 }
                                 HomeFragment.tasks.get(finalI1).setCompleted(isCompleted);
-                                Log.e("AAA", HomeFragment.tasks.get(finalI1).toString());
-                                Log.e("AAA",ItemCheckListDAO.getInstance().getByParentId(task.getId()).toString());
                                 HomeFragment.adapter.notifyDataSetChanged();
                             }
                         });
@@ -494,13 +508,24 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         SelectedObserverService.getInstance().removeObserver(this);
     }
 
-  public void getDefauleActivity(){
-      sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-      String defaultActivity =sharedPreferences.getString("default_activity","Notes");
-if(!defaultActivity.equals("Notes")){
-    viewPager.setCurrentItem(1);
-}
-  }
+      public void getDefauleActivity(){
+          sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+          String defaultActivity =sharedPreferences.getString("default_activity","Notes");
+          if(!defaultActivity.equals("Notes")){
+             viewPager.setCurrentItem(1);
+          }
+      }
+
+    public boolean checkAvailableInternet() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            return true;
+        }
+        else
+            return false;
+    }
+
 //    @Override
 //    protected void onResume() {
 //        super.onResume();

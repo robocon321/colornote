@@ -118,4 +118,15 @@ public class CheckListDAO extends AbstractDAO{
         return checkList;
     }
 
+    public List<Text> getCalendarTextByDate(String date) {
+        List<Text> list = new ArrayList<>();
+        String sql = queryAll() + " WHERE reminderId <> 0 and modifiedDate between '" + date + "' and '" + date + "'";
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
+        RowMapper<Text> mapper= new TextMapper();
+        while(cursor.moveToNext()){
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
+    }
+
 }
