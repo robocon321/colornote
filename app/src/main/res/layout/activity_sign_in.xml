@@ -70,6 +70,20 @@
         android:textColor="#FFFFFF"
         android:textSize="18sp"
         app:backgroundTint="#676666" />
-
-
+    <TextView
+        android:id="@+id/txtTitleLastSync"
+        android:text="Last sync"
+        android:layout_margin="10dp"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/txtContentLastSync"
+        android:text="0 giây trước"
+        android:textSize="20dp"
+        android:layout_margin="10dp"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal" />
 </LinearLayout>

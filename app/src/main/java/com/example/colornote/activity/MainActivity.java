@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
     TextView txtTitle;
     AlertDialog dialog;
     SharedPreferences sharedPreferences;
-    String textSignIn = Constant.textSignin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         sharedPreferences = getSharedPreferences("Theme", Context.MODE_PRIVATE);
@@ -304,8 +304,6 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                                     ItemCheckListDAO.getInstance().changeCompleted(item.getId(), isCompleted);
                                 }
                                 HomeFragment.tasks.get(finalI1).setCompleted(isCompleted);
-                                Log.e("AAA", HomeFragment.tasks.get(finalI1).toString());
-                                Log.e("AAA",ItemCheckListDAO.getInstance().getByParentId(task.getId()).toString());
                                 HomeFragment.adapter.notifyDataSetChanged();
                             }
                         });
