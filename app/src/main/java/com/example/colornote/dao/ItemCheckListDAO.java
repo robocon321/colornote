@@ -1,5 +1,6 @@
 package com.example.colornote.dao;
 
+import android.content.ClipData;
 import android.content.ContentValues;
 import android.database.Cursor;
 
@@ -89,4 +90,5 @@ public class ItemCheckListDAO extends AbstractDAO{
     public String queryWithKey() {
         return "Select * from ItemCheckList Where title LIKE ? OR content LIKE ? or modifiedDate like ?";
     }
+
 }

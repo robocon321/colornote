@@ -67,12 +67,13 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"/>
         </RelativeLayout>
+
     <Button
         android:id="@+id/btnSort"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toolbar"
-        android:backgroundTint="?attr/android:windowBackground"
+        android:backgroundTint="?attr/sort_btn"
         android:drawableRight="@drawable/ic_icon_down"
         android:fontFamily="@font/arial"
         android:paddingLeft="70dp"
