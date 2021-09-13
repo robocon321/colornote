@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         init();
         setEvents();
 
-        getDefauleActivity();
+//        getDefauleActivity();
 
     }
 
@@ -508,13 +508,13 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         SelectedObserverService.getInstance().removeObserver(this);
     }
 
-      public void getDefauleActivity(){
-          sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-          String defaultActivity =sharedPreferences.getString("default_activity","Notes");
-          if(!defaultActivity.equals("Notes")){
-             viewPager.setCurrentItem(1);
-          }
-      }
+//      public void getDefauleActivity(){
+//          sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//          String defaultActivity =sharedPreferences.getString("default_activity","Notes");
+//          if(!defaultActivity.equals("Notes")){
+//             viewPager.setCurrentItem(1);
+//          }
+//      }
 
     public boolean checkAvailableInternet() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
