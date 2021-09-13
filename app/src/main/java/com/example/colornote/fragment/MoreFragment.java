@@ -74,6 +74,9 @@ public class MoreFragment extends Fragment {
         btnMoreSettings =  view.findViewById(R.id.btnMoreSettings);
         btnMoreTheme =  view.findViewById(R.id.btnMoreTheme);
         relativeLayout_signIn =  view.findViewById(R.id.relative_signIn);
+
+     //   btn_signedIn = view.findViewById(R.id.btn_signedIn);
+
     }
 
     private void addEvent() {
@@ -129,6 +132,13 @@ public class MoreFragment extends Fragment {
 
             }
         });
+
+//        btn_signedIn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
 
 //        cho nay bao loi nen tao comment lai
         relativeLayout_signIn.setOnClickListener(new View.OnClickListener() {
