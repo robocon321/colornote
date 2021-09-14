@@ -204,7 +204,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
             editor.putString("account_name", acct.getDisplayName());
             editor.putString("account_email", acct.getEmail());
             editor.putLong("last_sync", Calendar.getInstance().getTimeInMillis());
-            SyncFirebase.getInstance().login(acct.getId());
+            SyncFirebase.getInstance().login(acct.getId(), this);
             editor.apply();
             Toast.makeText(SignInActivity.this,"Đăng nhập thành công",Toast.LENGTH_LONG).show();
 //          urlImage = acct.getPhotoUrl().toString();

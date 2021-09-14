@@ -1,11 +1,13 @@
 package com.example.colornote.activity;
 
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 
 import android.app.SearchManager;
 import android.content.Context;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.SharedPreferences;
@@ -33,6 +35,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,6 +46,8 @@ import com.example.colornote.R;
 import com.example.colornote.adapter.CheckListAdapter;
 import com.example.colornote.dao.CheckListDAO;
 import com.example.colornote.dao.ItemCheckListDAO;
+import com.example.colornote.dao.TextDAO;
+import com.example.colornote.fragment.HomeFragment;
 import com.example.colornote.model.CheckList;
 import com.example.colornote.model.ItemCheckList;
 import com.example.colornote.model.Text;
@@ -74,13 +79,20 @@ public class CheckList_Activity extends AppCompatActivity {
     int color_black =1;
     int num_click = 0;
 
+    SharedPreferences sharedPreferences;
+    String themeName;
     private Date date;
+
+    AlertDialog dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = getSharedPreferences("Theme", Context.MODE_PRIVATE);
+        themeName = sharedPreferences.getString("ThemeName", "Default");
         setContentView(R.layout.activity_check_list);
-        this.colorid = 2;
+
         toolbar = findViewById(R.id.toolbar_checklist);
         title_checklist = findViewById(R.id.title_checklist);
         date_checklist = findViewById(R.id.date_checklist);
@@ -91,6 +103,16 @@ public class CheckList_Activity extends AppCompatActivity {
         Constant.num_edit = 1;
         title_checklist.setVisibility(View.VISIBLE);
         button_additem.setVisibility(View.VISIBLE);
+
+        if(themeName.equalsIgnoreCase("Dark")){
+            button_additem.setBackgroundColor(Color.parseColor("#000000"));
+            linearLayout.setBackgroundColor(Color.parseColor("#000000"));
+        }else{
+            linearLayout.setBackgroundColor(Color.parseColor("#ffe77a"));
+            button_additem.setBackgroundColor(Color.parseColor("#ffe77a"));
+        }
+
+
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
         String s = simpleDateFormat.format(date);
@@ -126,9 +148,17 @@ public class CheckList_Activity extends AppCompatActivity {
                 }
 //                Toast.makeText(CheckList_Activity.this, colorSub, Toast.LENGTH_LONG).show();
 //                Drawable colorDrawable = new ColorDrawable(Color.parseColor(colorSub));
-                button_additem.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("colorMain")));
+
                 actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(colorSub)));
-                linearLayout.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("colorMain")));
+
+                if(themeName.equalsIgnoreCase("Dark")){
+                    button_additem.setBackgroundColor(Color.parseColor("#000000"));
+                    linearLayout.setBackgroundColor(Color.parseColor("#000000"));
+                }else{
+                    button_additem.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("colorMain")));
+                    linearLayout.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("colorMain")));
+                }
+
                //get item checklist
                 ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
                 List<ItemCheckList> listItem = new ArrayList<>();
@@ -186,7 +216,7 @@ public class CheckList_Activity extends AppCompatActivity {
                 Button button_ok,button_exit;
                 editTextitem = (EditText) dialog.findViewById(R.id.edtext_item);
                 button_ok = (Button) dialog.findViewById(R.id.btn_ok);
-                button_exit = (Button) dialog.findViewById(R.id.btn_exit);
+               // button_exit = (Button) dialog.findViewById(R.id.btn_exit);
 
                 button_ok.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -204,12 +234,12 @@ public class CheckList_Activity extends AppCompatActivity {
                         }
                     }
                 });
-                button_exit.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
+//                button_exit.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        dialog.dismiss();
+//                    }
+//                });
                 dialog.show();
                 checkIcon=true;
                 Constant.num_edit = 1;
@@ -224,6 +254,7 @@ public class CheckList_Activity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.text_checklist_menu,menu);
+
         MenuItem searchItem = menu.findItem(R.id.find);
 
         final androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
@@ -250,6 +281,13 @@ public class CheckList_Activity extends AppCompatActivity {
             }
         });
         return super.onCreateOptionsMenu(menu);
+
+
+        menu.findItem(R.id.mnCheck).setTitle(checkList.completeAll() ? "Uncheck" : "Check");
+        menu.findItem(R.id.mnCheck).setIcon(checkList.completeAll() ? R.drawable.ic_square : R.drawable.ic_check);
+         return super.onCreateOptionsMenu(menu);
+//         return true;
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -314,14 +352,14 @@ public class CheckList_Activity extends AppCompatActivity {
                 button_gray = dialog.findViewById(R.id.btn_gray);
                 button_white_gray = dialog.findViewById(R.id.btn_white);
 
-                changeColorActionbar(button_red,dialog,4,1,"#fc6f6f");
-                changeColorActionbar(button_black,dialog,8,0,"#b5b5b5");
-                changeColorActionbar(button_orange,dialog,3,1,"#ffaf75");
-                changeColorActionbar(button_yellow,dialog,2,1,"#ffe77a");
-                changeColorActionbar(button_green,dialog,5,1,"#94f08d");
-                changeColorActionbar(button_purple,dialog,7,1,"#e4a8ff");
-                changeColorActionbar(button_gray,dialog,9,1,"#e6e6e6");
-                changeColorActionbar(button_blue,dialog,6,1,"#97c2f7");
+                changeColorActionbar(button_red,dialog,4,1,"#f7cad0");
+                changeColorActionbar(button_black,dialog,8,0,"#adb5bd");
+                changeColorActionbar(button_orange,dialog,3,1,"#FFEAD7");
+                changeColorActionbar(button_yellow,dialog,2,1,"#fff2b2");
+                changeColorActionbar(button_green,dialog,5,1,"#b7efc5");
+                changeColorActionbar(button_purple,dialog,7,1,"#dec9e9");
+                changeColorActionbar(button_gray,dialog,9,1,"#dee2e6");
+                changeColorActionbar(button_blue,dialog,6,1,"#caf0f8");
                 changeColorActionbar(button_white_gray,dialog,10,1,"#ffffff");
 
                 dialog.show();
@@ -337,11 +375,106 @@ public class CheckList_Activity extends AppCompatActivity {
                 title_checklist.requestFocus();
                 checkIcon = true;
                 return true;
+            case R.id.mnCheck:
+                checkCheckList(item);
+                return true;
+            case R.id.mnSend:
+                sendTask();
+                return true;
+            case R.id.mnReminder:
+                changeReminderActivitiy();
+                return true;
+            case R.id.mnArchive:
+                archiveTask();
+                return true;
+            case R.id.mnDelete:
+                deleteTask();
+                return true;
             default:break;
-
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void deleteTask() {
+        ItemCheckListDAO.getInstance().changeStatus(checkList.getId(), Constant.STATUS.RECYCLE_BIN);
+        CheckListDAO.getInstance().changeStatus(checkList.getId(), Constant.STATUS.RECYCLE_BIN);
+        onBackPressed();
+    }
+
+    public void archiveTask() {
+        CheckListDAO.getInstance().changeStatus(checkList.getId(), Constant.STATUS.ARCHIVE);
+        onBackPressed();
+    }
+
+    public void changeReminderActivitiy(){
+        Intent intent = new Intent(this, ReminderActivity.class);
+        intent.putExtra("task", checkList);
+        startActivity(intent);
+    }
+
+    public void sendTask() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, checkList.getTitle() + "\n" + checkList.showContent());
+        this.startActivity(Intent.createChooser(intent, "Share tasks"));
+    }
+
+    public void checkCheckList(MenuItem item) {
+        boolean isCompleted = !checkList.completeAll();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        if(!checkList.completeAll()) {
+            builder.setTitle("Check all items");
+            builder.setMessage("Are you sure you want to check all items?");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int index) {
+                    List<ItemCheckList> items = ItemCheckListDAO.getInstance().getByParentId(checkList.getId());
+                    CheckListDAO.getInstance().changeCompleted(checkList.getId(), isCompleted);
+                    for (ItemCheckList item : items) {
+                        ItemCheckListDAO.getInstance().changeCompleted(item.getId(), isCompleted);
+                        CheckListAdapter checkListAdapter = new CheckListAdapter(list,CheckList_Activity.this);
+                        recyclerView.setAdapter(checkListAdapter);
+                    }
+                    checkList.setCompleted(isCompleted);
+                    item.setTitle(checkList.completeAll() ? "Uncheck" : "Check");
+                    item.setIcon(checkList.completeAll() ? R.drawable.ic_square : R.drawable.ic_check);
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int index) {
+                    dialog.dismiss();
+                }
+            });
+        } else {
+            builder.setTitle("Uncheck all items");
+            builder.setMessage("Are you sure you want to uncheck all items?");
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int index) {
+                    List<ItemCheckList> items = ItemCheckListDAO.getInstance().getByParentId(checkList.getId());
+                    CheckListDAO.getInstance().changeCompleted(checkList.getId(), isCompleted);
+                    for (ItemCheckList item : items) {
+                        ItemCheckListDAO.getInstance().changeCompleted(item.getId(), isCompleted);
+                        CheckListAdapter checkListAdapter = new CheckListAdapter(list,CheckList_Activity.this);
+                        recyclerView.setAdapter(checkListAdapter);
+                    }
+                    checkList.setCompleted(isCompleted);
+                    item.setTitle(checkList.completeAll() ? "Uncheck" : "Check");
+                    item.setIcon(checkList.completeAll() ? R.drawable.ic_square : R.drawable.ic_check);
+                }
+            });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int index) {
+                    dialog.dismiss();
+                }
+            });
+        }
+        dialog = builder.create();
+        dialog.show();
     }
     public void changeColorActionbar(Button button,Dialog dialog,int color,int colorWB, String colorBackground){
 
@@ -353,9 +486,17 @@ public class CheckList_Activity extends AppCompatActivity {
                 actionBar.setBackgroundDrawable(drawable);
                 color_black=colorWB;
                 changeIconToolBar(color_black);
-                linearLayout.setBackgroundColor(Color.parseColor(colorBackground));
-                recyclerView.setBackgroundColor(Color.parseColor(colorBackground));
-                button_additem.setBackgroundColor(Color.parseColor(colorBackground));
+                if(!themeName.equalsIgnoreCase("Dark")){
+                    linearLayout.setBackgroundColor(Color.parseColor(colorBackground));
+                    button_additem.setBackgroundColor(Color.parseColor(colorBackground));
+                }
+                if(themeName.equalsIgnoreCase("Dark")){
+                    recyclerView.setBackgroundColor(Color.parseColor("#000000"));
+                }else{
+                    recyclerView.setBackgroundColor(Color.parseColor(colorBackground));
+                }
+
+
                 colorid = color;
                 dialog.cancel();
 
@@ -363,9 +504,7 @@ public class CheckList_Activity extends AppCompatActivity {
         });
     }
     public boolean addCheckList(int color){
-        if(date == null){
-            date = Calendar.getInstance().getTime();
-        }
+        Date date = getDateFromCalendarFragment();
         CheckList checkList = new CheckList();
         CheckListDAO checkListDAO = CheckListDAO.getInstance();
         checkList.setId(checkListDAO.count()+1);
@@ -387,7 +526,7 @@ public class CheckList_Activity extends AppCompatActivity {
             ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
             itemCheckList.setId(itemCheckListDAO.count()+1);
             itemCheckList.setContent(list.get(i));
-            Date date = Calendar.getInstance().getTime();
+            Date date = getDateFromCalendarFragment();
             itemCheckList.setModifiedDate(date);
             itemCheckList.setParentId(checkListDAO.count()+1);
             itemCheckList.setStatus(Constant.STATUS.NORMAL);
@@ -460,21 +599,65 @@ public class CheckList_Activity extends AppCompatActivity {
             int color = pre.getInt("default_color", 0xFFF7D539);
             ActionBar actionBar = getSupportActionBar();
             actionBar.setBackgroundDrawable(new ColorDrawable(color));
+            if(color== ContextCompat.getColor(this, R.color.yellow_custom)){
+                linearLayout.setBackgroundColor(Color.parseColor("#fff2b2"));
+                button_additem.setBackgroundColor(Color.parseColor("#fff2b2"));
+                colorid=2;
+            }else if(color==ContextCompat.getColor(this, R.color.orange_custom)){
+                linearLayout.setBackgroundColor(Color.parseColor("#FFEAD7"));
+                button_additem.setBackgroundColor(Color.parseColor("#FFEAD7"));
+                colorid=3;
+            }else if(color==ContextCompat.getColor(this, R.color.red_custom)){
+                linearLayout.setBackgroundColor(Color.parseColor("#f7cad0"));
+                button_additem.setBackgroundColor(Color.parseColor("#f7cad0"));
+                colorid=4;
+            }else if(color==ContextCompat.getColor(this, R.color.green_custom)){
+                linearLayout.setBackgroundColor(Color.parseColor("#b7efc5"));
+                button_additem.setBackgroundColor(Color.parseColor("#b7efc5"));
+                colorid=5;
+            }else if(color==ContextCompat.getColor(this, R.color.blue_custom)){
+                linearLayout.setBackgroundColor(Color.parseColor("#caf0f8"));
+                button_additem.setBackgroundColor(Color.parseColor("#caf0f8"));
+                colorid=6;
+            }else if(color==ContextCompat.getColor(this, R.color.purple_custom)){
+                linearLayout.setBackgroundColor(Color.parseColor("#dec9e9"));
+                button_additem.setBackgroundColor(Color.parseColor("#dec9e9"));
+                colorid=7;
+            }else if(color==ContextCompat.getColor(this, R.color.black_custom)){
+                linearLayout.setBackgroundColor(Color.parseColor("#adb5bd"));
+                button_additem.setBackgroundColor(Color.parseColor("#adb5bd"));
+                colorid=8;
+            }else if(color==ContextCompat.getColor(this, R.color.gray_custom)){
+                linearLayout.setBackgroundColor(Color.parseColor("#dee2e6"));
+                button_additem.setBackgroundColor(Color.parseColor("#dee2e6"));
+                colorid=9;
+            }else if(color==ContextCompat.getColor(this, R.color.white)){
+                linearLayout.setBackgroundColor(Color.parseColor("#ffffff"));
+                button_additem.setBackgroundColor(Color.parseColor("#ffffff"));
+                colorid=10;
+            }
+            if(themeName.equalsIgnoreCase("Dark")){
+                button_additem.setBackgroundColor(Color.parseColor("#000000"));
+                linearLayout.setBackgroundColor(Color.parseColor("#000000"));
+            }
         }
     }
 
-    private void getDateFromCalendarFragment() {
+    private Date getDateFromCalendarFragment() {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("bundle");
         if(bundle == null){
-            return;
+            return Calendar.getInstance().getTime();
         }
+        Date date = new Date();
         String data = bundle.getString("date");
         try {
             date = new SimpleDateFormat("yyyy-MM-dd").parse(data);
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        return date;
     }
 }
 

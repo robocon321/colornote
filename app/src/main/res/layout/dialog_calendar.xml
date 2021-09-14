@@ -32,7 +32,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
         android:background="@color/teal_700"
-        android:text="Add"
-        android:textColor="@color/white" />
+
+        android:textColor="@color/white"
+
+
+        android:text="ADD"
+        />
 
 </LinearLayout>

@@ -54,20 +54,20 @@ public class Database {
         sqLiteDatabase.execSQL("CREATE TABLE Color(id INTEGER PRIMARY KEY AUTOINCREMENT, colorMain VARCHAR(10), colorSub VARCHAR(10), content NVARCHAR(255))");
         sqLiteDatabase.execSQL("CREATE TABLE Reminder(id INTEGER PRIMARY KEY AUTOINCREMENT, type INTEGER, startTime DATETIME, endTime DATETIME, repetition INTEGER, status INT)");
 
-        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'ZDG', 'osier iopser oise rionsdagf oiwe rlkase rf oiw eraskdnf', 1, 3, 0, '2007-01-01', 2);");
-        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'YTI', 'laksdfqwierjpsaoi dfj;askdf askdnf;sakd,f qwsf oisdnfsq erijsnef asdfkkj', 0, 3, 0, '2021-11-12', 2);");
+        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'yellow2', 'osier iopser oise rionsdagf oiwe rlkase rf oiw eraskdnf', 1, 2, 0, '2007-01-01', 2);");
+        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'orange3', 'laksdfqwierjpsaoi dfj;askdf askdnf;sakd,f qwsf oisdnfsq erijsnef asdfkkj', 0, 3, 0, '2021-11-12', 2);");
 //        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'tuyen','asidfwqe oisđ oids02', 1, 2, 0, '2020-12-05', 2)");
 //        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'YTU','asdkj ase983w3 lksd', 0, 2, 0, '2020-03-15', 1)");
 //        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'tuyen1','2938 sdkk w23kd', 0, 7, 0, '2020-03-05', 0)");
 
-        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'ZDG', 'osier iopser oise rionsdagf oiwe rlkase rf oiw eraskdnf', 1, 3, 1, '1632502800000', 2);");
-        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'YTI', 'laksdfqwierjpsaoi dfj;askdf askdnf;sakd,f qwsf oisdnfsq erijsnef asdfkkj', 0, 3, 0, '1632243600000', 2);");
-        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'tuyen','asidfwqe oisđ oids02', 1, 2, 0, '1632934800000', 2)");
-        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'YTU','asdkj ase983w3 lksd', 0, 2, 0, '2020-03-15', 1)");
-        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, 'tuyen1','2938 sdkk w23kd', 0, 7, 0, '2020-03-05', 0)");
+        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, '4', 'osier iopser oise rionsdagf oiwe rlkase rf oiw eraskdnf', 1, 4, 1, '1632502800000', 2);");
+        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, '5', 'laksdfqwierjpsaoi dfj;askdf askdnf;sakd,f qwsf oisdnfsq erijsnef asdfkkj', 0, 5, 0, '1632243600000', 2);");
+        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, '6','asidfwqe oisđ oids02', 1, 6, 0, '1632934800000', 2)");
+        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, '7','asdkj ase983w3 lksd', 0, 7, 0, '2020-03-15', 2)");
+        sqLiteDatabase.execSQL("INSERT INTO TEXT VALUES(null, '8','2938 sdkk w23kd', 0, 8, 0, '2020-03-05', 2)");
 
-        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'checklist1', 1, 2, 0, '163276200000', 2)");
-        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'hecklist12', 0, 3, 0, '1635613200000', 2)");
+        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, '9', 1, 9, 0, '163276200000', 2)");
+        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, '10', 0, 10, 0, '1635613200000', 2)");
         sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'hecklist13', 1, 7, 0, '2021-08-17', 1)");
         sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'hecklist14', 1, 5, 0, '2021-02-17', 0)");
 //        sqLiteDatabase.execSQL("INSERT INTO CHECKLIST VALUES(null, 'checklist5', 0, 2, 0, '2021-03-02', 1)");
@@ -87,15 +87,15 @@ public class Database {
 //        sqLiteDatabase.execSQL("INSERT INTO ItemCheckList VALUES(null, 'oakszdieow iwe lkd lkske ik ', 0, 3, '2011-11-10', 2);");
 
         sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,null ,null, null);");
-        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#ffe77a' ,'#f7d539', 'yellow'); ");
-        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#ffaf75' ,'#ff7f24', 'orange'); ");
-        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#fc6f6f' ,'#ff2b2b','red'); ");
-        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#94f08d' ,'#48fc3a', 'green'); ");
-        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#97c2f7' ,'#286fc7', 'blue'); ");
-        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#e4a8ff' ,'#e4a8ff', 'purple'); ");
-        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#b5b5b5' ,'#000000', 'black'); ");
-        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#e6e6e6' ,'#948787', 'gray'); ");
-        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#ffffff' ,'#ededed', 'white'); ");
+        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#fff2b2' ,'#ffe14c', 'yellow'); ");
+        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#FFEAD7' ,'#ff7f24', 'orange'); ");
+        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#f7cad0' ,'#fc6f6f','red'); ");
+        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#b7efc5' ,'#6ede8a', 'green'); ");
+        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#caf0f8' ,'#48cae4', 'blue'); ");
+        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#dec9e9' ,'#c19ee0', 'purple'); ");
+        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#adb5bd' ,'#212529', 'black'); ");
+        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#dee2e6' ,'#6c757d', 'gray'); ");
+        sqLiteDatabase.execSQL("INSERT INTO Color(id,colorMain,colorSub,content) VALUES (null,'#ffffff' ,'#ffffff', 'white'); ");
     }
 
     public void dropTable(String name){

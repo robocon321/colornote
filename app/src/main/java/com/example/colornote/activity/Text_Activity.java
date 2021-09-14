@@ -3,6 +3,7 @@ package com.example.colornote.activity;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 import android.app.Dialog;
@@ -14,6 +15,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 
@@ -41,8 +43,11 @@ import com.example.colornote.R;
 import com.example.colornote.dao.ColorDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.fragment.CalendarFragment;
+import com.example.colornote.fragment.HomeFragment;
+import com.example.colornote.model.Task;
 import com.example.colornote.model.Text;
 import com.example.colornote.util.Constant;
+import com.example.colornote.util.SelectedObserverService;
 
 import java.text.DateFormat;
 
@@ -59,24 +64,31 @@ public class Text_Activity extends AppCompatActivity {
     EditText title_text, edit_text;
     TextView text_date;
     boolean checkIcon = true;
-    private Date date;
     private long numEdit = 0;
     Text text = new Text();
     LinearLayout linearLayout;
     int color_black =1;
     int num_click = 0;
-
-
+    SharedPreferences sharedPreferences;
+String themeName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = getSharedPreferences("Theme", Context.MODE_PRIVATE);
+        themeName = sharedPreferences.getString("ThemeName", "Default");
+
         setContentView(R.layout.activity_text);
         title_text = findViewById(R.id.title_text);
         edit_text = findViewById(R.id.edit_text);
         toolbar = findViewById(R.id.toolbar_text);
         text_date = findViewById(R.id.text_date);
         linearLayout = findViewById(R.id.layout_text);
-        linearLayout.setBackgroundColor(Color.parseColor("#ffe77a"));
+        if(themeName.equalsIgnoreCase("Dark")){
+            linearLayout.setBackgroundColor(Color.parseColor("#000000"));
+        }else{
+            linearLayout.setBackgroundColor(Color.parseColor("#ffe77a"));
+        }
+
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
         String s = simpleDateFormat.format(date);
@@ -97,10 +109,15 @@ public class Text_Activity extends AppCompatActivity {
                 colorid = text.getColorId();
                 text_date.setText(simpleDateFormat.format(text.getModifiedDate()));
                 String colorSub = getIntent().getStringExtra("colorSub");
-                Toast.makeText(Text_Activity.this,colorSub,Toast.LENGTH_LONG).show();
+              //  Toast.makeText(Text_Activity.this,colorSub,Toast.LENGTH_LONG).show();
 //                Drawable colorDrawable = new ColorDrawable(Color.parseColor(colorSub));
                 actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(colorSub)));
-                linearLayout.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("colorMain")));
+                if(themeName.equalsIgnoreCase("Dark")){
+                    linearLayout.setBackgroundColor(Color.parseColor("#000000"));
+                }else{
+                    linearLayout.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("colorMain")));
+                }
+
                 Constant.num_click = 0;
                 numEdit = 1;
                 title_text.setVisibility(View.GONE);
@@ -146,7 +163,9 @@ public class Text_Activity extends AppCompatActivity {
             }
         });
 
-        this.colorid = 2;
+
+//         this.colorid = 2;
+
 
     }
 
@@ -156,6 +175,7 @@ public class Text_Activity extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.text_checklist_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.find);
+
 
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -180,13 +200,18 @@ public class Text_Activity extends AppCompatActivity {
             }
         });
         return super.onCreateOptionsMenu(menu);
+
+        menu.findItem(R.id.mnCheck).setTitle(text.completeAll() ? "Uncheck" : "Check");
+        menu.findItem(R.id.mnCheck).setIcon(text.completeAll() ? R.drawable.ic_square : R.drawable.ic_check);
+        return super.onCreateOptionsMenu(menu);
+//         return true;
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-
                 if(checkIcon==false) {
                     onBackPressed();
                 }
@@ -242,14 +267,14 @@ public class Text_Activity extends AppCompatActivity {
                 button_white_gray = dialog.findViewById(R.id.btn_white);
 
 
-                changeColorActionbar(button_red,dialog,4,1,"#fc6f6f");
-                changeColorActionbar(button_black,dialog,8,0,"#b5b5b5");
-                changeColorActionbar(button_orange,dialog,3,1,"#ffaf75");
-                changeColorActionbar(button_yellow,dialog,2,1,"#ffe77a");
-                changeColorActionbar(button_green,dialog,5,1,"#94f08d");
-                changeColorActionbar(button_purple,dialog,7,1,"#e4a8ff");
-                changeColorActionbar(button_gray,dialog,9,1,"#e6e6e6");
-                changeColorActionbar(button_blue,dialog,6,1,"#97c2f7");
+                changeColorActionbar(button_red,dialog,4,1,"#f7cad0");
+                changeColorActionbar(button_black,dialog,8,0,"#adb5bd");
+                changeColorActionbar(button_orange,dialog,3,1,"#FFEAD7");
+                changeColorActionbar(button_yellow,dialog,2,1,"#fff2b2");
+                changeColorActionbar(button_green,dialog,5,1,"#b7efc5");
+                changeColorActionbar(button_purple,dialog,7,1,"#dec9e9");
+                changeColorActionbar(button_gray,dialog,9,1,"#dee2e6");
+                changeColorActionbar(button_blue,dialog,6,1,"#caf0f8");
                 changeColorActionbar(button_white_gray,dialog,10,1,"#ffffff");
 
                 if(color_black==0){
@@ -265,12 +290,54 @@ public class Text_Activity extends AppCompatActivity {
                 return true;
             case R.id.find:
 
+            case R.id.mnCheck:
+                TextDAO.getInstance().changeCompleted(text.getId(), !text.completeAll());
+                text.setCompleted(!text.completeAll());
+
+                item.setTitle(text.completeAll() ? "Uncheck" : "Check");
+                item.setIcon(text.completeAll() ? R.drawable.ic_square : R.drawable.ic_check);
+                return true;
+            case R.id.mnSend:
+                sendTask();
+                return true;
+            case R.id.mnReminder:
+                changeReminderActivitiy();
+                return true;
+            case R.id.mnArchive:
+                archiveTask();
+                return true;
+            case R.id.mnDelete:
+                deleteTask();
+                return true;
             default:
                 break;
 
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void deleteTask() {
+        TextDAO.getInstance().changeStatus(text.getId(), Constant.STATUS.RECYCLE_BIN);
+        onBackPressed();
+    }
+
+    public void archiveTask() {
+        TextDAO.getInstance().changeStatus(text.getId(), Constant.STATUS.ARCHIVE);
+        onBackPressed();
+    }
+
+    public void changeReminderActivitiy(){
+            Intent intent = new Intent(this, ReminderActivity.class);
+            intent.putExtra("task", text);
+            startActivity(intent);
+    }
+
+    public void sendTask() {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, text.getTitle() + "\n" + text.showContent());
+        this.startActivity(Intent.createChooser(intent, "Share tasks"));
     }
 
     public void changeColorActionbar(Button button,Dialog dialog,int color,int colorWB, String colorBackground){
@@ -284,7 +351,13 @@ public class Text_Activity extends AppCompatActivity {
                 actionBar.setBackgroundDrawable(drawable);
                 color_black=colorWB;
                 changeIconToolBar(color_black);
-                linearLayout.setBackgroundColor(Color.parseColor(colorBackground));
+                if(themeName.equalsIgnoreCase("Dark")){
+
+                    linearLayout.setBackgroundColor(Color.parseColor("#000000"));
+                }else{
+                    linearLayout.setBackgroundColor(Color.parseColor(colorBackground));
+                }
+
                 colorid = color;
                 dialog.cancel();
 
@@ -294,10 +367,8 @@ public class Text_Activity extends AppCompatActivity {
 
 
     public boolean addText(int color) {
-        if(date == null){
-            date = Calendar.getInstance().getTime();
-        }
         Text text = new Text();
+        Date date = getDateFromCalendarFragment();
 
         TextDAO textDAO = TextDAO.getInstance();
         text.setId(textDAO.count()+1);
@@ -318,10 +389,11 @@ public class Text_Activity extends AppCompatActivity {
     public boolean editText(int color){
 //        Text text = new Text();
         TextDAO textDAO = TextDAO.getInstance();
+        Date date = getDateFromCalendarFragment();
+
         text.setTitle(title_text.getText().toString());
         text.setContent(edit_text.getText().toString());
         text.setColorId(color);
-        Date date = Calendar.getInstance().getTime();
         text.setModifiedDate(date);
         text.setReminderId(-1);
         text.setStatus(Constant.STATUS.NORMAL);
@@ -367,21 +439,58 @@ public class Text_Activity extends AppCompatActivity {
             int color = pre.getInt("default_color", 0xFFF7D539);
             ActionBar actionBar = getSupportActionBar();
             actionBar.setBackgroundDrawable(new ColorDrawable(color));
+           // String hexColor = String.format("#%06X", (0xFFFFFF & color));
+
+
+          if(color==ContextCompat.getColor(this, R.color.yellow_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#fff2b2"));
+              colorid=2;
+          }else if(color==ContextCompat.getColor(this, R.color.orange_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#FFEAD7"));
+              colorid=3;
+          }else if(color==ContextCompat.getColor(this, R.color.red_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#f7cad0"));
+              colorid=4;
+          }else if(color==ContextCompat.getColor(this, R.color.green_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#b7efc5"));
+              colorid=5;
+          }else if(color==ContextCompat.getColor(this, R.color.blue_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#caf0f8"));
+              colorid=6;
+          }else if(color==ContextCompat.getColor(this, R.color.purple_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#dec9e9"));
+              colorid=7;
+          }else if(color==ContextCompat.getColor(this, R.color.black_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#adb5bd"));
+              colorid=8;
+          }else if(color==ContextCompat.getColor(this, R.color.gray_custom)){
+              linearLayout.setBackgroundColor(Color.parseColor("#dee2e6"));
+              colorid=9;
+          }else if(color==ContextCompat.getColor(this, R.color.white)){
+              linearLayout.setBackgroundColor(Color.parseColor("#ffffff"));
+              colorid=10;
+          }  if(themeName.equalsIgnoreCase("Dark")){
+
+                linearLayout.setBackgroundColor(Color.parseColor("#000000"));
+            }
         }
     }
 
-    private void getDateFromCalendarFragment() {
+    private Date getDateFromCalendarFragment() {
         Intent intent = getIntent();
         Bundle bundle = intent.getBundleExtra("bundle");
         if(bundle == null){
-           return;
+           return Calendar.getInstance().getTime();
         }
+        Date date = new Date();
         String data = bundle.getString("date");
         try {
             date = new SimpleDateFormat("yyyy-MM-dd").parse(data);
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        return date;
     }
 //    private void highlightText(String s) {
 //        SpannableString spannableString = new SpannableString(edit_text.getText());

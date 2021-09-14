@@ -181,7 +181,6 @@ public class ReminderTypeNoneFragment extends Fragment {
             CheckListDAO.getInstance().update(checkList);
         }
 
-        Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivity(intent);
+        getActivity().onBackPressed();
     }
 }

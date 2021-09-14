@@ -13,23 +13,49 @@
         android:title="color"
         app:showAsAction="always" />
     <item
-        android:id="@+id/check"
-        android:title="Check"
-        app:showAsAction="withText" />
-    <item android:title="Send"
-        android:id="@+id/send"/>
-    <item android:title="Reminder"
-        android:id="@+id/reminder"/>
-    <item android:title="Find"
+
+       
+<!-- <!--     <item android:title="Find"
         android:id="@+id/find"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        />
-    <item android:title="Lock"
-        android:id="@+id/lock"/>
-    <item android:title="Archive"
-        android:id="@+id/archive"/>
-    <item android:title="Delete"
-        android:id="@+id/delete"/>
+        /> --> -->
+    
 
+
+        android:title="option"
+        android:icon="@drawable/ic_option_active"
+        app:showAsAction="ifRoom">
+        <menu>
+            <item
+                android:id="@+id/mnCheck"
+                android:title="Check"
+                android:icon="@drawable/ic_edit_squre" />
+            <item
+                android:icon="@drawable/ic_send"
+                android:title="Send"
+                android:id="@+id/mnSend"/>
+            <item
+                android:icon="@drawable/ic_edit_reminder"
+                android:title="Reminder"
+                android:id="@+id/mnReminder"/>
+            <item
+                android:icon="@drawable/ic_search"
+                android:id="@+id/find"
+                app:showAsAction="ifRoom|collapseActionView"
+                app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+            <item
+                android:title="Lock"
+                android:icon="@drawable/ic_lock"
+                android:id="@+id/mnLock"/>
+            <item
+                android:icon="@drawable/ic_edit_archive"
+                android:title="Archive"
+                android:id="@+id/mnArchive"/>
+            <item
+                android:icon="@drawable/ic_edit_delete"
+                android:title="Delete"
+                android:id="@+id/mnDelete"/>
+        </menu>
+    </item>
 </menu>

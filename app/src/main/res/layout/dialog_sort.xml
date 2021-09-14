@@ -7,10 +7,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayoutSort"
-        app:tabSelectedTextColor="@color/tab_selected"
-        app:tabTextColor="@color/tab_non_selected"
-        app:tabIndicatorColor="@color/tab_selected"
-        app:tabIconTint="@color/tab_non_selected"
+        app:tabSelectedTextColor="?attr/itemTextColor"
+        app:tabTextColor="?attr/colorControlNormal"
+        app:tabIndicatorColor="?attr/itemTextColor"
+        app:tabIconTint="?attr/colorControlNormal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <com.example.colornote.customview.CustomViewPager

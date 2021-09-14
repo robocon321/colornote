@@ -6,42 +6,51 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.cardview.widget.CardView;
+import androidx.preference.PreferenceManager;
 
 import com.example.colornote.R;
 import com.example.colornote.activity.CheckList_Activity;
 import com.example.colornote.activity.Text_Activity;
 import com.example.colornote.customview.CustomCardView;
 import com.example.colornote.dao.CheckListDAO;
-import com.example.colornote.dao.ItemCheckListDAO;
+import com.example.colornote.dao.ColorDAO;
 import com.example.colornote.dao.TextDAO;
 import com.example.colornote.mapper.ColorMapper;
 import com.example.colornote.model.CheckList;
 import com.example.colornote.model.Color;
-import com.example.colornote.model.ItemCheckList;
 import com.example.colornote.model.Task;
 import com.example.colornote.model.Text;
 import com.example.colornote.util.Constant;
 import com.example.colornote.util.DateConvert;
 import com.example.colornote.util.SelectedObserverService;
 
-import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
+import java.util.Date;
 
-public class ViewDetailsAdapter extends ViewAdapter {
+public class ViewCalendarAdapter extends BaseAdapter {
+    private Context context;
+    private ArrayList<Task> tasks;
+    ColorDAO colorDAO = ColorDAO.getInstance();
+
     SharedPreferences sharedPreferences;
     String themeName;
-    public ViewDetailsAdapter(ArrayList<Task> tasks, Context context){
-        super(tasks, context);
+    public ViewCalendarAdapter(ArrayList<Task> tasks, Context context){
+        this.tasks = tasks;
+        this.context = context;
+
     }
 
     @Override
@@ -61,53 +70,76 @@ public class ViewDetailsAdapter extends ViewAdapter {
 
     @Override
     public View getView(int position, View  view, ViewGroup parent) {
-        this.parent = (GridView) parent;
-        ViewHolder holder = null;
+        ViewCalendarAdapter.ViewHolder holder = null;
         Task task = tasks.get(position);
         if(view == null){
             LayoutInflater inflater = LayoutInflater.from(context);
             holder = new ViewHolder();
-            view = inflater.inflate(R.layout.layout_view_details, parent, false);
-
+            view = inflater.inflate(R.layout.layout_view_list, parent, false);
+            holder.task_item = view.findViewById(R.id.task_item);
             holder.txtTitle = view.findViewById(R.id.txtTitle);
-            holder.txtContent = view.findViewById(R.id.txtContent);
             holder.txtTime = view.findViewById(R.id.txtTime);
             holder.imgCheck = view.findViewById(R.id.imgCheck);
             holder.cvTask = view.findViewById(R.id.cvTask);
             holder.colorSub = view.findViewById(R.id.colorSub);
-
             view.setTag(holder);
         }else{
-            holder = (ViewHolder) view.getTag();
+            holder = (ViewCalendarAdapter.ViewHolder) view.getTag();
         }
 
         holder.txtTitle.setText(task.getTitle());
-        holder.txtContent.setText(task.showContent());
-        if(task.completeAll()) {
-            holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-          //  holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#737373"));
+
+        SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        String font_size =pre.getString("font_size","100dp");
+
+        float size=0;
+        switch (font_size){
+            case "Tiny":     size=context.getResources().getDimensionPixelSize(R.dimen.font_size_tiny);
+                break;
+            case "Small":size=context.getResources().getDimensionPixelSize(R.dimen.font_size_small);
+                break;
+            case "Medium": size=context.getResources().getDimensionPixelSize(R.dimen.font_size_medium);
+                break;
+            case "Large": size=context.getResources().getDimensionPixelSize(R.dimen.font_size_large);
+                break;
+            case "Huge": size=context.getResources().getDimensionPixelSize(R.dimen.font_size_huge);
+                break;
+            default: size=context.getResources().getDimensionPixelSize(R.dimen.font_size);
+                break;
+
+        }
+
+        holder.txtTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);
+
+        if(task.completeAll()){
             holder.imgCheck.setImageResource(R.drawable.ic_check);
-        }else{
+            holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }else
             holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
-         //   holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#000000"));
+
+        if(task.getStatus()== Constant.STATUS.RECYCLE_BIN){
+            holder.imgCheck.setImageResource(R.drawable.ic_trash_can);
+        }else{
             holder.imgCheck.setImageResource(0);
         }
+
         holder.txtTime.setText(new DateConvert(task.getModifiedDate()).showTime());
 
         Color color = colorDAO.get(new ColorMapper(), task.getColorId());
+
+        holder.colorSub.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.SUB_COLOR : color.getColorSub()));
 
         sharedPreferences = context.getSharedPreferences("Theme", Context.MODE_PRIVATE);
         themeName = sharedPreferences.getString("ThemeName", "Default");
         if(themeName.equalsIgnoreCase("Dark")){
             holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor( "#000000"));
-
         }else{
             holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.MAIN_COLOR : color.getColorMain()));
         }
-
         holder.colorSub.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.SUB_COLOR : color.getColorSub()));
 
-        ViewHolder finalHolder = holder;
+        ViewCalendarAdapter.ViewHolder finalHolder = holder;
+
         holder.cvTask.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -116,7 +148,6 @@ public class ViewDetailsAdapter extends ViewAdapter {
                 }else{
                     SelectedObserverService.getInstance().unselected(position, position+1);
                 }
-                updateBorderView();
 
                 return true;
             }
@@ -131,8 +162,8 @@ public class ViewDetailsAdapter extends ViewAdapter {
                     }else{
                         SelectedObserverService.getInstance().unselected(position, position+1);
                     }
-                    updateBorderView();
                 }else{
+                    Log.e("EE", task.toString());
                     if(task.getClass().equals(Text.class)) {
                         int num = task.getId();
                         Color color1 = colorDAO.get(new ColorMapper(), task.getColorId());
@@ -145,6 +176,7 @@ public class ViewDetailsAdapter extends ViewAdapter {
                         bundle.putSerializable("text",text);
                         bundle.putString("colorSub",color1.getColorSub());
                         bundle.putString("colorMain",color1.getColorMain());
+                        bundle.putString("date in view", task.getModifiedDate()+"");
                         intent.putExtras(bundle);
                         context.startActivity(intent);
                         Constant.num_click = 1;
@@ -170,14 +202,15 @@ public class ViewDetailsAdapter extends ViewAdapter {
                 }
             }
         });
-        updateBorderView();
+
         return view;
     }
 
     public class ViewHolder{
-        TextView txtTitle, txtContent, txtTime;
+        TextView txtTitle, txtTime;
         ImageView imgCheck;
         CustomCardView cvTask;
         View colorSub;
+        LinearLayout task_item;
     }
 }

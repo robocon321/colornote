@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         init();
         setEvents();
 
-        getDefauleActivity();
+//        getDefauleActivity();
 
     }
 
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                         String accountId = getSharedPreferences("account", MODE_PRIVATE).getString("account_id", "");
                         if(accountId.length() > 0) {
                             if(checkAvailableInternet()){
-                                SyncFirebase.getInstance().sync(accountId);
+                                SyncFirebase.getInstance().sync(accountId, MainActivity.this);
                                 getSharedPreferences("account", Context.MODE_PRIVATE).edit().putLong("last_sync", Calendar.getInstance().getTimeInMillis()).commit();
                             }
                             else Toast.makeText(MainActivity.this, "Internet không có sẵn", Toast.LENGTH_SHORT).show();
@@ -366,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
                 Task task = HomeFragment.tasks.get(i);
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_SUBJECT, task.getTitle());
+                intent.putExtra(Intent.EXTRA_SUBJECT, task.getTitle() + "\n" +task.showContent());
                 this.startActivity(Intent.createChooser(intent, "Share tasks"));
                 break;
             }
@@ -508,13 +508,13 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
         SelectedObserverService.getInstance().removeObserver(this);
     }
 
-      public void getDefauleActivity(){
-          sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-          String defaultActivity =sharedPreferences.getString("default_activity","Notes");
-          if(!defaultActivity.equals("Notes")){
-             viewPager.setCurrentItem(1);
-          }
-      }
+//      public void getDefauleActivity(){
+//          sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+//          String defaultActivity =sharedPreferences.getString("default_activity","Notes");
+//          if(!defaultActivity.equals("Notes")){
+//             viewPager.setCurrentItem(1);
+//          }
+//      }
 
     public boolean checkAvailableInternet() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
