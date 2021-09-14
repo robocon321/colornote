@@ -56,7 +56,7 @@ public class ReminderActivity extends AppCompatActivity {
         if(task.getClass().equals(Text.class)) task = TextDAO.getInstance().get(new TextMapper(), task.getId());
         else task = CheckListDAO.getInstance().get(new CheckListMapper(), task.getId());
 
-        if(task.getReminderId() == 0){
+        if(task.getReminderId() <= 0){
             reminder = new Reminder();
         }else {
             reminder = ReminderDAO.getInstance().get(new ReminderMapper(), task.getReminderId());
