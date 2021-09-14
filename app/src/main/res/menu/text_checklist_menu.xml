@@ -13,6 +13,16 @@
         android:title="color"
         app:showAsAction="always" />
     <item
+
+       
+<!-- <!--     <item android:title="Find"
+        android:id="@+id/find"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        /> --> -->
+    
+
+
         android:title="option"
         android:icon="@drawable/ic_option_active"
         app:showAsAction="ifRoom">
@@ -31,8 +41,9 @@
                 android:id="@+id/mnReminder"/>
             <item
                 android:icon="@drawable/ic_search"
-                android:title="Find"
-                android:id="@+id/mnFind"/>
+                android:id="@+id/find"
+                app:showAsAction="ifRoom|collapseActionView"
+                app:actionViewClass="androidx.appcompat.widget.SearchView"/>
             <item
                 android:title="Lock"
                 android:icon="@drawable/ic_lock"
