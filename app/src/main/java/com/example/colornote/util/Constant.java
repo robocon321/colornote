@@ -67,5 +67,7 @@ public class Constant {
     public static int num_acct = 0;
     public static String email = "";
     public static int num_click = 0;
+    public static String sfind = "";
+    public static int num_edit = 0;
 
 }

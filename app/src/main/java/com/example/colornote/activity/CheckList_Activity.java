@@ -3,6 +3,7 @@ package com.example.colornote.activity;
 
 import android.app.Dialog;
 
+import android.app.SearchManager;
 import android.content.Context;
 
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +30,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -62,6 +65,7 @@ public class CheckList_Activity extends AppCompatActivity {
     Button button_additem;
     RecyclerView recyclerView;
     ArrayList<String> list = new ArrayList<>();
+    CheckListAdapter checkListAdapter;
     private long numEdit = 0;
     CheckList checkList = new CheckList();
     ItemCheckList itemCheckList = new ItemCheckList();
@@ -84,6 +88,9 @@ public class CheckList_Activity extends AppCompatActivity {
         linearLayout = findViewById(R.id.layout_checkList);
         linearLayout.setBackgroundColor(Color.parseColor("#ffe77a"));
         button_additem.setBackgroundColor(Color.parseColor("#ffe77a"));
+        Constant.num_edit = 1;
+        title_checklist.setVisibility(View.VISIBLE);
+        button_additem.setVisibility(View.VISIBLE);
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy - HH:mm");
         String s = simpleDateFormat.format(date);
@@ -93,9 +100,9 @@ public class CheckList_Activity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(CheckList_Activity.this,LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        CheckListAdapter checkListAdapter = new CheckListAdapter(list,CheckList_Activity.this);
+        checkListAdapter = new CheckListAdapter(list,CheckList_Activity.this);
         recyclerView.setAdapter(checkListAdapter);
-
+        checkListAdapter.notifyDataSetChanged();
 
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -112,6 +119,11 @@ public class CheckList_Activity extends AppCompatActivity {
                 colorid = checkList.getColorId();
                 date_checklist.setText(simpleDateFormat.format(checkList.getModifiedDate()));
                 String colorSub = getIntent().getStringExtra("colorSub");
+                if(colorSub.equals("#000000")) {
+//                    changeIconToolBar(1);
+                }else{
+//                    changeIconToolBar(0);
+                }
 //                Toast.makeText(CheckList_Activity.this, colorSub, Toast.LENGTH_LONG).show();
 //                Drawable colorDrawable = new ColorDrawable(Color.parseColor(colorSub));
                 button_additem.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("colorMain")));
@@ -126,6 +138,7 @@ public class CheckList_Activity extends AppCompatActivity {
                 }
                 parentId = checkList.getId();
                 Constant.num_click = 0;
+
                 numEdit = 1;
                 checkIcon = false;
                 if (color_black == 0) {
@@ -133,6 +146,9 @@ public class CheckList_Activity extends AppCompatActivity {
                 } else {
                     getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
                 }
+                Constant.num_edit = 0;
+                title_checklist.setVisibility(View.GONE);
+                button_additem.setVisibility(View.GONE);
             } else {
                 Toast.makeText(CheckList_Activity.this, "null", Toast.LENGTH_LONG).show();
             }
@@ -180,7 +196,7 @@ public class CheckList_Activity extends AppCompatActivity {
                         if(!text.equals("")){
                             list.add(text);
 //                            Toast.makeText(CheckList_Activity.this,""+list.size(),Toast.LENGTH_LONG).show();
-                            CheckListAdapter checkListAdapter = new CheckListAdapter(list,CheckList_Activity.this);
+                            checkListAdapter = new CheckListAdapter(list,CheckList_Activity.this);
                             recyclerView.setAdapter(checkListAdapter);
                             dialog.dismiss();
                         }else{
@@ -196,37 +212,54 @@ public class CheckList_Activity extends AppCompatActivity {
                 });
                 dialog.show();
                 checkIcon=true;
+                Constant.num_edit = 1;
+                checkListAdapter.notifyDataSetChanged();
+                title_checklist.setVisibility(View.VISIBLE);
+                button_additem.setVisibility(View.VISIBLE);
             }
         });
-
-
-//        Intent intent = getIntent();
-//        Bundle bundle = intent.getBundleExtra("bundle");
-//        String data = bundle.getString("date");
-//        try {
-//            date = new SimpleDateFormat("dd-MM-yyyy").parse(data);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        Toast.makeText(this, "" + date, Toast.LENGTH_SHORT).show();
-
-//        getDateFromCalendarFragment();
-
 
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.text_checklist_menu,menu);
-        return true;
+        MenuItem searchItem = menu.findItem(R.id.find);
+
+        final androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Toast.makeText(CheckList_Activity.this,query,Toast.LENGTH_LONG).show();
+                searchView.clearFocus();
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("aaaaa",newText);
+//                checkListAdapter = new CheckListAdapter(list,CheckList_Activity.this);
+                checkListAdapter.getFilter().filter(newText);
+                if(newText.equals("")){
+                    checkListAdapter = new CheckListAdapter(list,CheckList_Activity.this);
+                    recyclerView.setAdapter(checkListAdapter);
+                }
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId())
         {
             case android.R.id.home:
-                if(checkIcon==false)
+                if(checkIcon==false) {
                     onBackPressed();
+
+                }
                 else{
                     if(color_black==0){
                         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24_w);
@@ -246,7 +279,10 @@ public class CheckList_Activity extends AppCompatActivity {
                     title_checklist.clearFocus();
                     closekeyboard();
                     checkIcon =false;
-
+                    Constant.num_edit = 0;
+                    checkListAdapter.notifyDataSetChanged();
+                    title_checklist.setVisibility(View.GONE);
+                    button_additem.setVisibility(View.GONE);
                 }
                 return true;
             case R.id.edit:
@@ -258,6 +294,10 @@ public class CheckList_Activity extends AppCompatActivity {
                 title_checklist.requestFocus();
                 checkIcon = true;
                 getSupportActionBar().setTitle(title_checklist.getText().toString());
+                Constant.num_edit = 1;
+                checkListAdapter.notifyDataSetChanged();
+                title_checklist.setVisibility(View.VISIBLE);
+                button_additem.setVisibility(View.VISIBLE);
                 return  true;
             case R.id.color:
                 Dialog dialog = new Dialog(CheckList_Activity.this);
@@ -285,6 +325,17 @@ public class CheckList_Activity extends AppCompatActivity {
                 changeColorActionbar(button_white_gray,dialog,10,1,"#ffffff");
 
                 dialog.show();
+                Constant.num_edit = 1;
+                checkListAdapter.notifyDataSetChanged();
+                title_checklist.setVisibility(View.VISIBLE);
+                button_additem.setVisibility(View.VISIBLE);
+                if(color_black==0){
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24_w);
+                }else{
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24);
+                }
+                title_checklist.requestFocus();
+                checkIcon = true;
                 return true;
             default:break;
 

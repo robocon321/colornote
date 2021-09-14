@@ -7,6 +7,7 @@ import androidx.preference.PreferenceManager;
 
 import android.app.Dialog;
 
+import android.app.SearchManager;
 import android.content.Context;
 
 import android.content.Intent;
@@ -19,6 +20,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.BackgroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +32,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -98,6 +103,7 @@ public class Text_Activity extends AppCompatActivity {
                 linearLayout.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("colorMain")));
                 Constant.num_click = 0;
                 numEdit = 1;
+                title_text.setVisibility(View.GONE);
                 checkIcon = false;
                 if(color_black==0){
                     getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24_w);
@@ -128,6 +134,7 @@ public class Text_Activity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
+                    title_text.setVisibility(View.VISIBLE);
                     checkIcon = true;
                     if(color_black==0){
                         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24_w);
@@ -140,17 +147,6 @@ public class Text_Activity extends AppCompatActivity {
         });
 
         this.colorid = 2;
-//        Intent intent = getIntent();
-//        Bundle bundle = intent.getBundleExtra("bundle");
-//        String data = bundle.getString("date");
-//        try {
-//            date = new SimpleDateFormat("yyyy-MM-dd").parse(data);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        Toast.makeText(this, "" + date, Toast.LENGTH_SHORT).show();
-
-//        getDateFromCalendarFragment();
 
     }
 
@@ -159,8 +155,31 @@ public class Text_Activity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.text_checklist_menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.find);
 
-        return true;
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Toast.makeText(Text_Activity.this,query,Toast.LENGTH_LONG).show();
+//                highlightText(query);
+                String textToHightLight = query;
+                String replaceWith = "<span style='background-color:yellow'>"+textToHightLight+"</span>";
+                //get text from edittext
+                String origianlText = edit_text.getText().toString();
+                //
+                String modifiedText = origianlText.replaceAll(textToHightLight,replaceWith);
+                edit_text.setText(Html.fromHtml(modifiedText));
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("aaaaa",newText);
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -189,6 +208,7 @@ public class Text_Activity extends AppCompatActivity {
                     getSupportActionBar().setTitle(title_text.getText().toString());
                     title_text.clearFocus();
                     edit_text.clearFocus();
+                    title_text.setVisibility(View.GONE);
 
                 }
                 return true;
@@ -199,6 +219,7 @@ public class Text_Activity extends AppCompatActivity {
                     getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24);
                 }
                 checkIcon = true;
+                title_text.setVisibility(View.VISIBLE);
 
                 getSupportActionBar().setTitle(title_text.getText().toString());
                 title_text.requestFocus();
@@ -231,9 +252,19 @@ public class Text_Activity extends AppCompatActivity {
                 changeColorActionbar(button_blue,dialog,6,1,"#97c2f7");
                 changeColorActionbar(button_white_gray,dialog,10,1,"#ffffff");
 
+                if(color_black==0){
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24_w);
+                }else{
+                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_check_24);
+                }
+                checkIcon = true;
+                title_text.setVisibility(View.VISIBLE);
 
+                getSupportActionBar().setTitle(title_text.getText().toString());
                 dialog.show();
                 return true;
+            case R.id.find:
+
             default:
                 break;
 
@@ -352,4 +383,19 @@ public class Text_Activity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+//    private void highlightText(String s) {
+//        SpannableString spannableString = new SpannableString(edit_text.getText());
+//        BackgroundColorSpan[] backgroundColorSpan =
+//                spannableString.getSpans(0, spannableString.length(), BackgroundColorSpan.class);
+//        for (BackgroundColorSpan bgSpan : backgroundColorSpan) {
+//            spannableString.removeSpan(bgSpan);
+//        }
+//        int indexOfKeyWord = spannableString.toString().indexOf(s);
+//        while (indexOfKeyWord > 0) {
+//            spannableString.setSpan(new BackgroundColorSpan(Color.YELLOW), indexOfKeyWord,
+//                    indexOfKeyWord + s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//            indexOfKeyWord = spannableString.toString().indexOf(s, indexOfKeyWord + s.length());
+//        }
+//        edit_text.setText(spannableString);
+//    }
 }

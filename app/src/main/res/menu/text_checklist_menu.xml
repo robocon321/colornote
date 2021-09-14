@@ -21,7 +21,10 @@
     <item android:title="Reminder"
         android:id="@+id/reminder"/>
     <item android:title="Find"
-        android:id="@+id/find"/>
+        android:id="@+id/find"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        />
     <item android:title="Lock"
         android:id="@+id/lock"/>
     <item android:title="Archive"
