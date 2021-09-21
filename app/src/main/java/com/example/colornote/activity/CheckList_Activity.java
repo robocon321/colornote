@@ -280,7 +280,7 @@ public class CheckList_Activity extends AppCompatActivity {
                 return false;
             }
         });
-        return super.onCreateOptionsMenu(menu);
+//         return super.onCreateOptionsMenu(menu);
 
 
         menu.findItem(R.id.mnCheck).setTitle(checkList.completeAll() ? "Uncheck" : "Check");
