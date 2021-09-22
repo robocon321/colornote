@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-
+    android:title="option"
+    android:icon="@drawable/ic_option_active"
+    app:showAsAction="ifRoom">
     <item
         android:id="@+id/edit"
         android:icon="@drawable/ic_baseline_edit_24_black"
@@ -12,21 +14,7 @@
         android:icon="@drawable/color"
         android:title="color"
         app:showAsAction="always" />
-    <item
 
-       
-<!-- <!--     <item android:title="Find"
-        android:id="@+id/find"
-        app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        /> --> -->
-    
-
-
-        android:title="option"
-        android:icon="@drawable/ic_option_active"
-        app:showAsAction="ifRoom">
-        <menu>
             <item
                 android:id="@+id/mnCheck"
                 android:title="Check"
@@ -42,6 +30,7 @@
             <item
                 android:icon="@drawable/ic_search"
                 android:id="@+id/find"
+                android:title="Find"
                 app:showAsAction="ifRoom|collapseActionView"
                 app:actionViewClass="androidx.appcompat.widget.SearchView"/>
             <item
@@ -56,6 +45,5 @@
                 android:icon="@drawable/ic_edit_delete"
                 android:title="Delete"
                 android:id="@+id/mnDelete"/>
-        </menu>
-    </item>
+
 </menu>

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 
 import android.app.SearchManager;
+import android.content.ClipData;
 import android.content.Context;
 
 import android.content.DialogInterface;
@@ -69,7 +70,7 @@ public class CheckList_Activity extends AppCompatActivity {
     boolean checkIcon = true;
     Button button_additem;
     RecyclerView recyclerView;
-    ArrayList<String> list = new ArrayList<>();
+    ArrayList<ItemCheckList> list = new ArrayList<>();
     CheckListAdapter checkListAdapter;
     private long numEdit = 0;
     CheckList checkList = new CheckList();
@@ -164,7 +165,7 @@ public class CheckList_Activity extends AppCompatActivity {
                 List<ItemCheckList> listItem = new ArrayList<>();
                 listItem = itemCheckListDAO.getByParentId(checkList.getId());
                 for(int i = 0;i<listItem.size();i++){
-                    list.add(listItem.get(i).getContent());
+                    list.add(listItem.get(i));
                 }
                 parentId = checkList.getId();
                 Constant.num_click = 0;
@@ -224,7 +225,9 @@ public class CheckList_Activity extends AppCompatActivity {
 
                         String text = editTextitem.getText().toString();
                         if(!text.equals("")){
-                            list.add(text);
+                            ItemCheckList itemCheckList = new ItemCheckList();
+                            itemCheckList.setContent(text);
+                            list.add(itemCheckList);
 //                            Toast.makeText(CheckList_Activity.this,""+list.size(),Toast.LENGTH_LONG).show();
                             checkListAdapter = new CheckListAdapter(list,CheckList_Activity.this);
                             recyclerView.setAdapter(checkListAdapter);
@@ -280,8 +283,6 @@ public class CheckList_Activity extends AppCompatActivity {
                 return false;
             }
         });
-        return super.onCreateOptionsMenu(menu);
-
 
         menu.findItem(R.id.mnCheck).setTitle(checkList.completeAll() ? "Uncheck" : "Check");
         menu.findItem(R.id.mnCheck).setIcon(checkList.completeAll() ? R.drawable.ic_square : R.drawable.ic_check);
@@ -308,7 +309,7 @@ public class CheckList_Activity extends AppCompatActivity {
                         addItemCheckList();
                         addCheckList(colorid);
                     }else{
-                        removeAllItemListDAO();
+//                        removeAllItemListDAO();
                         editItemChecklist();
                         editCheckList(colorid);
                     }
@@ -525,7 +526,7 @@ public class CheckList_Activity extends AppCompatActivity {
 //            ItemCheckList itemCheckList = new ItemCheckList();
             ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
             itemCheckList.setId(itemCheckListDAO.count()+1);
-            itemCheckList.setContent(list.get(i));
+            itemCheckList.setContent(list.get(i).getContent());
             Date date = getDateFromCalendarFragment();
             itemCheckList.setModifiedDate(date);
             itemCheckList.setParentId(checkListDAO.count()+1);
@@ -546,23 +547,53 @@ public class CheckList_Activity extends AppCompatActivity {
         checkListDAO.update(checkList);
         return true;
     }
-    public void removeAllItemListDAO(){
-//            list.removeAll(list);
-            ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
-            itemCheckListDAO.deleteByIdCheckList(parentId);
-    }
+//    public void removeAllItemListDAO(){
+////            list.removeAll(list);
+//            ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
+//            itemCheckListDAO.deleteByIdCheckList(parentId);
+//    }
     public void editItemChecklist(){
-        for (int i = 0; i < list.size(); i++) {
-//
-                    ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
+        ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
+        CheckListDAO checkListDAO = CheckListDAO.getInstance();
+        List<ItemCheckList> item = itemCheckListDAO.getByParentId(parentId);
+
+        if(list.size()<item.size()){
+            for(int i = 0;i<item.size();i++) {
+                if (i >= list.size()) {
+                    itemCheckList = item.get(i);
+                    itemCheckListDAO.deleteByIdItemChecklist(itemCheckList.getId());
+                }else{
+                    itemCheckList = item.get(i);
+                    itemCheckList.setContent(list.get(i).getContent());
+                    itemCheckListDAO.update(itemCheckList);
+                }
+            }
+        }
+        if(list.size()>item.size()){
+            for (int i = 0; i < list.size(); i++) {
+                if (i >= item.size()) {
                     itemCheckList.setId(itemCheckListDAO.count() + 1);
-                    itemCheckList.setContent(list.get(i));
+                    itemCheckList.setContent(list.get(i).getContent());
                     Date date = Calendar.getInstance().getTime();
                     itemCheckList.setModifiedDate(date);
                     itemCheckList.setParentId(parentId);
                     itemCheckList.setStatus(Constant.STATUS.NORMAL);
                     itemCheckListDAO.insert(itemCheckList);
+                } else {
+                    itemCheckList = item.get(i);
+                    itemCheckList.setContent(list.get(i).getContent());
+                    itemCheckListDAO.update(itemCheckList);
                 }
+            }
+        }
+        if(list.size()==item.size()){
+            for (int i = 0; i < list.size(); i++) {
+                itemCheckList = item.get(i);
+                itemCheckList.setContent(list.get(i).getContent());
+                itemCheckListDAO.update(itemCheckList);
+            }
+        }
+
     }
     public void closekeyboard() {
         View view = this.getCurrentFocus();
