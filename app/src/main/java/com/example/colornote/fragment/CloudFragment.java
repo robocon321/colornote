@@ -119,7 +119,9 @@ public class CloudFragment extends Fragment implements GoogleApiClient.OnConnect
             editor.putString("account_name", acct.getDisplayName());
             editor.putString("account_email", acct.getEmail());
             editor.putLong("last_sync", Calendar.getInstance().getTimeInMillis());
-//            SyncFirebase.getInstance().login(acct.getId());
+
+            SyncFirebase.getInstance().login(acct.getId(),getActivity());
+
             editor.apply();
             Toast.makeText(this.getActivity(),"Đăng nhập thành công",Toast.LENGTH_LONG).show();
 //          urlImage = acct.getPhotoUrl().toString();

@@ -30,7 +30,7 @@
             <item
                 android:icon="@drawable/ic_search"
                 android:id="@+id/find"
-                android:title="Search"
+                android:title="Find"
                 app:showAsAction="ifRoom|collapseActionView"
                 app:actionViewClass="androidx.appcompat.widget.SearchView"/>
             <item
