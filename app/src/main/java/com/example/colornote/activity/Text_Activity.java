@@ -117,16 +117,21 @@ String themeName;
                 }else{
                     linearLayout.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("colorMain")));
                 }
+                if(colorSub.equals("#000000")) {
+                    color_black = 0;
+                    setSupportActionBar(toolbar);
+                    toolbar.setTitleTextColor(Color.WHITE);
+                    toolbar.getOverflowIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                    actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24_w);
 
+                }else{
+                    actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
+                }
                 Constant.num_click = 0;
                 numEdit = 1;
                 title_text.setVisibility(View.GONE);
                 checkIcon = false;
-                if(color_black==0){
-                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24_w);
-                }else{
-                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
-                }
+
             }else{
                 Toast.makeText(Text_Activity.this,"null",Toast.LENGTH_LONG).show();
             }
@@ -176,6 +181,11 @@ String themeName;
         menuInflater.inflate(R.menu.text_checklist_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.find);
 
+        if(Constant.num_edit==1){
+            for(int i = 2;i<menu.size();i++){
+                menu.getItem(i).setVisible(false);
+            }
+        }
 
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -491,7 +501,23 @@ String themeName;
         }
         return date;
     }
-//    private void highlightText(String s) {
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(this.numEdit == 0) {
+            if (title_text.getText().toString() != null && !title_text.getText().toString().equals("")) {
+                addText(colorid);
+                Toast.makeText(Text_Activity.this, "Saved", Toast.LENGTH_LONG).show();
+            }
+        }
+        else{
+            editText(colorid);
+                Toast.makeText(Text_Activity.this,"Saved",Toast.LENGTH_LONG).show();
+        }
+
+    }
+    //    private void highlightText(String s) {
 //        SpannableString spannableString = new SpannableString(edit_text.getText());
 //        BackgroundColorSpan[] backgroundColorSpan =
 //                spannableString.getSpans(0, spannableString.length(), BackgroundColorSpan.class);
