@@ -80,7 +80,7 @@ public class CheckList_Activity extends AppCompatActivity {
     LinearLayout linearLayout;
     int color_black =1;
     int num_click = 0;
-
+    private Menu menu;
     SharedPreferences sharedPreferences;
     String themeName;
     private Date date;
@@ -143,10 +143,16 @@ public class CheckList_Activity extends AppCompatActivity {
                 colorid = checkList.getColorId();
                 date_checklist.setText(simpleDateFormat.format(checkList.getModifiedDate()));
                 String colorSub = getIntent().getStringExtra("colorSub");
+//                Toast.makeText(CheckList_Activity.this,colorSub,Toast.LENGTH_LONG).show();
                 if(colorSub.equals("#000000")) {
-//                    changeIconToolBar(1);
+                    color_black = 0;
+//                    setSupportActionBar(toolbar);
+                    toolbar.setTitleTextColor(Color.WHITE);
+                    toolbar.getOverflowIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                    actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24_w);
+
                 }else{
-//                    changeIconToolBar(0);
+                    actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
                 }
 //                Toast.makeText(CheckList_Activity.this, colorSub, Toast.LENGTH_LONG).show();
 //                Drawable colorDrawable = new ColorDrawable(Color.parseColor(colorSub));
@@ -173,11 +179,11 @@ public class CheckList_Activity extends AppCompatActivity {
 
                 numEdit = 1;
                 checkIcon = false;
-                if (color_black == 0) {
-                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24_w);
-                } else {
-                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
-                }
+//                if (color_black == 0) {
+//                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24_w);
+//                } else {
+//                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
+//                }
                 Constant.num_edit = 0;
                 title_checklist.setVisibility(View.GONE);
                 button_additem.setVisibility(View.GONE);
@@ -259,8 +265,19 @@ public class CheckList_Activity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.text_checklist_menu,menu);
+        if(Constant.num_edit==1){
+            for(int i = 2;i<menu.size();i++){
+                menu.getItem(i).setVisible(false);
+            }
+        }
 
+        if(color_black==0){
+            menu.getItem(0).setIcon(R.drawable.ic_baseline_edit_24);
+        }else{
+            menu.getItem(0).setIcon(R.drawable.ic_baseline_edit_24_black);
+        }
         MenuItem searchItem = menu.findItem(R.id.find);
+
 
         final androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) searchItem.getActionView();
 
@@ -311,7 +328,6 @@ public class CheckList_Activity extends AppCompatActivity {
                         addItemCheckList();
                         addCheckList(colorid);
                     }else{
-//                        removeAllItemListDAO();
                         editItemChecklist();
                         editCheckList(colorid);
                     }
@@ -689,6 +705,23 @@ public class CheckList_Activity extends AppCompatActivity {
             e.printStackTrace();
         }
         return date;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(numEdit==0) {
+            if(title_checklist.getText().toString()!=null && !title_checklist.getText().toString().equals("")){
+                addItemCheckList();
+                addCheckList(colorid);
+                Toast.makeText(CheckList_Activity.this,"Saved",Toast.LENGTH_LONG).show();
+            }
+        }else{
+            editItemChecklist();
+            editCheckList(colorid);
+            Toast.makeText(CheckList_Activity.this,"Saved",Toast.LENGTH_LONG).show();
+        }
+
     }
 }
 

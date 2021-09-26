@@ -180,28 +180,29 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
                 itemView.setOnLongClickListener(new View.OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        if(listitem.get(getAdapterPosition()).isCompleted()==false) {
-                            ItemCheckList itemCheckList = listitem.get(getAdapterPosition());
-                            itemCheckList.setCompleted(true);
-                            ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
-                            itemCheckListDAO.update(itemCheckList);
-                            textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                        }else{
-                            ItemCheckList itemCheckList = listitem.get(getAdapterPosition());
-                            itemCheckList.setCompleted(false);
-                            ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
-                            itemCheckListDAO.update(itemCheckList);
-                            textView.setPaintFlags(0);
+                        if (Constant.num_edit == 0) {
+                            if (listitem.get(getAdapterPosition()).isCompleted() == false) {
+                                ItemCheckList itemCheckList = listitem.get(getAdapterPosition());
+                                itemCheckList.setCompleted(true);
+                                ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
+                                itemCheckListDAO.update(itemCheckList);
+                                textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                            } else {
+                                ItemCheckList itemCheckList = listitem.get(getAdapterPosition());
+                                itemCheckList.setCompleted(false);
+                                ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
+                                itemCheckListDAO.update(itemCheckList);
+                                textView.setPaintFlags(0);
+                            }}
+                            return false;
                         }
-                        return false;
-                    }
+
                 });
 
                     itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             if (Constant.num_edit == 1) {
-                                Toast.makeText(context.getApplicationContext(), Constant.num_edit + "", Toast.LENGTH_LONG).show();
                                 Dialog dialog = new Dialog(v.getContext());
                                 dialog.setContentView(R.layout.dialog_additem_checklist);
                                 TextView textViewtitle;
@@ -227,7 +228,6 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
                                 });
                                 dialog.show();
                             }else{
-                                Toast.makeText(context.getApplicationContext(), Constant.num_edit + "", Toast.LENGTH_LONG).show();
                             }
                         }
                     });
