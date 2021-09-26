@@ -93,11 +93,15 @@ public class MainActivity extends AppCompatActivity implements ISeletectedObserv
 
         init();
         setEvents();
-
-//        getDefauleActivity();
-
+        getDefauleActivity();
     }
-
+    public void getDefauleActivity(){
+          sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+          String defaultActivity =sharedPreferences.getString("default_activity","Notes");
+          if(!defaultActivity.equals("Notes")){
+             viewPager.setCurrentItem(1);
+          }
+      }
     public void init(){
         Database.getInstance().createDatabase("database.sqlite", this);
         Settings.getInstance().setSharedPreferences(getSharedPreferences("settings", MODE_PRIVATE));
