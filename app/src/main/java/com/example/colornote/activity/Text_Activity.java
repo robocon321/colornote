@@ -416,7 +416,6 @@ public void setSizeContent(EditText edit_text){
         text.setStatus(Constant.STATUS.NORMAL);
         numEdit = textDAO.insert(text);
 
-        Toast.makeText(Text_Activity.this,this.numEdit+"",Toast.LENGTH_LONG).show();
         closekeyboard();
         return true;
     }
