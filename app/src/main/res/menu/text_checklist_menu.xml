@@ -48,6 +48,8 @@
             <item
                 android:id="@+id/mnDiscard"
                 android:title="Discard"
+                android:icon="@drawable/ic_baseline_close_24"
+                app:showAsAction="always"
                 />
 
 </menu>
