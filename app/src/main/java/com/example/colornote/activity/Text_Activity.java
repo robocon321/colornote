@@ -199,7 +199,6 @@ String themeName;
                 return false;
             }
         });
-//         return super.onCreateOptionsMenu(menu);
 
         menu.findItem(R.id.mnCheck).setTitle(text.completeAll() ? "Uncheck" : "Check");
         menu.findItem(R.id.mnCheck).setIcon(text.completeAll() ? R.drawable.ic_square : R.drawable.ic_check);

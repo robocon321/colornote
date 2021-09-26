@@ -2,9 +2,11 @@ package com.example.colornote.adapter;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.Html;
 import android.text.Spannable;
@@ -19,6 +21,7 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -26,6 +29,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.colornote.R;
 import com.example.colornote.activity.CheckList_Activity;
+import com.example.colornote.dao.ItemCheckListDAO;
+import com.example.colornote.model.ItemCheckList;
 import com.example.colornote.util.Constant;
 import com.google.android.material.resources.TextAppearance;
 
@@ -37,11 +42,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.ViewHolder> implements Filterable {
-    private ArrayList<String> listitem;
-    private ArrayList<String> filterList;
+    private ArrayList<ItemCheckList> listitem;
+    private ArrayList<ItemCheckList> filterList;
     private Context context;
     String queryText = "";
-    public CheckListAdapter(ArrayList<String> listitem,Context context){
+    ItemCheckList itemCheckList;
+    public CheckListAdapter(ArrayList<ItemCheckList> listitem,Context context){
         this.listitem = listitem;
         this.context = context;
         this.filterList = listitem;
@@ -55,14 +61,20 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-//        holder.textView.setText(filterList.get(position));
         if(Constant.num_edit==0){
             holder.button.setVisibility(View.GONE);
         }else{
             holder.button.setVisibility(View.VISIBLE);
         }
+        //nhan gach chan vao database
+        itemCheckList = listitem.get(position);
+        if(itemCheckList.isCompleted()==false){
+           holder.textView.setPaintFlags(0);
+        }else{
+            holder.textView.setPaintFlags(holder.textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
 
-        String dataText = filterList.get(position);
+        String dataText = filterList.get(position).getContent();
         if(queryText!=null && !queryText.isEmpty()){
             int startsPos = dataText.toLowerCase().indexOf(queryText.toLowerCase());
             int endPos = startsPos+queryText.length();
@@ -101,9 +113,9 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
         protected FilterResults performFiltering(CharSequence constraint) {
             if(constraint!=null && !constraint.equals("")){
                 queryText = constraint.toString();
-                List<String> newList = new ArrayList<>();
+                List<ItemCheckList> newList = new ArrayList<>();
                 for(int i = 0;i<listitem.size();i++){
-                    if(listitem.get(i).toLowerCase().contains(constraint.toString().toLowerCase())){
+                    if(listitem.get(i).getContent().toLowerCase().contains(constraint.toString().toLowerCase())){
                         newList.add(listitem.get(i));
                     }
                 }
@@ -119,7 +131,7 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             if(results!=null && results.count>0){
-                filterList = (ArrayList<String>) results.values;
+                filterList = (ArrayList<ItemCheckList>) results.values;
                 notifyDataSetChanged();
             }
         }
@@ -133,42 +145,68 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
             button = (Button) itemView.findViewById(R.id.button_deleteitem);
             textView.setBackgroundDrawable(itemView.getBackground());
             button.setBackgroundDrawable(itemView.getBackground());
-
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     removeItem(getAdapterPosition());
                 }
             });
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        if(listitem.get(getAdapterPosition()).isCompleted()==false) {
+                            ItemCheckList itemCheckList = listitem.get(getAdapterPosition());
+                            itemCheckList.setCompleted(true);
+                            ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
+                            itemCheckListDAO.update(itemCheckList);
+                            textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                        }else{
+                            ItemCheckList itemCheckList = listitem.get(getAdapterPosition());
+                            itemCheckList.setCompleted(false);
+                            ItemCheckListDAO itemCheckListDAO = ItemCheckListDAO.getInstance();
+                            itemCheckListDAO.update(itemCheckList);
+                            textView.setPaintFlags(0);
+                        }
+                        return false;
+                    }
+                });
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Constant.num_edit = 1;
-                    notifyDataSetChanged();
-                    Dialog dialog = new Dialog(v.getContext());
-                    dialog.setContentView(R.layout.dialog_additem_checklist);
-                    TextView textViewtitle;
-                    EditText editTextitemDialog;
-                    Button button_ok,button_exit;
-                    textViewtitle = (TextView) dialog.findViewById(R.id.textViewTitle);
-                    editTextitemDialog = (EditText) dialog.findViewById(R.id.edtext_item);
-                    button_ok = (Button) dialog.findViewById(R.id.btn_ok);
-                  //  button_exit = (Button) dialog.findViewById(R.id.btn_exit);
-                    textViewtitle.setText("Edit Item");
-                    button_ok.setOnClickListener(new View.OnClickListener() {
+                    itemView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String text = editTextitemDialog.getText().toString();
-                            textView.setText(text);
-                            listitem.set(getAdapterPosition(),text);
-                            dialog.dismiss();
+                            if (Constant.num_edit == 1) {
+                                Toast.makeText(context.getApplicationContext(), Constant.num_edit + "", Toast.LENGTH_LONG).show();
+                                Dialog dialog = new Dialog(v.getContext());
+                                dialog.setContentView(R.layout.dialog_additem_checklist);
+                                TextView textViewtitle;
+                                EditText editTextitemDialog;
+                                Button button_ok, button_exit;
+                                textViewtitle = (TextView) dialog.findViewById(R.id.textViewTitle);
+                                editTextitemDialog = (EditText) dialog.findViewById(R.id.edtext_item);
+                                button_ok = (Button) dialog.findViewById(R.id.btn_ok);
+                                editTextitemDialog.setText(textView.getText());
+                                //  button_exit = (Button) dialog.findViewById(R.id.btn_exit);
+                                textViewtitle.setText("Edit Item");
+                                button_ok.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        String text = editTextitemDialog.getText().toString();
+                                        textView.setText(text);
+                                        ItemCheckList item = listitem.get(getAdapterPosition());
+                                        item.setContent(text);
+                                        listitem.set(getAdapterPosition(), item);
+                                        dialog.dismiss();
 
+                                    }
+                                });
+                                dialog.show();
+                            }else{
+                                Toast.makeText(context.getApplicationContext(), Constant.num_edit + "", Toast.LENGTH_LONG).show();
+                            }
                         }
                     });
-                    dialog.show();
-                }
-            });
+
+
 
 
         }
