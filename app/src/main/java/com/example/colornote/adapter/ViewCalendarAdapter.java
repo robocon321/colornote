@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,8 +18,8 @@ import android.widget.TextView;
 import androidx.preference.PreferenceManager;
 
 import com.example.colornote.R;
-import com.example.colornote.activity.CheckList_Activity;
-import com.example.colornote.activity.Text_Activity;
+import com.example.colornote.activity.Calendar_Checklist_Activity;
+import com.example.colornote.activity.Calendar_Text_Activity;
 import com.example.colornote.customview.CustomCardView;
 import com.example.colornote.dao.CheckListDAO;
 import com.example.colornote.dao.ColorDAO;
@@ -34,23 +33,19 @@ import com.example.colornote.util.Constant;
 import com.example.colornote.util.DateConvert;
 import com.example.colornote.util.SelectedObserverService;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 public class ViewCalendarAdapter extends BaseAdapter {
     private Context context;
     private ArrayList<Task> tasks;
-    ColorDAO colorDAO = ColorDAO.getInstance();
+    private ColorDAO colorDAO = ColorDAO.getInstance();
 
     SharedPreferences sharedPreferences;
     String themeName;
-    public ViewCalendarAdapter(ArrayList<Task> tasks, Context context){
+
+    public ViewCalendarAdapter(ArrayList<Task> tasks, Context context) {
         this.tasks = tasks;
         this.context = context;
-
     }
 
     @Override
@@ -69,12 +64,13 @@ public class ViewCalendarAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View  view, ViewGroup parent) {
+    public View getView(int position, View view, ViewGroup parent) {
+
         ViewCalendarAdapter.ViewHolder holder = null;
         Task task = tasks.get(position);
-        if(view == null){
+        if (view == null) {
             LayoutInflater inflater = LayoutInflater.from(context);
-            holder = new ViewHolder();
+            holder = new ViewCalendarAdapter.ViewHolder();
             view = inflater.inflate(R.layout.layout_view_list, parent, false);
             holder.task_item = view.findViewById(R.id.task_item);
             holder.txtTitle = view.findViewById(R.id.txtTitle);
@@ -83,43 +79,51 @@ public class ViewCalendarAdapter extends BaseAdapter {
             holder.cvTask = view.findViewById(R.id.cvTask);
             holder.colorSub = view.findViewById(R.id.colorSub);
             view.setTag(holder);
-        }else{
+        } else {
             holder = (ViewCalendarAdapter.ViewHolder) view.getTag();
         }
 
         holder.txtTitle.setText(task.getTitle());
-
+//
         SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
-        String font_size =pre.getString("font_size","100dp");
+        String font_size = pre.getString("font_size", "100dp");
 
-        float size=0;
-        switch (font_size){
-            case "Tiny":     size=context.getResources().getDimensionPixelSize(R.dimen.font_size_tiny);
+        float size = 0;
+        switch (font_size) {
+            case "Tiny":
+                size = context.getResources().getDimensionPixelSize(R.dimen.font_size_tiny);
                 break;
-            case "Small":size=context.getResources().getDimensionPixelSize(R.dimen.font_size_small);
+            case "Small":
+                size = context.getResources().getDimensionPixelSize(R.dimen.font_size_small);
                 break;
-            case "Medium": size=context.getResources().getDimensionPixelSize(R.dimen.font_size_medium);
+            case "Medium":
+                size = context.getResources().getDimensionPixelSize(R.dimen.font_size_medium);
                 break;
-            case "Large": size=context.getResources().getDimensionPixelSize(R.dimen.font_size_large);
+            case "Large":
+                size = context.getResources().getDimensionPixelSize(R.dimen.font_size_large);
                 break;
-            case "Huge": size=context.getResources().getDimensionPixelSize(R.dimen.font_size_huge);
+            case "Huge":
+                size = context.getResources().getDimensionPixelSize(R.dimen.font_size_huge);
                 break;
-            default: size=context.getResources().getDimensionPixelSize(R.dimen.font_size);
+            default:
+                size = context.getResources().getDimensionPixelSize(R.dimen.font_size);
                 break;
 
         }
 
-        holder.txtTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);
-
-        if(task.completeAll()){
+        holder.txtTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+//
+        if (task.completeAll()) {
             holder.imgCheck.setImageResource(R.drawable.ic_check);
             holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-        }else
-            holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() & (~ Paint.STRIKE_THRU_TEXT_FLAG));
+            // holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#737373"));
+        } else
+            holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+        //  holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#000000"));
 
-        if(task.getStatus()== Constant.STATUS.RECYCLE_BIN){
+        if (task.getStatus() == Constant.STATUS.RECYCLE_BIN) {
             holder.imgCheck.setImageResource(R.drawable.ic_trash_can);
-        }else{
+        } else {
             holder.imgCheck.setImageResource(0);
         }
 
@@ -131,9 +135,9 @@ public class ViewCalendarAdapter extends BaseAdapter {
 
         sharedPreferences = context.getSharedPreferences("Theme", Context.MODE_PRIVATE);
         themeName = sharedPreferences.getString("ThemeName", "Default");
-        if(themeName.equalsIgnoreCase("Dark")){
-            holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor( "#000000"));
-        }else{
+        if (themeName.equalsIgnoreCase("Dark")) {
+            holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor("#000000"));
+        } else {
             holder.cvTask.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.MAIN_COLOR : color.getColorMain()));
         }
         holder.colorSub.setBackgroundColor(android.graphics.Color.parseColor(color == null ? Constant.SUB_COLOR : color.getColorSub()));
@@ -143,10 +147,10 @@ public class ViewCalendarAdapter extends BaseAdapter {
         holder.cvTask.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if(SelectedObserverService.getInstance().getIsSelected()[position] == false){
-                    SelectedObserverService.getInstance().selected(position, position+1);
-                }else{
-                    SelectedObserverService.getInstance().unselected(position, position+1);
+                if (SelectedObserverService.getInstance().getIsSelected()[position] == false) {
+                    SelectedObserverService.getInstance().selected(position, position + 1);
+                } else {
+                    SelectedObserverService.getInstance().unselected(position, position + 1);
                 }
 
                 return true;
@@ -156,44 +160,41 @@ public class ViewCalendarAdapter extends BaseAdapter {
         holder.cvTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(SelectedObserverService.getInstance().hasSelected()){
-                    if(SelectedObserverService.getInstance().getIsSelected()[position] == false){
-                        SelectedObserverService.getInstance().selected(position, position+1);
-                    }else{
-                        SelectedObserverService.getInstance().unselected(position, position+1);
+                if (SelectedObserverService.getInstance().hasSelected()) {
+                    if (SelectedObserverService.getInstance().getIsSelected()[position] == false) {
+                        SelectedObserverService.getInstance().selected(position, position + 1);
+                    } else {
+                        SelectedObserverService.getInstance().unselected(position, position + 1);
                     }
-                }else{
-                    Log.e("EE", task.toString());
-                    if(task.getClass().equals(Text.class)) {
+                } else {
+                    if (task.getClass().equals(Text.class)) {
                         int num = task.getId();
                         Color color1 = colorDAO.get(new ColorMapper(), task.getColorId());
                         TextDAO textDAO = TextDAO.getInstance();
                         Text text = new Text();
                         text = textDAO.getText(num);
                         text.setModifiedDate(task.getModifiedDate());
-                        Intent intent = new Intent(context, Text_Activity.class);
+                        Intent intent = new Intent(context, Calendar_Text_Activity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable("text",text);
-                        bundle.putString("colorSub",color1.getColorSub());
-                        bundle.putString("colorMain",color1.getColorMain());
-                        bundle.putString("date in view", task.getModifiedDate()+"");
+                        bundle.putSerializable("text", text);
+                        bundle.putString("colorSub", color1.getColorSub());
+                        bundle.putString("colorMain", color1.getColorMain());
                         intent.putExtras(bundle);
                         context.startActivity(intent);
                         Constant.num_click = 1;
 
                     }
-                    if(task.getClass().equals(CheckList.class)){
+                    if (task.getClass().equals(CheckList.class)) {
                         Color color1 = colorDAO.get(new ColorMapper(), task.getColorId());
                         CheckList checkList = new CheckList();
                         CheckListDAO checkListDAO = CheckListDAO.getInstance();
                         checkList = (CheckList) checkListDAO.getCheckList(task.getId());
                         checkList.setModifiedDate(task.getModifiedDate());
-
-                        Intent intent = new Intent(context, CheckList_Activity.class);
+                        Intent intent = new Intent(context, Calendar_Checklist_Activity.class);
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable("checkList",checkList);
-                        bundle.putString("colorSub",color1.getColorSub());
-                        bundle.putString("colorMain",color1.getColorMain());
+                        bundle.putSerializable("checkList", checkList);
+                        bundle.putString("colorSub", color1.getColorSub());
+                        bundle.putString("colorMain", color1.getColorMain());
                         intent.putExtras(bundle);
                         context.startActivity(intent);
                         Constant.num_click = 1;
@@ -206,11 +207,12 @@ public class ViewCalendarAdapter extends BaseAdapter {
         return view;
     }
 
-    public class ViewHolder{
+    public class ViewHolder {
         TextView txtTitle, txtTime;
         ImageView imgCheck;
         CustomCardView cvTask;
         View colorSub;
         LinearLayout task_item;
     }
+
 }

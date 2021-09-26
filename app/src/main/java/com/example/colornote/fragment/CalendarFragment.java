@@ -20,7 +20,8 @@ import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
 import com.example.colornote.R;
-import com.example.colornote.activity.CheckList_Activity;
+import com.example.colornote.activity.Calendar_Text_Activity;
+import com.example.colornote.activity.Calendar_Checklist_Activity;
 import com.example.colornote.activity.Text_Activity;
 import com.example.colornote.adapter.ViewCalendarAdapter;
 import com.example.colornote.adapter.ViewListAdapter;
@@ -128,7 +129,7 @@ public class CalendarFragment extends Fragment {
         button_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Text_Activity.class);
+                Intent intent = new Intent(getActivity(), Calendar_Text_Activity.class);
                 bundle.putString("date", setDate);
                 intent.putExtra("bundle", bundle);
                 startActivity(intent);
@@ -138,7 +139,7 @@ public class CalendarFragment extends Fragment {
         button_checklist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CheckList_Activity.class);
+                Intent intent = new Intent(getActivity(), Calendar_Checklist_Activity.class);
                 bundle.putString("date", setDate);
                 intent.putExtra("bundle", bundle);
                 startActivity(intent);
@@ -160,7 +161,7 @@ public class CalendarFragment extends Fragment {
 //        add icon to note
         lsTaskRemider.addAll(textDAO.getCalendarText());
         lsTaskRemider.addAll(checkListDAO.getCalendarCheckList());
-        for (int i = 0; i < lsTaskRemider.size(); i++){
+        for (int i = 0; i < lsTaskRemider.size(); i++) {
             lsEvent.add(new EventDay(parseDateToCalendar(lsTaskRemider.get(i).getModifiedDate()), R.drawable.ic_note));
         }
         calendarView.setEvents(lsEvent);
@@ -169,7 +170,7 @@ public class CalendarFragment extends Fragment {
     }
 
     private void getTaskInday() {
-        if(setDate != null){
+        if (setDate != null) {
             lsTask.clear();
             lsTask.addAll(checkListDAO.getCalendarTextByDate(convertTimestamp(setDate)));
             lsTask.addAll(textDAO.getCalendarTextByDate(convertTimestamp(setDate)));
@@ -185,14 +186,14 @@ public class CalendarFragment extends Fragment {
 
     public String convertTimestamp(String date) {
         String result = "";
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            try {
-                Date dateTemp = sdf.parse(date);
-                long time = dateTemp.getTime();
-                result += time;
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        return result ;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date dateTemp = sdf.parse(date);
+            long time = dateTemp.getTime();
+            result += time;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 }

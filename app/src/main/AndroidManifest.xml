@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.colornote">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
@@ -14,13 +14,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ColorNote">
         <activity
+            android:name=".activity.Calendar_Checklist_Activity"
+            android:exported="true" />
+        <activity
+            android:name=".activity.Calendar_Text_Activity"
+            android:exported="true" />
+        <activity
             android:name=".activity.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
         <activity android:name=".activity.TrashCanActivity" />
         <activity android:name=".activity.ArchiveActivity" />
         <activity android:name=".activity.DetailItemBackupActivity" />
         <activity android:name=".activity.ReminderActivity" />
-        <activity android:name=".activity.DetailItemBackupActivity"
+        <activity
+            android:name=".activity.DetailItemBackupActivity"
             tools:ignore="DuplicateActivity" />
         <activity
             android:name=".activity.BackupActivity"
@@ -31,12 +38,16 @@
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <receiver android:name=".receiver.ReminderReceiver" />
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
     </application>
 
 </manifest>
