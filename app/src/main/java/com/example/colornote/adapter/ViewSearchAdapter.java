@@ -123,9 +123,9 @@ public class ViewSearchAdapter extends BaseAdapter {
             holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         //  holder.txtTitle.setTextColor(android.graphics.Color.parseColor("#000000"));
 
-        if (task.getStatus() == 1) {
+        if (task.getStatus() == Constant.STATUS.RECYCLE_BIN) {
             holder.imgCheck.setImageResource(R.drawable.ic_trash_can);
-        } else if (task.getStatus() == 0) {
+        } else if (task.getStatus() == Constant.STATUS.ARCHIVE) {
             holder.imgCheck.setImageResource(R.drawable.ic_archive);
         } else {
             holder.imgCheck.setImageResource(0);

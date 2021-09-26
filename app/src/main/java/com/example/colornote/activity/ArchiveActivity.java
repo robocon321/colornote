@@ -491,7 +491,7 @@ loadCal_CheckList();
                 }
             }
         }
-
+load();
         adapter.notifyDataSetChanged();
 
     }
@@ -508,7 +508,7 @@ loadCal_CheckList();
                 }
             }
         }
-
+load();
         adapter.notifyDataSetChanged();
 
     }
