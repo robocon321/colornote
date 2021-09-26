@@ -188,7 +188,7 @@ public class CheckList_Activity extends AppCompatActivity {
                 title_checklist.setVisibility(View.GONE);
                 button_additem.setVisibility(View.GONE);
             } else {
-                Toast.makeText(CheckList_Activity.this, "null", Toast.LENGTH_LONG).show();
+//                Toast.makeText(CheckList_Activity.this, "null", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -266,7 +266,7 @@ public class CheckList_Activity extends AppCompatActivity {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.text_checklist_menu,menu);
         if(Constant.num_edit==1){
-            for(int i = 2;i<menu.size();i++){
+            for(int i = 2;i<menu.size()-1;i++){
                 menu.getItem(i).setVisible(false);
             }
         }
@@ -408,6 +408,9 @@ public class CheckList_Activity extends AppCompatActivity {
                 return true;
             case R.id.mnDelete:
                 deleteTask();
+                return true;
+            case R.id.mnDiscard:
+                finish();
                 return true;
             default:break;
         }

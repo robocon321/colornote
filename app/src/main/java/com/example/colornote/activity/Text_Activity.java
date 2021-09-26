@@ -85,6 +85,7 @@ String themeName;
         toolbar = findViewById(R.id.toolbar_text);
         text_date = findViewById(R.id.text_date);
         linearLayout = findViewById(R.id.layout_text);
+        Constant.num_edit = 1;
         if(themeName.equalsIgnoreCase("Dark")){
             linearLayout.setBackgroundColor(Color.parseColor("#000000"));
         }else{
@@ -129,13 +130,13 @@ String themeName;
                 }else{
                     actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
                 }
-                Constant.num_click = 0;
+                Constant.num_edit = 0;
                 numEdit = 1;
                 title_text.setVisibility(View.GONE);
                 checkIcon = false;
 
             }else{
-                Toast.makeText(Text_Activity.this,"null",Toast.LENGTH_LONG).show();
+//                Toast.makeText(Text_Activity.this,"null",Toast.LENGTH_LONG).show();
             }
 
         }
@@ -169,7 +170,7 @@ String themeName;
                 }
             }
         });
-
+//        Constant.num_edit = 1;
 
 //         this.colorid = 2;
 
@@ -201,13 +202,12 @@ public void setSizeContent(EditText edit_text){
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.text_checklist_menu, menu);
-        MenuItem searchItem = menu.findItem(R.id.find);
-
         if(Constant.num_edit==1){
-            for(int i = 2;i<menu.size();i++){
+            for(int i = 2;i<menu.size()-1;i++){
                 menu.getItem(i).setVisible(false);
             }
         }
+        MenuItem searchItem = menu.findItem(R.id.find);
 
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -262,6 +262,7 @@ public void setSizeContent(EditText edit_text){
                     Toast.makeText(Text_Activity.this,"Saved",Toast.LENGTH_LONG).show();
                     checkIcon =false;
                     getSupportActionBar().setTitle(title_text.getText().toString());
+                    Constant.num_edit = 0;
                     title_text.clearFocus();
                     edit_text.clearFocus();
                     title_text.setVisibility(View.GONE);
@@ -339,6 +340,9 @@ public void setSizeContent(EditText edit_text){
                 return true;
             case R.id.mnDelete:
                 deleteTask();
+                return true;
+            case R.id.mnDiscard:
+                finish();
                 return true;
             default:
                 break;
