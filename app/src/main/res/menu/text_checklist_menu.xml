@@ -45,5 +45,9 @@
                 android:icon="@drawable/ic_edit_delete"
                 android:title="Delete"
                 android:id="@+id/mnDelete"/>
+            <item
+                android:id="@+id/mnDiscard"
+                android:title="Discard"
+                />
 
 </menu>
