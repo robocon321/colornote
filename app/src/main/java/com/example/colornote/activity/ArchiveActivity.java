@@ -398,10 +398,16 @@ loadCal_CheckList();
                     @Override
                     public void onClick(View v) {
                         tasks.clear();
-                        tasks.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
-                        tasks.addAll(TextDAO.getInstance().getAll(new TextMapper()));
+                        List<Task> temp = new ArrayList<>();
+                        temp.addAll(CheckListDAO.getInstance().getAll(new CheckListMapper()));
+                        temp.addAll(TextDAO.getInstance().getAll(new TextMapper()));
                         if(color.getId() != 1){
-                            tasks.removeIf(task -> task.getColorId() != color.getId());
+                            temp.removeIf(task -> task.getColorId() != color.getId());
+                        }
+                        for (Task t:temp){
+                            if(t.getStatus()==Constant.STATUS.ARCHIVE){
+                                tasks.add(t);
+                            }
                         }
                         adapter.notifyDataSetChanged();
                         dialogEditColor.dismiss();
