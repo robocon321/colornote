@@ -159,7 +159,8 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        add icon to note
+        lsTaskRemider.clear();
+        lsEvent.clear();
         lsTaskRemider.addAll(textDAO.getCalendarTextNoTrash());
         lsTaskRemider.addAll(checkListDAO.getCalendarCheckListNoTrash());
 
