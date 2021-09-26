@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,7 +55,8 @@ import java.util.List;
 public class ArchiveActivity extends AppCompatActivity implements ISeletectedObserver {
     ImageButton btnBackArchive, btnNoteArchive, btnColorArchive;
     AlertDialog.Builder builder;
-    Spinner spnLeft_Archive,spnRight_Archive;
+    Spinner spnLeft_Archive;
+    String spn_left="All",note_type="All";
     Button btnSort_Archive;
     public static ViewAdapter adapter;
     static GridView gvListArchive;
@@ -77,10 +79,40 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
         setContentView(R.layout.activity_archive);
         addControls();
         addEvents(this);
-    }
+        spnLeft_Archive.setSelection(0);
+        btnNoteArchive.setImageResource(getResources().getIdentifier("@drawable/ic_square",null,getPackageName()));
 
+    }
+public void load(){
+        if(spn_left.equals("All")&&note_type.equals("All")){
+            loadAll_All();
+        }else if(spn_left.equals("All")&&note_type.equals("Text")){
+            loadAll_Text();
+        }
+        else if(spn_left.equals("All")&&note_type.equals("CheckList")){
+            loadAll_CheckList();
+        }
+        else if(spn_left.equals("Notes")&&note_type.equals("All")){
+            loadNotes_All();
+        }
+        else if(spn_left.equals("Notes")&&note_type.equals("Text")){
+        loadNotes_Text();
+        }
+        else if(spn_left.equals("Notes")&&note_type.equals("CheckList")){
+loadNotes_CheckList();
+        }
+        else if(spn_left.equals("Cal")&&note_type.equals("All")){
+loadCal_All();
+        }
+        else if(spn_left.equals("Cal")&&note_type.equals("Text")){
+loadCal_Text();
+        }
+        else if(spn_left.equals("Cal")&&note_type.equals("CheckList")){
+loadCal_CheckList();
+        }
+}
     private void addEvents(Activity activity) {
-        loadAllTaskArchive();
+
         btnBackArchive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +132,9 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
                     @Override
                     public void onClick(View v) {
                         btnNoteArchive.setImageResource(getResources().getIdentifier("@drawable/ic_square",null,getPackageName()));
-                        loadAllTaskArchive();
+                       note_type="All";
+                        Toast.makeText(ArchiveActivity.this, spn_left+"_"+note_type, Toast.LENGTH_SHORT).show();
+                       load();
                         adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
@@ -109,7 +143,9 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
                     @Override
                     public void onClick(View v) {
                         btnNoteArchive.setImageResource(getResources().getIdentifier("@drawable/ic_text",null,getPackageName()));
-                        loadTextTaskArchive();
+                        note_type="Text";
+                        Toast.makeText(ArchiveActivity.this, spn_left+"_"+note_type, Toast.LENGTH_SHORT).show();
+                        load();
                         adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
@@ -118,7 +154,9 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
                     @Override
                     public void onClick(View v) {
                         btnNoteArchive.setImageResource(getResources().getIdentifier("@drawable/ic_check_list",null,getPackageName()));
-                        loadChecklistTaskArchive();
+                        note_type="CheckList";
+                        Toast.makeText(ArchiveActivity.this, spn_left+"_"+note_type, Toast.LENGTH_SHORT).show();
+                        load();
                         adapter.notifyDataSetChanged();
                         dialog.dismiss();
                     }
@@ -132,15 +170,14 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String n =(String)parent.getItemAtPosition(position);
                 if(n.equals("All")){
-                    loadNotesAndCalendar();
-                    adapter.notifyDataSetChanged();
+                   spn_left="All";
                 }else if(n.equals("Notes")){
-                    loadNotes();
-                    adapter.notifyDataSetChanged();
+                    spn_left="Notes";
                 }else{
-                    loadCalendar();
-                    adapter.notifyDataSetChanged();
+                    spn_left="Cal";
                 }
+                load();
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -148,27 +185,7 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
 
             }
         });
-        spnRight_Archive.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String n =(String)parent.getItemAtPosition(position);
-                if(n.equals("Normal")){
-                    loadAllTaskNormal();
-                    adapter.notifyDataSetChanged();
-                }else if(n.equals("All")){
-                    loadAllTaskNormalAndArchive();
-                    adapter.notifyDataSetChanged();
-                }else{
-                    loadAllTaskArchive();
-                    adapter.notifyDataSetChanged();
-                }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         //button sort
         btnSort_Archive.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -273,7 +290,7 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
         btnNoteArchive =  findViewById(R.id.btnNoteArchive);
         btnColorArchive =  findViewById(R.id.btnColorArchive);
         spnLeft_Archive =  findViewById(R.id.spnLeft_Archive);
-        spnRight_Archive =  findViewById(R.id.spnRight_Archive);
+
         btnSort_Archive =  findViewById(R.id.btnSort_Archive);
         bottom_bar_archive = findViewById(R.id.bottom_bar_archive);
         btn_change_color_archive = findViewById(R.id.btn_change_color_archive);
@@ -468,7 +485,7 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
                 }
             }
         }
-        loadAllTaskArchive();
+
         adapter.notifyDataSetChanged();
 
     }
@@ -485,7 +502,7 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
                 }
             }
         }
-        loadAllTaskArchive();
+
         adapter.notifyDataSetChanged();
 
     }
@@ -519,7 +536,7 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
                             }
                         }
                     }
-                    loadAllTaskArchive();
+                  load();
                     adapter.notifyDataSetChanged();
                     dialog.cancel();
                 }
@@ -527,46 +544,130 @@ public class ArchiveActivity extends AppCompatActivity implements ISeletectedObs
             gvColor.addView(btn);
         }
     }
-    public static void loadAllTaskArchive(){
+    //all+all
+    public static void loadAll_All(){
         tasks.clear();
-        tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.ARCHIVE));
-        tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.ARCHIVE));
+        List<Task> temp = new ArrayList<>();
+        temp.addAll(CheckListDAO.getInstance().getCalendarCheckList());
+        temp.addAll(TextDAO.getInstance().getCalendarText());
+
+        temp.addAll(CheckListDAO.getInstance().getNoteCheckList());
+        temp.addAll(TextDAO.getInstance().getNoteText());
+
+        for (Task t:temp){
+            if(t.getStatus()==Constant.STATUS.ARCHIVE){
+                tasks.add(t);
+            }
+        }
     }
-    public static void loadTextTaskArchive(){
+    //all+text
+    public static void loadAll_Text(){
         tasks.clear();
-        tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.ARCHIVE));
+        List<Task> temp = new ArrayList<>();
+        temp.addAll(TextDAO.getInstance().getCalendarText());
+        temp.addAll(TextDAO.getInstance().getNoteText());
+
+        for (Task t:temp){
+            if(t.getStatus()==Constant.STATUS.ARCHIVE){
+                tasks.add(t);
+            }
+        }
 
     }
-    public static void loadChecklistTaskArchive(){
+    //all+CheckList
+    public static void loadAll_CheckList(){
         tasks.clear();
-        tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.ARCHIVE));
-    }public  void loadCalendar(){
-        tasks.clear();
-        tasks.addAll(CheckListDAO.getInstance().getCalendarCheckList());
-        tasks.addAll(TextDAO.getInstance().getCalendarText());
+        List<Task> temp = new ArrayList<>();
+        temp.addAll(CheckListDAO.getInstance().getCalendarCheckList());
+        temp.addAll(CheckListDAO.getInstance().getNoteCheckList());
+        for (Task t:temp){
+            if(t.getStatus()==Constant.STATUS.ARCHIVE){
+                tasks.add(t);
+            }
+        }
     }
-    public  void loadNotes(){
+    //Notes+All
+    public static void loadNotes_All(){
         tasks.clear();
-        tasks.addAll(CheckListDAO.getInstance().getNoteCheckList());
-        tasks.addAll(TextDAO.getInstance().getNoteText());
+        List<Task> temp = new ArrayList<>();
+        temp.addAll(CheckListDAO.getInstance().getNoteCheckList());
+        temp.addAll(TextDAO.getInstance().getNoteText());
+        
+        for (Task t:temp){
+            if(t.getStatus()==Constant.STATUS.ARCHIVE){
+                tasks.add(t);
+            }
+        }
+
+
+
+
     }
-    public  void loadNotesAndCalendar(){
+    //Notes+Text
+    public static void loadNotes_Text(){
         tasks.clear();
-        tasks.addAll(CheckListDAO.getInstance().getNoteCheckList());
-        tasks.addAll(TextDAO.getInstance().getNoteText());
-        tasks.addAll(CheckListDAO.getInstance().getCalendarCheckList());
-        tasks.addAll(TextDAO.getInstance().getCalendarText());
+        List<Task> temp = new ArrayList<>();
+        temp.addAll(TextDAO.getInstance().getNoteText());
+
+        for (Task t:temp){
+            if(t.getStatus()==Constant.STATUS.ARCHIVE){
+                tasks.add(t);
+            }
+        }
     }
-    public static void loadAllTaskNormal(){
+    //Notes+CheckList
+    public static void loadNotes_CheckList(){
         tasks.clear();
-        tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.NORMAL));
-        tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.NORMAL));
+        List<Task> temp = new ArrayList<>();
+        temp.addAll(CheckListDAO.getInstance().getNoteCheckList());
+        temp.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.ARCHIVE));
+        for (Task t:temp){
+            if(t.getStatus()==Constant.STATUS.ARCHIVE){
+                tasks.add(t);
+            }
+        }
     }
-    public static void loadAllTaskNormalAndArchive(){
+    //Cal+All
+    public static void loadCal_All(){
+
         tasks.clear();
-        tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.NORMAL));
-        tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.NORMAL));
-        tasks.addAll(TextDAO.getInstance().getByStatus(Constant.STATUS.ARCHIVE));
-        tasks.addAll(CheckListDAO.getInstance().getByStatus(Constant.STATUS.ARCHIVE));
+        List<Task> temp = new ArrayList<>();
+        temp.addAll(CheckListDAO.getInstance().getCalendarCheckList());
+        temp.addAll(TextDAO.getInstance().getCalendarText());
+
+        for (Task t:temp){
+            if(t.getStatus()==Constant.STATUS.ARCHIVE){
+                tasks.add(t);
+            }
+        }
+
     }
+    //Cal+Text
+    public static void loadCal_Text(){
+        tasks.clear();
+        List<Task> temp = new ArrayList<>();
+        temp.addAll(TextDAO.getInstance().getCalendarText());
+        for (Task t:temp){
+            if(t.getStatus()==Constant.STATUS.ARCHIVE){
+                tasks.add(t);
+            }
+        }
+
+    }
+    //Cal+CheckList
+    public static void loadCal_CheckList(){
+        tasks.clear();
+        List<Task> temp = new ArrayList<>();
+        temp.addAll(CheckListDAO.getInstance().getCalendarCheckList());
+
+        for (Task t:temp){
+            if(t.getStatus()==Constant.STATUS.ARCHIVE){
+                tasks.add(t);
+            }
+        }
+    }
+
+
+
+
 }
