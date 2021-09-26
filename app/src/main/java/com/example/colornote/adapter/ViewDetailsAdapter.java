@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
+import androidx.preference.PreferenceManager;
 
 import com.example.colornote.R;
 import com.example.colornote.activity.CheckList_Activity;
@@ -82,6 +84,35 @@ public class ViewDetailsAdapter extends ViewAdapter {
         }
 
         holder.txtTitle.setText(task.getTitle());
+        SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        String font_size =pre.getString("font_size","100dp");
+
+        float size=0;
+        float sizeContent=0;
+        switch (font_size){
+            case "Tiny":     size=context.getResources().getDimensionPixelSize(R.dimen.font_size_tiny);
+                sizeContent=context.getResources().getDimensionPixelSize(R.dimen.font_size_tiny_content);
+                break;
+            case "Small":size=context.getResources().getDimensionPixelSize(R.dimen.font_size_small);
+                sizeContent=context.getResources().getDimensionPixelSize(R.dimen.font_size_small_content);
+                break;
+            case "Medium": size=context.getResources().getDimensionPixelSize(R.dimen.font_size_medium);
+                sizeContent=context.getResources().getDimensionPixelSize(R.dimen.font_size_medium_content);
+                break;
+            case "Large": size=context.getResources().getDimensionPixelSize(R.dimen.font_size_large);
+                sizeContent=context.getResources().getDimensionPixelSize(R.dimen.font_size_large_content);
+                break;
+            case "Huge": size=context.getResources().getDimensionPixelSize(R.dimen.font_size_huge);
+                sizeContent=context.getResources().getDimensionPixelSize(R.dimen.font_size_huge_content);
+                break;
+            default: size=context.getResources().getDimensionPixelSize(R.dimen.font_size);
+                sizeContent=context.getResources().getDimensionPixelSize(R.dimen.font_size_content);
+                break;
+
+        }
+
+        holder.txtTitle.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);
+        holder.txtContent.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);
         holder.txtContent.setText(task.showContent());
         if(task.completeAll()) {
             holder.txtTitle.setPaintFlags(holder.txtTitle.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);

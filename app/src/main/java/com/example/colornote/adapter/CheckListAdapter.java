@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.ClipData;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,6 +14,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.TextAppearanceSpan;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,12 +47,35 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
     private ArrayList<ItemCheckList> listitem;
     private ArrayList<ItemCheckList> filterList;
     private Context context;
+    float sizeContent=0;
     String queryText = "";
     ItemCheckList itemCheckList;
     public CheckListAdapter(ArrayList<ItemCheckList> listitem,Context context){
         this.listitem = listitem;
         this.context = context;
         this.filterList = listitem;
+
+    }
+    public void setSizeContent(TextView textView){
+        SharedPreferences pre = androidx.preference.PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext());
+        String font_size =pre.getString("font_size","100dp");
+        switch (font_size){
+            case "Tiny":    sizeContent=context.getResources().getDimensionPixelSize(R.dimen.font_size_tiny);
+                break;
+            case "Small":sizeContent=context.getResources().getDimensionPixelSize(R.dimen.font_size_small);
+                break;
+            case "Medium": sizeContent=context.getResources().getDimensionPixelSize(R.dimen.font_size_medium);
+                break;
+            case "Large": sizeContent=context.getResources().getDimensionPixelSize(R.dimen.font_size_large);
+                break;
+            case "Huge": sizeContent=context.getResources().getDimensionPixelSize(R.dimen.font_size_huge);
+                break;
+            default: sizeContent=context.getResources().getDimensionPixelSize(R.dimen.font_size);
+                break;
+
+        }
+
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_PX,sizeContent);
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -145,6 +170,7 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.View
             button = (Button) itemView.findViewById(R.id.button_deleteitem);
             textView.setBackgroundDrawable(itemView.getBackground());
             button.setBackgroundDrawable(itemView.getBackground());
+            setSizeContent(textView);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

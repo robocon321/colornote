@@ -26,6 +26,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -69,6 +70,7 @@ public class Text_Activity extends AppCompatActivity {
     LinearLayout linearLayout;
     int color_black =1;
     int num_click = 0;
+    float sizeContent=0;
     SharedPreferences sharedPreferences;
 String themeName;
     @Override
@@ -166,10 +168,30 @@ String themeName;
 
 //         this.colorid = 2;
 
+setSizeContent(edit_text);
+    }
+
+public void setSizeContent(EditText edit_text){
+    SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    String font_size =pre.getString("font_size","100dp");
+    switch (font_size){
+        case "Tiny":     sizeContent=getResources().getDimensionPixelSize(R.dimen.font_size_tiny);
+            break;
+        case "Small":sizeContent=getResources().getDimensionPixelSize(R.dimen.font_size_small);
+            break;
+        case "Medium": sizeContent=getResources().getDimensionPixelSize(R.dimen.font_size_medium);
+            break;
+        case "Large": sizeContent=getResources().getDimensionPixelSize(R.dimen.font_size_large);
+            break;
+        case "Huge": sizeContent=getResources().getDimensionPixelSize(R.dimen.font_size_huge);
+            break;
+        default: sizeContent=getResources().getDimensionPixelSize(R.dimen.font_size);
+            break;
 
     }
 
-
+    edit_text.setTextSize(TypedValue.COMPLEX_UNIT_PX,sizeContent);
+}
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
