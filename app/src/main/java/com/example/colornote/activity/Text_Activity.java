@@ -59,7 +59,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Text_Activity extends AppCompatActivity {
-    private int colorid;
+    private int colorid = 2;
     Toolbar toolbar;
     EditText title_text, edit_text;
     TextView text_date;

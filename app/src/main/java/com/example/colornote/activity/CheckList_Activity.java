@@ -63,7 +63,7 @@ import java.util.Date;
 import java.util.List;
 
 public class CheckList_Activity extends AppCompatActivity {
-    private int colorid;
+    private int colorid = 2;
     EditText title_checklist;
     TextView date_checklist;
     Toolbar toolbar;
@@ -431,13 +431,12 @@ public class CheckList_Activity extends AppCompatActivity {
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int index) {
-                    List<ItemCheckList> items = ItemCheckListDAO.getInstance().getByParentId(checkList.getId());
                     CheckListDAO.getInstance().changeCompleted(checkList.getId(), isCompleted);
-                    for (ItemCheckList item : items) {
+                    for (ItemCheckList item : list) {
                         ItemCheckListDAO.getInstance().changeCompleted(item.getId(), isCompleted);
-                        CheckListAdapter checkListAdapter = new CheckListAdapter(list,CheckList_Activity.this);
-                        recyclerView.setAdapter(checkListAdapter);
+                        item.setCompleted(isCompleted);
                     }
+                    checkListAdapter.notifyDataSetChanged();
                     checkList.setCompleted(isCompleted);
                     item.setTitle(checkList.completeAll() ? "Uncheck" : "Check");
                     item.setIcon(checkList.completeAll() ? R.drawable.ic_square : R.drawable.ic_check);
@@ -455,13 +454,12 @@ public class CheckList_Activity extends AppCompatActivity {
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int index) {
-                    List<ItemCheckList> items = ItemCheckListDAO.getInstance().getByParentId(checkList.getId());
                     CheckListDAO.getInstance().changeCompleted(checkList.getId(), isCompleted);
-                    for (ItemCheckList item : items) {
+                    for (ItemCheckList item : list) {
                         ItemCheckListDAO.getInstance().changeCompleted(item.getId(), isCompleted);
-                        CheckListAdapter checkListAdapter = new CheckListAdapter(list,CheckList_Activity.this);
-                        recyclerView.setAdapter(checkListAdapter);
+                        item.setCompleted(isCompleted);
                     }
+                    checkListAdapter.notifyDataSetChanged();
                     checkList.setCompleted(isCompleted);
                     item.setTitle(checkList.completeAll() ? "Uncheck" : "Check");
                     item.setIcon(checkList.completeAll() ? R.drawable.ic_square : R.drawable.ic_check);
