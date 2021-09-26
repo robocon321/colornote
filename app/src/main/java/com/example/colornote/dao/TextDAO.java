@@ -108,7 +108,7 @@ public class TextDAO extends AbstractDAO{
 
     public List<Text> getCalendarTextByDate(String date) {
         List<Text> list = new ArrayList<>();
-        String sql = queryAll() + " WHERE reminderId <> 0 and modifiedDate between '" + date + "' and '" + date + "'";
+        String sql = queryAll() + " WHERE reminderId <> 0 and status <> 0 and modifiedDate between '" + date + "' and '" + date + "'";
         Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
         RowMapper<Text> mapper= new TextMapper();
         while(cursor.moveToNext()){
@@ -131,5 +131,16 @@ public class TextDAO extends AbstractDAO{
             text.setStatus(cursor.getInt(7));
         }
         return text;
+    }
+
+    public List<Text> getCalendarTextNoTrash() {
+        List<Text> list = new ArrayList<>();
+        String sql = queryAll() + " WHERE reminderId <> 0 and status <> 0" ;
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
+        RowMapper<Text> mapper= new TextMapper();
+        while(cursor.moveToNext()){
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
     }
 }

@@ -51,6 +51,7 @@ public class Calendar_Text_Activity extends AppCompatActivity {
     LinearLayout linearLayout;
     int color_black =1;
     int num_click = 0;
+    String putDate;
     SharedPreferences sharedPreferences;
     String themeName;
     @Override
@@ -91,6 +92,7 @@ public class Calendar_Text_Activity extends AppCompatActivity {
                 colorid = text.getColorId();
                 text_date.setText(simpleDateFormat.format(text.getModifiedDate()));
                 String colorSub = getIntent().getStringExtra("colorSub");
+                putDate = getIntent().getStringExtra("putDate");
                 //  Toast.makeText(Calendar_Activity.this,colorSub,Toast.LENGTH_LONG).show();
 //                Drawable colorDrawable = new ColorDrawable(Color.parseColor(colorSub));
                 actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor(colorSub)));
@@ -369,10 +371,14 @@ public class Calendar_Text_Activity extends AppCompatActivity {
     }
 
     public boolean editText(int color){
-//        Text text = new Text();
         TextDAO textDAO = TextDAO.getInstance();
-        Date date = getDateFromCalendarFragment();
+        Date date = null;
+        try {
+            date = new SimpleDateFormat("yyyy-MM-dd").parse(putDate);
 
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         text.setTitle(title_text.getText().toString());
         text.setContent(edit_text.getText().toString());
         text.setColorId(color);
@@ -474,19 +480,4 @@ public class Calendar_Text_Activity extends AppCompatActivity {
         }
         return date;
     }
-//    private void highlightText(String s) {
-//        SpannableString spannableString = new SpannableString(edit_text.getText());
-//        BackgroundColorSpan[] backgroundColorSpan =
-//                spannableString.getSpans(0, spannableString.length(), BackgroundColorSpan.class);
-//        for (BackgroundColorSpan bgSpan : backgroundColorSpan) {
-//            spannableString.removeSpan(bgSpan);
-//        }
-//        int indexOfKeyWord = spannableString.toString().indexOf(s);
-//        while (indexOfKeyWord > 0) {
-//            spannableString.setSpan(new BackgroundColorSpan(Color.YELLOW), indexOfKeyWord,
-//                    indexOfKeyWord + s.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//            indexOfKeyWord = spannableString.toString().indexOf(s, indexOfKeyWord + s.length());
-//        }
-//        edit_text.setText(spannableString);
-//    }
 }

@@ -120,7 +120,18 @@ public class CheckListDAO extends AbstractDAO{
 
     public List<CheckList> getCalendarTextByDate(String date) {
         List<CheckList> list = new ArrayList<>();
-        String sql = queryAll() + " WHERE reminderId <> 0 and modifiedDate between '" + date + "' and '" + date + "'";
+        String sql = queryAll() + " WHERE reminderId <> 0 and status <> 0 and modifiedDate between '" + date + "' and '" + date + "'";
+        Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
+        RowMapper<CheckList> mapper= new CheckListMapper();
+        while(cursor.moveToNext()){
+            list.add(mapper.mappRow(cursor));
+        }
+        return list;
+    }
+
+    public List<CheckList> getCalendarCheckListNoTrash() {
+        List<CheckList> list = new ArrayList<>();
+        String sql = queryAll() + " WHERE reminderId <> 0 and status <> 0" ;
         Cursor cursor = database.getSqLiteDatabase().rawQuery(sql, null);
         RowMapper<CheckList> mapper= new CheckListMapper();
         while(cursor.moveToNext()){

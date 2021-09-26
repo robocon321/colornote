@@ -120,18 +120,19 @@ public class CalendarFragment extends Fragment {
                 openDialogAddTask();
             }
         });
-        // open dialog calendar
+
         dialogAddCalendar.show();
     }
 
     //   add new task (text or checklist)
     private void openDialogAddTask() {
+        Intent intent = new Intent(getActivity(), Calendar_Text_Activity.class);
+        bundle.putString("date", setDate);
+        intent.putExtra("bundle", bundle);
+
         button_text.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Calendar_Text_Activity.class);
-                bundle.putString("date", setDate);
-                intent.putExtra("bundle", bundle);
                 startActivity(intent);
             }
         });
@@ -159,14 +160,17 @@ public class CalendarFragment extends Fragment {
     public void onResume() {
         super.onResume();
 //        add icon to note
-        lsTaskRemider.addAll(textDAO.getCalendarText());
-        lsTaskRemider.addAll(checkListDAO.getCalendarCheckList());
+        lsTaskRemider.addAll(textDAO.getCalendarTextNoTrash());
+        lsTaskRemider.addAll(checkListDAO.getCalendarCheckListNoTrash());
+
         for (int i = 0; i < lsTaskRemider.size(); i++) {
             lsEvent.add(new EventDay(parseDateToCalendar(lsTaskRemider.get(i).getModifiedDate()), R.drawable.ic_note));
         }
+
         calendarView.setEvents(lsEvent);
-        //  null set date when on resume
+
         getTaskInday();
+
     }
 
     private void getTaskInday() {

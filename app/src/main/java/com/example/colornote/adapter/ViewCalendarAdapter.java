@@ -33,7 +33,11 @@ import com.example.colornote.util.Constant;
 import com.example.colornote.util.DateConvert;
 import com.example.colornote.util.SelectedObserverService;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 public class ViewCalendarAdapter extends BaseAdapter {
     private Context context;
@@ -177,6 +181,7 @@ public class ViewCalendarAdapter extends BaseAdapter {
                         Intent intent = new Intent(context, Calendar_Text_Activity.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("text", text);
+                        bundle.putString("putDate", task.getModifiedDate() + "");
                         bundle.putString("colorSub", color1.getColorSub());
                         bundle.putString("colorMain", color1.getColorMain());
                         intent.putExtras(bundle);
@@ -190,9 +195,11 @@ public class ViewCalendarAdapter extends BaseAdapter {
                         CheckListDAO checkListDAO = CheckListDAO.getInstance();
                         checkList = (CheckList) checkListDAO.getCheckList(task.getId());
                         checkList.setModifiedDate(task.getModifiedDate());
+                        Log.d("Gett", "onClick: " + task.getModifiedDate());
                         Intent intent = new Intent(context, Calendar_Checklist_Activity.class);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("checkList", checkList);
+                        bundle.putString("putDate", task.getModifiedDate() + "");
                         bundle.putString("colorSub", color1.getColorSub());
                         bundle.putString("colorMain", color1.getColorMain());
                         intent.putExtras(bundle);
