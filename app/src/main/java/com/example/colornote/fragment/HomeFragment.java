@@ -471,6 +471,7 @@ public class HomeFragment extends Fragment implements ISeletectedObserver {
         loadTask();
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("account", Context.MODE_PRIVATE);
         accountId = sharedPreferences.getString("account_id", "");
+        getActivity().invalidateOptionsMenu();
     }
 
     public boolean checkAvailableInternet() {
