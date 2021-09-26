@@ -26,6 +26,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -69,6 +70,7 @@ public class Text_Activity extends AppCompatActivity {
     LinearLayout linearLayout;
     int color_black =1;
     int num_click = 0;
+    float sizeContent=0;
     SharedPreferences sharedPreferences;
 String themeName;
     @Override
@@ -117,16 +119,21 @@ String themeName;
                 }else{
                     linearLayout.setBackgroundColor(Color.parseColor(getIntent().getStringExtra("colorMain")));
                 }
+                if(colorSub.equals("#000000")) {
+                    color_black = 0;
+                    setSupportActionBar(toolbar);
+                    toolbar.setTitleTextColor(Color.WHITE);
+                    toolbar.getOverflowIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+                    actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24_w);
 
+                }else{
+                    actionBar.setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
+                }
                 Constant.num_click = 0;
                 numEdit = 1;
                 title_text.setVisibility(View.GONE);
                 checkIcon = false;
-                if(color_black==0){
-                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24_w);
-                }else{
-                    getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_baseline_arrow_back_24);
-                }
+
             }else{
                 Toast.makeText(Text_Activity.this,"null",Toast.LENGTH_LONG).show();
             }
@@ -166,16 +173,41 @@ String themeName;
 
 //         this.colorid = 2;
 
+setSizeContent(edit_text);
+    }
+
+public void setSizeContent(EditText edit_text){
+    SharedPreferences pre = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+    String font_size =pre.getString("font_size","100dp");
+    switch (font_size){
+        case "Tiny":     sizeContent=getResources().getDimensionPixelSize(R.dimen.font_size_tiny);
+            break;
+        case "Small":sizeContent=getResources().getDimensionPixelSize(R.dimen.font_size_small);
+            break;
+        case "Medium": sizeContent=getResources().getDimensionPixelSize(R.dimen.font_size_medium);
+            break;
+        case "Large": sizeContent=getResources().getDimensionPixelSize(R.dimen.font_size_large);
+            break;
+        case "Huge": sizeContent=getResources().getDimensionPixelSize(R.dimen.font_size_huge);
+            break;
+        default: sizeContent=getResources().getDimensionPixelSize(R.dimen.font_size);
+            break;
 
     }
 
-
+    edit_text.setTextSize(TypedValue.COMPLEX_UNIT_PX,sizeContent);
+}
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.text_checklist_menu, menu);
         MenuItem searchItem = menu.findItem(R.id.find);
 
+        if(Constant.num_edit==1){
+            for(int i = 2;i<menu.size();i++){
+                menu.getItem(i).setVisible(false);
+            }
+        }
 
         SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -491,7 +523,23 @@ String themeName;
         }
         return date;
     }
-//    private void highlightText(String s) {
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(this.numEdit == 0) {
+            if (title_text.getText().toString() != null && !title_text.getText().toString().equals("")) {
+                addText(colorid);
+                Toast.makeText(Text_Activity.this, "Saved", Toast.LENGTH_LONG).show();
+            }
+        }
+        else{
+            editText(colorid);
+                Toast.makeText(Text_Activity.this,"Saved",Toast.LENGTH_LONG).show();
+        }
+
+    }
+    //    private void highlightText(String s) {
 //        SpannableString spannableString = new SpannableString(edit_text.getText());
 //        BackgroundColorSpan[] backgroundColorSpan =
 //                spannableString.getSpans(0, spannableString.length(), BackgroundColorSpan.class);

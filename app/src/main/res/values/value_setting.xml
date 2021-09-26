@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="font_size">15sp</dimen>
-    <dimen name="font_size_tiny">10sp</dimen>
-    <dimen name="font_size_small">13sp</dimen>
+    <dimen name="font_size_tiny">12sp</dimen>
+    <dimen name="font_size_small">14sp</dimen>
     <dimen name="font_size_medium">15sp</dimen>
     <dimen name="font_size_large">18sp</dimen>
     <dimen name="font_size_huge">24sp</dimen>
+
+    <dimen name="font_size_content">14sp</dimen>
+    <dimen name="font_size_tiny_content">9sp</dimen>
+    <dimen name="font_size_small_content">12sp</dimen>
+    <dimen name="font_size_medium_content">14sp</dimen>
+    <dimen name="font_size_large_content">17sp</dimen>
+    <dimen name="font_size_huge_content">22sp</dimen>
+
     <color name="color_primary">#ffd64937</color>
     <color name="color_primary_dark">#ffbb4030</color>
     <color name="color_accent">#ffd64937</color>
