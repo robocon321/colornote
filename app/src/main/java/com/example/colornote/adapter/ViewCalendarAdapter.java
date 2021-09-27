@@ -49,6 +49,7 @@ public class ViewCalendarAdapter extends BaseAdapter {
 
     public ViewCalendarAdapter(ArrayList<Task> tasks, Context context) {
         this.tasks = tasks;
+        Log.e("cc",tasks.size()+"xxxxxxxxxxxxxxxxx");
         this.context = context;
     }
 
