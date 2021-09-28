@@ -64,6 +64,7 @@ public class CalendarFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         addControls(view);
         addEvents();
+
         return view;
     }
 
@@ -113,6 +114,7 @@ public class CalendarFragment extends Fragment {
     private void addTask(EventDay eventDay) {
         setDate = new SimpleDateFormat("yyyy-MM-dd").format(eventDay.getCalendar().getTime());
         getTaskInday();
+        adapterTask.notifyDataSetChanged();
         txtDate.setText(setDate);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +174,7 @@ public class CalendarFragment extends Fragment {
 
         getTaskInday();
 
+
     }
 
     private void getTaskInday() {
@@ -179,8 +182,10 @@ public class CalendarFragment extends Fragment {
             lsTask.clear();
             lsTask.addAll(checkListDAO.getCalendarTextByDate(convertTimestamp(setDate)));
             lsTask.addAll(textDAO.getCalendarTextByDate(convertTimestamp(setDate)));
+            gvTask.setAdapter(adapterTask);
             adapterTask.notifyDataSetChanged();
         }
+
     }
 
     public Calendar parseDateToCalendar(Date date) {

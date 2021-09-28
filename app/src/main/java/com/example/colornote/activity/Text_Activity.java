@@ -353,12 +353,14 @@ public void setSizeContent(EditText edit_text){
     }
 
     public void deleteTask() {
-        TextDAO.getInstance().changeStatus(text.getId(), Constant.STATUS.RECYCLE_BIN);
+       text.setStatus(Constant.STATUS.RECYCLE_BIN);
         onBackPressed();
     }
 
     public void archiveTask() {
-        TextDAO.getInstance().changeStatus(text.getId(), Constant.STATUS.ARCHIVE);
+
+       text.setStatus(Constant.STATUS.ARCHIVE);
+
         onBackPressed();
     }
 
@@ -430,7 +432,7 @@ public void setSizeContent(EditText edit_text){
         text.setColorId(color);
         text.setModifiedDate(date);
         text.setReminderId(-1);
-        text.setStatus(Constant.STATUS.NORMAL);
+
         textDAO.update(text);
         closekeyboard();
         return true;
