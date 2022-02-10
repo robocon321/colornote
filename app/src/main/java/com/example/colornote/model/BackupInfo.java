@@ -40,4 +40,14 @@ public class BackupInfo implements Serializable {
     public void setType(boolean type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "BackupInfo{" +
+                "password='" + password + '\'' +
+                ", date=" + date +
+                ", type=" + type +
+                ", path='" + path + '\'' +
+                '}';
+    }
 }
