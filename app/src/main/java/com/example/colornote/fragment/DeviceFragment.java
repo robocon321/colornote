@@ -96,7 +96,7 @@ public class DeviceFragment extends Fragment{
                             BackupInfo info = new BackupInfo();
 
                             info.setDate(Calendar.getInstance().getTime());
-                            info.setPassword(edtPwd.getText().toString());
+                            info.setPassword(MD5Hash.MDA5(edtPwd.getText().toString()));
                             info.setType(false);
 
                             String nameFile = buildNameFileBackup(info);
@@ -178,8 +178,8 @@ public class DeviceFragment extends Fragment{
     public BackupInfo getBackupInfoFromNameFile(File file){
         BackupInfo info = new BackupInfo();
         info.setPath(file.getPath());
-
         String path = file.getName();
+        path = path.substring(0, path.length() - 7);
         String[] arr = path.split("_");
         if(arr.length == 3){
             info.setDate(new Date(Long.parseLong(arr[0])));

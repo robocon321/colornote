@@ -176,13 +176,14 @@ public class BackupRclAdapter extends RecyclerView.Adapter<BackupRclAdapter.View
                             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    if(infos.get(getAdapterPosition()).getPassword().equals(MD5Hash.MDA5(edtPwd.getText().toString()) + ".sqlite")) {
+                                    Log.e("EEE", infos.get(getAdapterPosition()).getPassword());
+                                    if(infos.get(getAdapterPosition()).getPassword().equals(MD5Hash.MDA5(edtPwd.getText().toString()))) {
                                         Intent intent = new Intent(context, DetailItemBackupActivity.class);
                                         intent.putExtra("info", infos.get(getAdapterPosition()));
                                         context.startActivity(intent);
 
                                     } else {
-                                        Toast.makeText(ctw, "Password incorrect", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ctw, "Password is incorrect", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
